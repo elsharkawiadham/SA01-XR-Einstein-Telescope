@@ -7,7 +7,9 @@ Open `Scenes/Scene01_Opening_Adham.unity`. All authored environment content belo
 - Cyan floor guidance toward a closed elevator; dim corridor sides.
 - Left wall movement instructions and right wall welcome transcript.
 - Existing controller locomotion, with move speed reduced to 1.4 m/s.
-- Elevator call panel is visual only. Door opening, entry, floor travel, and next-scene handoff are intentionally deferred.
+- Within 2 metres horizontally of the call button, a cyan down arrow appears. Aim the controller and press the select trigger. It turns green and the door lifts over 2 seconds, revealing a stationary enclosed cabin.
+- After 3 seconds nearby without selecting, an overhead voice says: "To push the button, click on the button." The timer resets on leaving, the hint plays once per scene run, and selection stops it. It waits for the initial welcome voice to finish.
+- Floor travel and next-scene handoff remain deferred. ElevatorCallButton.onCalled is available for future integration.
 
 The fade currently begins on scene start, not on detecting headset wear. Restart Play Mode to replay it. The welcome WAV is a replaceable macOS Daniel synthesized prototype, pitched down on its AudioSource.
 
@@ -19,3 +21,6 @@ Adjust lighting, panel positions, and guidance directly in the saved scene. Open
 
 ## Device acceptance still required
 Test Quest standalone and Windows PC Link separately: tracking, controller movement/snap turn, collisions, stereo fade coverage, text readability, overhead audio, and frame timing. Mac editor rendering does not establish device compatibility or performance. Existing OpenXR project settings are preserved.
+
+## Elevator settings
+Select `ElevatorEntrance/Down button - aim and press trigger` to change activation distance, hint delay, opening time, voice, and open offset. Physical hand-poke input has not been implemented; controller selection uses XRSimpleInteractable. `ElevatorInteractionCheck.Run` provides a batch-mode scripted Play Mode check.
