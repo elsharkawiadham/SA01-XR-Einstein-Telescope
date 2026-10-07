@@ -9,6 +9,8 @@ namespace GroupProject.Opening
         public Camera headsetCamera;
         public Material fadeMaterial;
         public AudioSource welcome;
+        public LocomotionGuide locomotionGuide;
+        public StandaloneAIGuide aiGuide;
         Material instance;
         GameObject overlay;
         IEnumerator Start()
@@ -32,7 +34,18 @@ namespace GroupProject.Opening
                 yield return null;
             }
             Destroy(overlay);
-            if (welcome) welcome.Play();
+            bool spoken=false;
+            if(aiGuide){
+                var speech=aiGuide.SpeakInstruction("Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.");
+                while(!speech.IsCompleted)yield return null;
+                spoken=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion && speech.Result;
+            }
+            if (!spoken && welcome) {
+                welcome.Play();
+                yield return null;
+                while(welcome.isPlaying) yield return null;
+            }
+            if(locomotionGuide) locomotionGuide.Begin();
         }
         void OnDestroy()
         {

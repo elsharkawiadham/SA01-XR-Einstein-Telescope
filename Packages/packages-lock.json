@@ -1,5 +1,31 @@
 {
   "dependencies": {
+    "ai.undream.llm": {
+      "version": "https://github.com/undreamai/LLMUnity.git#9931a9ea46906b1f43adaf9498c05ccf227b5d0b",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.0.2"
+      },
+      "hash": "9931a9ea46906b1f43adaf9498c05ccf227b5d0b"
+    },
+    "com.cysharp.unitask": {
+      "version": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#a77a1b4a89824fb6df293099de3060daf2a432c1",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "a77a1b4a89824fb6df293099de3060daf2a432c1"
+    },
+    "com.ponyudev.sherpa-onnx": {
+      "version": "https://github.com/Ponyu-dev/Unity-Sherpa-ONNX.git#ebfccf15158d430f8ec15a17344f48ce632adc75",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.sharp-zip-lib": "1.4.1",
+        "com.cysharp.unitask": "2.5.10"
+      },
+      "hash": "ebfccf15158d430f8ec15a17344f48ce632adc75"
+    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 1,
@@ -230,6 +256,13 @@
         "com.unity.searcher": "4.9.3",
         "com.unity.graph-authoring": "1.0.0"
       }
+    },
+    "com.unity.sharp-zip-lib": {
+      "version": "1.4.2",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
     },
     "com.unity.test-framework": {
       "version": "1.8.0",

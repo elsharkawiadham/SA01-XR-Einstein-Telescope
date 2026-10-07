@@ -15,6 +15,8 @@ namespace GroupProject.Opening
         public Material calledMaterial;
         public AudioSource hintVoice;
         public AudioSource welcomeVoice;
+        public LocomotionGuide locomotionGuide;
+        public StandaloneAIGuide aiGuide;
         public Transform door;
         public Vector3 openOffset = new Vector3(0, 3.1f, 0);
         [Min(.1f)] public float activationDistance = 2f;
@@ -26,6 +28,7 @@ namespace GroupProject.Opening
         public bool Nearby { get; private set; }
         Vector3 closedPosition;
         float waiting, opening;
+        bool aiHintSpeaking;
         void Awake()
         {
             if (door) closedPosition = door.localPosition;
@@ -44,6 +47,7 @@ namespace GroupProject.Opening
         {
             if (Called || !IsInRange()) return false;
             Called = true;
+            if(aiGuide)aiGuide.CancelSpeech();
             if (hintVoice) hintVoice.Stop();
             if (indicator && calledMaterial) indicator.sharedMaterial = calledMaterial;
             if (proximityVisual) proximityVisual.SetActive(true);
@@ -58,6 +62,13 @@ namespace GroupProject.Opening
             delta.y = 0;
             return delta.sqrMagnitude <= activationDistance * activationDistance;
         }
+        async void SpeakHint()
+        {
+            aiHintSpeaking=true;
+            bool spoken=await aiGuide.SpeakInstruction("To push the button, aim at the down arrow and click with the controller trigger.");
+            aiHintSpeaking=false;
+            if(this && !Called && Nearby && !spoken && hintVoice)hintVoice.Play();
+        }
         void Update()
         {
             Nearby = IsInRange();
@@ -71,15 +82,17 @@ namespace GroupProject.Opening
             if (!Nearby)
             {
                 waiting = 0;
+                if(aiHintSpeaking && aiGuide)aiGuide.CancelSpeech();
                 if (hintVoice && hintVoice.isPlaying) hintVoice.Stop();
                 return;
             }
-            if (HintPlayed || (welcomeVoice && welcomeVoice.isPlaying)) return;
+            if (HintPlayed || (welcomeVoice && welcomeVoice.isPlaying) || (locomotionGuide && locomotionGuide.IsRunning) || (aiGuide && aiGuide.IsBusy)) return;
             waiting += Time.deltaTime;
             if (waiting >= hintDelay && hintVoice && hintVoice.clip)
             {
                 HintPlayed = true;
-                hintVoice.Play();
+                if(aiGuide && aiGuide.Ready) SpeakHint();
+                else hintVoice.Play();
             }
         }
     }

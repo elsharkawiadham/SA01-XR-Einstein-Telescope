@@ -1,0 +1,21 @@
+{
+  "activeProfileIndex": 0,
+  "profiles": [
+    {
+      "profileName": "sherpa-onnx-whisper-tiny.en",
+      "modelType": 2,
+      "modelSource": 0,
+      "numThreads": 2,
+      "provider": "cpu",
+      "sampleRate": 16000,
+      "featureDim": 80,
+      "decodingMethod": "greedy_search",
+      "tokens": "tiny.en-tokens.txt",
+      "whisperEncoder": "tiny.en-encoder.onnx",
+      "whisperDecoder": "tiny.en-decoder.onnx",
+      "whisperLanguage": "en",
+      "whisperTask": "transcribe",
+      "whisperTailPaddings": -1
+    }
+  ]
+}

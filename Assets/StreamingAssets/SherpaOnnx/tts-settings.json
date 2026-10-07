@@ -1,0 +1,26 @@
+{
+  "activeProfileIndex": 0,
+  "profiles": [
+    {
+      "profileName": "vits-piper-en_US-lessac-low",
+      "modelType": 0,
+      "modelSource": 0,
+      "numThreads": 2,
+      "provider": "cpu",
+      "speed": 1.0,
+      "maxNumSentences": 1,
+      "vitsModel": "en_US-lessac-low.onnx",
+      "vitsTokens": "tokens.txt",
+      "vitsDataDir": "espeak-ng-data",
+      "vitsNoiseScale": 0.667,
+      "vitsNoiseScaleW": 0.8,
+      "vitsLengthScale": 1.0
+    }
+  ],
+  "cache": {
+    "offlineTtsPoolSize": 1,
+    "resultCacheEnabled": false,
+    "audioClipEnabled": false,
+    "audioSourceEnabled": false
+  }
+}

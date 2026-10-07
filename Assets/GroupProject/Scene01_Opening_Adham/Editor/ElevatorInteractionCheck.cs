@@ -18,6 +18,8 @@ public static class ElevatorInteractionCheck
     static ElevatorInteractionCheck() { EditorApplication.update += Tick; }
     public static void Run() {
         EditorSceneManager.OpenScene("Assets/GroupProject/Scene01_Opening_Adham/Scenes/Scene01_Opening_Adham.unity");
+        var ai=UnityEngine.Object.FindFirstObjectByType<StandaloneAIGuide>();
+        if(ai){ai.opening.aiGuide=null;ai.tutorial.aiGuide=null;ai.elevator.aiGuide=null;ai.gameObject.SetActive(false);}
         SessionState.SetBool("Adham.ElevatorCheck",true);
         EditorApplication.isPlaying=true;
     }
@@ -55,11 +57,11 @@ public static class ElevatorInteractionCheck
                 Select();Next();
             } else if(stage==7 && elapsed>.8) {
                 Assert(button.Called&&!button.HintPlayed&&!button.hintVoice.isPlaying,"Hint played after immediate press");
-                File.WriteAllText("Temp/ElevatorCheck.txt","PASS: proximity visibility; distant press rejected; timer resets on leaving; delayed hint; XR select event; cancel hint; duplicate press ignored; door opens; green indicator; immediate press suppresses hint. Scripted editor check only.");
+                File.WriteAllText("Logs/ElevatorCheck.txt","PASS: proximity visibility; distant press rejected; timer resets on leaving; delayed hint; XR select event; cancel hint; duplicate press ignored; door opens; green indicator; immediate press suppresses hint. Scripted editor check only.");
                 SessionState.SetBool("Adham.ElevatorCheck",false);EditorApplication.Exit(0);
             }
         } catch(Exception e) {
-            File.WriteAllText("Temp/ElevatorCheck.txt","FAIL: "+e);Debug.LogException(e);SessionState.SetBool("Adham.ElevatorCheck",false);EditorApplication.Exit(1);
+            File.WriteAllText("Logs/ElevatorCheck.txt","FAIL: "+e);Debug.LogException(e);SessionState.SetBool("Adham.ElevatorCheck",false);EditorApplication.Exit(1);
         }
     }
 }
