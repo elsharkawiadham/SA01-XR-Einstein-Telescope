@@ -20,7 +20,7 @@ namespace GroupProject.Elevator
         public AudioSource motor, announcements;
         public AudioClip boardingClip, descendingClip, arrivalClip;
         public string destinationScene = "02_LowerFloor";
-        [Min(.1f)] public float doorSeconds = 2, travelSeconds = 7;
+        [Min(.1f)] public float doorSeconds = 2, travelSeconds = 45;
         public Phase State { get; private set; }
         public bool IsTravelling => State == Phase.Closing || State == Phase.Descending || State == Phase.Opening;
         public string Instruction => State == Phase.Arrived ? "B1 — Arrived. Leave the cabin through the open door."
@@ -37,7 +37,7 @@ namespace GroupProject.Elevator
             if (State == Phase.Boarding && InsideCabin() && !announced)
             { announced = true; Announce(boardingClip); }
             if (display && (State == Phase.Waiting || State == Phase.Boarding))
-                display.text = "G  /  B1\n" + (InsideCabin() ? "SELECT B1 TO DESCEND" : "STEP INSIDE");
+                display.text = "G  /  B1 (-300 m)\n" + (InsideCabin() ? "SELECT B1 TO DESCEND" : "STEP INSIDE");
         }
         public bool InsideCabin()
         {
@@ -98,7 +98,12 @@ namespace GroupProject.Elevator
             if (motor) motor.Play();
             for (float elapsed = 0; elapsed < travelSeconds; elapsed += Time.deltaTime)
             {
-                if (display) display.text = "GOING DOWN\nG  →  B1\n" + Mathf.CeilToInt(travelSeconds - elapsed) + " s";
+                if (display)
+                {
+                    float progress = Mathf.SmoothStep(0, 1, elapsed / travelSeconds);
+                    int depth = Mathf.RoundToInt(-300 * progress);
+                    display.text = "GOING DOWN / B1\n" + depth + " m / -300 m\n" + Mathf.CeilToInt(travelSeconds - elapsed) + " s";
+                }
                 yield return null;
             }
             AsyncOperation loading = null;
@@ -120,7 +125,7 @@ namespace GroupProject.Elevator
                 if (!light.transform.IsChildOf(transform)) light.enabled = false;
             SceneManager.SetActiveScene(SceneManager.GetSceneByName(destinationScene));
             if (motor) motor.Stop();
-            State = Phase.Opening; if (display) display.text = "B1\nARRIVED";
+            State = Phase.Opening; if (display) display.text = "B1 / -300 m\nARRIVED";
             Announce(arrivalClip); yield return Door(true);
             State = Phase.Arrived; RestoreMovement();
         }

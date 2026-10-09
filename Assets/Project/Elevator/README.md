@@ -26,3 +26,5 @@ The cabin remains stationary in world coordinates for comfort: no forced camera 
 The original GLB is preserved under `Assets/Project/ClientCleanroom/Source`, imported with official Unity glTFast 6.20.0 and Draco 5.5.0. A full-scale reference is placed separately beyond the lobby. It is **not yet a navigable cleanroom**; confirm the client's entrance, scale and collision layout before extending the lobby into it. B1 is a prototype floor designation, not a client-confirmed floor number.
 
 Prerecorded prototype announcements provide offline reliability. The descent does not need an LLM response or network. Quest performance, actual controller selection, seated/standing comfort and Android build still require device validation; editor checks are not headset acceptance.
+
+The descent to B1 (-300 m) lasts 45 seconds, plus door movement and scene loading. The cabin display shows eased depth progress and remaining travel time; the motor loop continues until arrival. Adjust `ElevatorRide.travelSeconds` in the opening scene to tune the pacing. This is a stationary-cabin simulation, not physical movement of the XR camera.

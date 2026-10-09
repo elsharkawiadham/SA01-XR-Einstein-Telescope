@@ -5060,7 +5060,7 @@ MonoBehaviour:
   arrivalClip: {fileID: 8300000, guid: 45ebbdc3cf50d4b569881485528d64c7, type: 3}
   destinationScene: 02_LowerFloor
   doorSeconds: 2
-  travelSeconds: 7
+  travelSeconds: 45
 --- !u!1 &627145290
 GameObject:
   m_ObjectHideFlags: 0
