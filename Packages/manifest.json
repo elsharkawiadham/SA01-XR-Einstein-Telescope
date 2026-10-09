@@ -56,6 +56,8 @@
     "com.unity.modules.xr": "1.0.0",
     "ai.undream.llm": "https://github.com/undreamai/LLMUnity.git#9931a9ea46906b1f43adaf9498c05ccf227b5d0b",
     "com.ponyudev.sherpa-onnx": "https://github.com/Ponyu-dev/Unity-Sherpa-ONNX.git#ebfccf15158d430f8ec15a17344f48ce632adc75",
-    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#a77a1b4a89824fb6df293099de3060daf2a432c1"
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask#a77a1b4a89824fb6df293099de3060daf2a432c1",
+    "com.unity.cloud.gltfast": "6.20.0",
+    "com.unity.cloud.draco": "5.5.0"
   }
 }

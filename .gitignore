@@ -122,8 +122,13 @@ InitTestScene*.unity*
 /Assets/StreamingAssets/SherpaOnnx/tts-models/
 /Assets/StreamingAssets/SherpaOnnx/streaming-assets-manifest.json*
 /Assets/Plugins/SherpaOnnx/*.dll
+# Small compile-time C# binding is required before Unity can run setup menus.
+!/Assets/Plugins/SherpaOnnx/sherpa-onnx.dll
 /Assets/Plugins/SherpaOnnx/osx-arm64/*.dylib
 /Assets/Plugins/SherpaOnnx/arm64-v8a/*.so
 /Assets/Plugins/SherpaOnnx/win-x64/*.dll
 /.offline-guide-cache/
 /Tools/__pycache__/
+
+# macOS Finder metadata
+.DS_Store

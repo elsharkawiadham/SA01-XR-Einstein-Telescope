@@ -268,7 +268,7 @@ PlayerSettings:
   shaderPrecisionModel: 0
   clonedFromGUID: 14e3da668dfd3496fb0ecd9272fcff02
   templatePackageId: com.unity.template.vr@10.0.0
-  templateDefaultScene: Assets/Scenes/SampleScene.unity
+  templateDefaultScene: Assets/Project/Opening/Scenes/01_Opening.unity
   useCustomMainManifest: 0
   useCustomLauncherManifest: 0
   useCustomMainGradleTemplate: 0
