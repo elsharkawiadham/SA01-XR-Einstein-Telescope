@@ -49,11 +49,11 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
                 Place(new Vector3(-11.4f,.03f,8));ride.destinationScene="DeliberatelyMissingTestScene";Press();Next();
             }else if(stage==4&&elapsed>1.5){
                 Assert(ride.State==ElevatorRide.Phase.Failed,"Load failure did not recover");Assert(!ride.playerRoot.GetComponent<DesktopPreview>().MovementLocked,"Load failure retained movement lock");
-                ride.destinationScene="02_LowerFloor";ride.playerHead.LookAt(floor.transform.position);
+                ride.destinationScene="cleanroom_jacy";ride.playerHead.LookAt(floor.transform.position);
                 Assert(ride.playerRoot.GetComponent<DesktopPreview>().TryInteract(),"Desktop aimed B1 interaction failed");Next();
             }else if(stage==5&&elapsed>2){
                 Assert(ride.State==ElevatorRide.Phase.Arrived,"Did not arrive: "+ride.State);
-                Assert(SceneManager.GetSceneByName("02_LowerFloor").isLoaded,"Destination not loaded");
+                Assert(SceneManager.GetSceneByName("cleanroom_jacy").isLoaded,"Destination not loaded");
                 Assert(UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsSortMode.None).Length==1,"Duplicate camera");
                 Assert(UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length==1,"Duplicate listener");
                 Assert(!ride.playerRoot.GetComponent<DesktopPreview>().MovementLocked,"Movement not restored");

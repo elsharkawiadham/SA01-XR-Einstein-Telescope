@@ -5058,7 +5058,7 @@ MonoBehaviour:
   boardingClip: {fileID: 8300000, guid: 061d6f27b7a2f468e8117e0a0fc2e41c, type: 3}
   descendingClip: {fileID: 8300000, guid: 432863f89d748460599ca537defa68be, type: 3}
   arrivalClip: {fileID: 8300000, guid: 45ebbdc3cf50d4b569881485528d64c7, type: 3}
-  destinationScene: 02_LowerFloor
+  destinationScene: cleanroom_jacy
   doorSeconds: 2
   travelSeconds: 45
 --- !u!1 &627145290

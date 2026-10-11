@@ -11,7 +11,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public static class ElevatorSceneSetup
 {
-    public const string ArrivalPath = "Assets/Project/Elevator/Scenes/02_LowerFloor.unity";
+    public const string ArrivalPath = "Assets/Project/cleanroom_jacy/Scenes/cleanroom_jacy.unity";
     static Material wall, floor, cyan;
     static Material Material(string name, Color color)
     {
@@ -44,6 +44,7 @@ public static class ElevatorSceneSetup
         var call=UnityEngine.Object.FindFirstObjectByType<ElevatorCallButton>();
         var entrance=GameObject.Find("ElevatorEntrance").transform;
         var ride=entrance.GetComponent<ElevatorRide>(); if (!ride) ride=entrance.gameObject.AddComponent<ElevatorRide>();
+        ride.destinationScene="cleanroom_jacy";
         ride.callButton=call; ride.playerHead=call.playerHead; ride.playerRoot=GameObject.Find("Shared_XR_Player").transform;
         foreach(var interactor in ride.playerRoot.GetComponentsInChildren<UnityEngine.XR.Interaction.Toolkit.Interactors.XRBaseInputInteractor>(true))
         { interactor.allowHoveredActivate=true; EditorUtility.SetDirty(interactor); PrefabUtility.RecordPrefabInstancePropertyModifications(interactor); }
@@ -67,8 +68,15 @@ public static class ElevatorSceneSetup
         ride.motor=voice.AddComponent<AudioSource>();ride.motor.clip=Clip("Motor");ride.motor.loop=true;ride.motor.playOnAwake=false;ride.motor.volume=.22f;ride.motor.spatialBlend=1;ride.motor.minDistance=3;
         var cabin=entrance.Find("Elevator cabin - stationary");if(cabin)cabin.name="Elevator cabin";
         EditorSceneManager.SaveScene(scene);
+        // Jacy owns the arrival scene: repeated setup must preserve his authored work.
+        if (File.Exists(ArrivalPath))
+        {
+            EditorBuildSettings.scenes=new[]{new EditorBuildSettingsScene(OpeningProjectSetup.ScenePath,true),new EditorBuildSettingsScene(ArrivalPath,true)};
+            AssetDatabase.SaveAssets();
+            return;
+        }
         var arrival=EditorSceneManager.NewScene(NewSceneSetup.EmptyScene,NewSceneMode.Single);
-        var root=new GameObject("Scene02_LowerFloor_Adham").transform;
+        var root=new GameObject("cleanroom_jacy").transform;
         Box("B1 landing floor",root,new Vector3(-4.85f,-.12f,8),new Vector3(10,.24f,5),floor);
         Box("B1 north wall",root,new Vector3(-4.85f,1.6f,10.5f),new Vector3(10,3.2f,.15f),wall);
         Box("B1 south wall",root,new Vector3(-4.85f,1.6f,5.5f),new Vector3(10,3.2f,.15f),wall);

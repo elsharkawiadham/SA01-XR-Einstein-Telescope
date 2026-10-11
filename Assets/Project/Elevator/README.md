@@ -28,3 +28,7 @@ The original GLB is preserved under `Assets/Project/ClientCleanroom/Source`, imp
 Prerecorded prototype announcements provide offline reliability. The descent does not need an LLM response or network. Quest performance, actual controller selection, seated/standing comfort and Android build still require device validation; editor checks are not headset acceptance.
 
 The descent to B1 (-300 m) lasts 45 seconds, plus door movement and scene loading. The cabin display shows eased depth progress and remaining travel time; the motor loop continues until arrival. Adjust `ElevatorRide.travelSeconds` in the opening scene to tune the pacing. This is a stationary-cabin simulation, not physical movement of the XR camera.
+
+## Current arrival scene
+
+The elevator now loads `Assets/Project/cleanroom_jacy/Scenes/cleanroom_jacy.unity`, owned by Jacy. The old `02_LowerFloor.unity` is a reference template only. Re-running the elevator setup preserves Jacy's existing scene.

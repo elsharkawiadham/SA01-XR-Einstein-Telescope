@@ -40,7 +40,7 @@ Keep one shared XR rig. The opening scene's authored environment stays under `Sc
 
 ## Elevator descent
 
-The opening now leads to a controller-operated B1 ride and the separate `Assets/Project/Elevator/Scenes/02_LowerFloor.unity` arrival lobby. Start from the opening scene, call the elevator, step fully inside, then aim at B1 and press the Quest trigger (E/click in desktop preview). See `Assets/Project/Elevator/README.md` for ownership, safety, additive scene loading and validation. The client cleanroom is imported as a separate reference; its walkable room integration remains future work.
+The opening now leads to a controller-operated B1 ride and the separate `Assets/Project/cleanroom_jacy/Scenes/cleanroom_jacy.unity` arrival scene. Start from the opening scene, call the elevator, step fully inside, then aim at B1 and press the Quest trigger (E/click in desktop preview). See `Assets/Project/Elevator/README.md` for ownership, safety, additive scene loading and validation. The client cleanroom is imported as a separate reference; its walkable room integration remains future work.
 
 ## Parrot guide and audio
 
@@ -49,3 +49,7 @@ The opening now leads to a controller-operated B1 ride and the separate `Assets/
 ## Fresh-clone speech dependencies
 
 The small Sherpa managed binding is included to prevent CS0246 compilation errors on a new clone. Before testing spoken questions, close Unity and run `python3 Tools/setup_offline_guide.py`. Large models and platform-native libraries are installed locally, not stored in Git.
+
+## Jacy: continue the cleanroom
+
+Open `Assets/Project/cleanroom_jacy/Scenes/cleanroom_jacy.unity`. Build under the `cleanroom_jacy` root. The elevator is already connected to this scene. Read [Jacy handoff](Assets/Project/cleanroom_jacy/README.md) before moving the arrival geometry or testing.

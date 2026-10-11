@@ -19,7 +19,7 @@ public static class StandaloneAISetup
         GuideSceneSetup.Configure();
         Directory.CreateDirectory("Builds");
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-            scenes=new[]{Root+"/Scenes/01_Opening.unity", "Assets/Project/Elevator/Scenes/02_LowerFloor.unity"},
+            scenes=new[]{Root+"/Scenes/01_Opening.unity", ElevatorSceneSetup.ArrivalPath},
             locationPathName="Builds/OpeningQuest.apk",target=BuildTarget.Android,options=BuildOptions.None
         });
         if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)

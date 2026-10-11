@@ -19,7 +19,7 @@ namespace GroupProject.Elevator
         public TMP_Text display;
         public AudioSource motor, announcements;
         public AudioClip boardingClip, descendingClip, arrivalClip;
-        public string destinationScene = "02_LowerFloor";
+        public string destinationScene = "cleanroom_jacy";
         [Min(.1f)] public float doorSeconds = 2, travelSeconds = 45;
         public Phase State { get; private set; }
         public bool IsTravelling => State == Phase.Closing || State == Phase.Descending || State == Phase.Opening;
