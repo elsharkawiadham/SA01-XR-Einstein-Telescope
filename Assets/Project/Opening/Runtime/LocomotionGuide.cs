@@ -12,13 +12,6 @@ namespace GroupProject.Opening
         public AudioSource narrator;
         public AudioClip[] steps;
         public AudioClip[] desktopSteps;
-        public static readonly string[] DesktopCaptions = {
-            "W / FORWARD\nPress W to walk ahead.",
-            "S / BACKWARD\nPress S to walk backward.",
-            "A D / SIDEWAYS\nPress A or D to step sideways.",
-            "MOUSE / TURN\nMove the mouse to look around. Use the arrow keys to turn in small steps.",
-            "YOUR TURN\nWalk forward. Turn left at the corner to find the elevator."
-        };
         public static string CaptionForStep(int step) => Captions[Mathf.Clamp(step, 0, 4)];
         public Text instruction;
         public RectTransform leftStick, rightStick;
@@ -39,20 +32,28 @@ namespace GroupProject.Opening
             if(IsRunning) return;
             StartCoroutine(Guide());
         }
+        Transform player;
+        Vector3 previous,forward,right;
+        float travelled,turned,lastYaw;
+        void BeginAction(){var origin=headset?headset.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>():null;player=origin?origin.transform:headset;if(!player)return;previous=player.position;forward=player.forward;right=player.right;lastYaw=player.eulerAngles.y;travelled=turned=0;}
+        void Update(){if(!IsRunning || !player)return;var delta=player.position-previous;previous=player.position;
+            if(delta.magnitude<.5f)travelled+=CurrentStep==0?Mathf.Max(0,Vector3.Dot(delta,forward)):CurrentStep==1?Mathf.Max(0,-Vector3.Dot(delta,forward)):Mathf.Abs(Vector3.Dot(delta,right));
+            turned+=Mathf.Abs(Mathf.DeltaAngle(lastYaw,player.eulerAngles.y));lastYaw=player.eulerAngles.y;}
+        public bool ActionComplete => player && (CurrentStep==3?turned>=25:CurrentStep==4?player.position.x < -2:travelled>=.35f);
         IEnumerator Guide()
         {
             IsRunning=true;
             if(panel) panel.SetActive(true);
-            for(int i=0;i<steps.Length;i++)
+            for(int i=0;i<Captions.Length;i++)
             {
-                CurrentStep=i; ShowStep(i);
+                CurrentStep=i; ShowStep(i);BeginAction();
                 bool spoken=false;
                 if(aiGuide){
                     var speech=aiGuide.SpeakInstruction(CaptionForStep(i).Substring(CaptionForStep(i).IndexOf('\n')+1).Replace("\n", " "),i);
                     while(!speech.IsCompleted)yield return null;
                     spoken=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion && speech.Result;
                 }
-                var clip=steps[i];
+                var clip=steps!=null && i<steps.Length?steps[i]:null;
                 if(!spoken && narrator && clip)
                 {
                     narrator.clip=clip;narrator.Play();
@@ -60,7 +61,8 @@ namespace GroupProject.Opening
                     while(narrator.isPlaying) yield return null;
                 }
                 else if(!spoken) yield return new WaitForSecondsRealtime(3);
-                yield return new WaitForSecondsRealtime(.3f);
+                while(!ActionComplete)yield return null;
+                yield return new WaitForSecondsRealtime(1.5f);
             }
             if(panel) panel.SetActive(false);
             CurrentStep=-1;IsRunning=false;

@@ -1,0 +1,331 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c43f8164b2e7043ecad9410bcd382c2c, type: 3}
+  m_Name: RecordedVoiceLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::GroupProject.Guide.RecordedVoiceLibrary
+  entries:
+  - id: VOICE_001
+    text: Inspect this Class A training plate. Grip the inspection lamp, then hold the trigger and aim at the plate.
+    originalName: Cleaning_00
+    clip: {fileID: 8300000, guid: c12ed9b2dd4e9406e99bdac21f035715, type: 3}
+  - id: VOICE_002
+    text: Inspect the plate with the lamp before choosing a wipe.
+    originalName: Cleaning_01
+    clip: {fileID: 8300000, guid: 52a3dbe52e1c847378bbead42e32ea55, type: 3}
+  - id: VOICE_003
+    text: KIMTECH W4 is not suitable for Class A. Choose Anticon Gold polyester.
+    originalName: Cleaning_02
+    clip: {fileID: 8300000, guid: ee0aa50971ec448f0b0f107a0b897fe3, type: 3}
+  - id: VOICE_004
+    text: Anticon Gold is intended for Class A; the client does not recommend it for Class B. Choose KIMTECH W4 here.
+    originalName: Cleaning_03
+    clip: {fileID: 8300000, guid: 855c7e7d083494294b756a41de9f277f, type: 3}
+  - id: VOICE_005
+    text: Use four parallel, slightly overlapping passes. Pull from left to right and lift at each end. Use a fresh face for each pass.
+    originalName: Cleaning_04
+    clip: {fileID: 8300000, guid: c146e469dbb384ed6911241162a691f7, type: 3}
+  - id: VOICE_006
+    text: Lift the wipe off the plate before changing its face.
+    originalName: Cleaning_05
+    clip: {fileID: 8300000, guid: 36f47085eca0d4979bf90cdf25af735e, type: 3}
+  - id: VOICE_007
+    text: Refolded to a fresh face. Make the third pass.
+    originalName: Cleaning_06
+    clip: {fileID: 8300000, guid: b8d01bc3efebf403389fbb5ec801e338, type: 3}
+  - id: VOICE_008
+    text: Flipped to a fresh face. Make the next pass.
+    originalName: Cleaning_07
+    clip: {fileID: 8300000, guid: aaf3be67b41e641899dac2471e4f9a1c, type: 3}
+  - id: VOICE_009
+    text: Four passes completed. Visible particles are reduced; this does not certify cleanliness. Fingerprints and other molecular contamination may remain invisible. Select CONTINUE.
+    originalName: Cleaning_08
+    clip: {fileID: 8300000, guid: a61826465fdac4efda1e828f411943de, type: 3}
+  - id: VOICE_010
+    text: Pass complete. Lifted correctly. Press the trigger to refold to a fresh face.
+    originalName: Cleaning_09
+    clip: {fileID: 8300000, guid: 4065a44455791445980e95ac2308ac5d, type: 3}
+  - id: VOICE_011
+    text: Pass complete. Lifted correctly. Press the trigger to flip to a fresh face.
+    originalName: Cleaning_10
+    clip: {fileID: 8300000, guid: 367b7a99669e649fa9cc571058ea0177, type: 3}
+  - id: VOICE_012
+    text: That face has already been used. Lift, then press the trigger for a fresh face.
+    originalName: Cleaning_11
+    clip: {fileID: 8300000, guid: 084c06291b4264bae910ce7b4a7207c9, type: 3}
+  - id: VOICE_013
+    text: Lift and start at the left edge of the next parallel pass.
+    originalName: Cleaning_12
+    clip: {fileID: 8300000, guid: 7201645a68ea64a52ada7a989bb21d9f, type: 3}
+  - id: VOICE_014
+    text: Avoid scrubbing back and forth or crossing the passes. Lift and retry this pass from the left.
+    originalName: Cleaning_13
+    clip: {fileID: 8300000, guid: 30c1586c712ca4b27a3ff167c05d9d4c, type: 3}
+  - id: VOICE_015
+    text: Now try a Class B plate independently. Inspect, choose a suitable wipe, then repeat the four-pass technique.
+    originalName: Cleaning_14
+    clip: {fileID: 8300000, guid: cf38bceaf938947e1a34d281df7d9c82, type: 3}
+  - id: VOICE_016
+    text: Rehearsal complete. You practised inspection, wipe selection, fresh faces and parallel passes. Follow the approved local procedure for real cleaning; ask trained staff about solvents, ultrasonic baths and baking.
+    originalName: Cleaning_15
+    clip: {fileID: 8300000, guid: 10abddc0873234d3b92b6e2a3cea8051, type: 3}
+  - id: VOICE_017
+    text: Particles are visible in this demonstration. Choose the wipe suitable for Class A. Grip a wipe to pick it up.
+    originalName: Cleaning_16
+    clip: {fileID: 8300000, guid: 288679666d1424edabf8b35ba45858b9, type: 3}
+  - id: VOICE_018
+    text: Particles are visible in this demonstration. Choose the wipe suitable for Class B. Grip a wipe to pick it up.
+    originalName: Cleaning_17
+    clip: {fileID: 8300000, guid: 0c7051e11857e43a4920bba133c432f4, type: 3}
+  - id: VOICE_019
+    text: Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.
+    originalName: Welcome_Short
+    clip: {fileID: 8300000, guid: fa0421c94f7354470a931b6e3a6187d8, type: 3}
+  - id: VOICE_020
+    text: To push the button, aim at the down arrow and click with the controller trigger.
+    originalName: ElevatorHint_Prototype
+    clip: {fileID: 8300000, guid: 76c617066bf734f1f88ff5f4d833d64e, type: 3}
+  - id: VOICE_021
+    text: Welcome aboard. Select B one on the cabin panel to go down.
+    originalName: Boarding
+    clip: {fileID: 8300000, guid: 73ca73b1f56ad4de8b4b18dd0f74dc17, type: 3}
+  - id: VOICE_022
+    text: Doors closing. Going down to level B one. Please stay inside the cabin.
+    originalName: Descending
+    clip: {fileID: 8300000, guid: 70d75a0e062ca4f048e6fe6b248e48be, type: 3}
+  - id: VOICE_023
+    text: Level B one. You have arrived. The doors are opening. You may leave the elevator.
+    originalName: Arrival
+    clip: {fileID: 8300000, guid: a3dfa70f9d4ea4687b71a394e6818a4e, type: 3}
+  - id: VOICE_024
+    text: Push the left stick forward to walk ahead.
+    originalName: Move_Forward
+    clip: {fileID: 8300000, guid: 44d33dda3241440a5bcda23362e60ae6, type: 3}
+  - id: VOICE_025
+    text: Pull the left stick back to move backward.
+    originalName: Move_Backward
+    clip: {fileID: 8300000, guid: ce95d6feea8a249858aa12ecc6cb8eb6, type: 3}
+  - id: VOICE_026
+    text: Move it left or right to step sideways.
+    originalName: Move_Sideways
+    clip: {fileID: 8300000, guid: 069135375bbcf40c593c63eb2d26559a, type: 3}
+  - id: VOICE_027
+    text: Flick left or right to turn in small steps.
+    originalName: Move_Turn
+    clip: {fileID: 8300000, guid: a88c6543838d14ce4a24bd0280270ef3, type: 3}
+  - id: VOICE_028
+    text: Walk forward. Turn left at the corner to find the elevator.
+    originalName: Move_Explore
+    clip: {fileID: 8300000, guid: 346ea68d7ad9a40208e48f5ed16beb33, type: 3}
+  - id: VOICE_029
+    text: Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.
+    originalName: 
+    clip: {fileID: 8300000, guid: 921746d0adafb4a5890f655ac834ada9, type: 3}
+  - id: VOICE_030
+    text: Use the left joystick to move forward or backward. Move it left or right to step sideways.
+    originalName: 
+    clip: {fileID: 8300000, guid: d09e13a5c3db346bb9d2ca14a3e52b2a, type: 3}
+  - id: VOICE_031
+    text: Enter the cabin through the open door.
+    originalName: 
+    clip: {fileID: 8300000, guid: f9b6f9202c77d412889f5bc7ed239491, type: 3}
+  - id: VOICE_032
+    text: Go close to the elevator. Aim at the down arrow and press the controller trigger to open the door.
+    originalName: 
+    clip: {fileID: 8300000, guid: 8c0273756ddbb457ab3e5a371aade613, type: 3}
+  - id: VOICE_033
+    text: You have reached the left corridor. Follow the floor arrows toward the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 491593a3910804fdea63a190c83c3441, type: 3}
+  - id: VOICE_034
+    text: Follow the floor arrows forward to the corner. Then turn left to find the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: b39b3e84db6454a4db9adb239c45c212, type: 3}
+  - id: VOICE_035
+    text: Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.
+    originalName: 
+    clip: {fileID: 8300000, guid: 9bc12a1d8cd80485f9e2246908f56a82, type: 3}
+  - id: VOICE_036
+    text: I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?
+    originalName: 
+    clip: {fileID: 8300000, guid: 3d2e1dc7f71944195bd68f375c82dbde, type: 3}
+  - id: VOICE_037
+    text: I'm ready to help, thanks for asking! How are you finding the training?
+    originalName: 
+    clip: {fileID: 8300000, guid: 48c8e354606c3427692f966496403b76, type: 3}
+  - id: VOICE_038
+    text: Hello! I'm your cleanroom guide. You can ask me where things are or how to use them.
+    originalName: 
+    clip: {fileID: 8300000, guid: 338547a485ace445ca890b3fed994824, type: 3}
+  - id: VOICE_039
+    text: Look down at the far left of the workbench, while facing the instructions. The purple tool beneath INSPECTION is the lamp. Aim at it and use the grip to pick it up.
+    originalName: 
+    clip: {fileID: 8300000, guid: 4cdb7f2f20945478292c3d6c20f48435, type: 3}
+  - id: VOICE_040
+    text: The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label.
+    originalName: 
+    clip: {fileID: 8300000, guid: 2976985ffcd9b43e98105208e5e22193, type: 3}
+  - id: VOICE_041
+    text: The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label.
+    originalName: 
+    clip: {fileID: 8300000, guid: 47ac3acdb124b48f897593e23156bfb9, type: 3}
+  - id: VOICE_042
+    text: Let's inspect it together. Look down at the purple lamp on the far left of the bench. Aim at it and press grip to pick it up. Hold the trigger and point the lamp at the plate in the centre tray for just over a second.
+    originalName: 
+    clip: {fileID: 8300000, guid: 39f4af7564a2e40dcbf2ec75fdf1d286, type: 3}
+  - id: VOICE_043
+    text: Lift the wipe clear of the plate, then press the trigger to expose a fresh face. Lower it at the left end of the next pass.
+    originalName: 
+    clip: {fileID: 8300000, guid: 269d76a11de014e67aedd11553f87883, type: 3}
+  - id: VOICE_044
+    text: Place the wipe at the left edge of the plate. Pull it steadily to the right, then lift it clear. Avoid scrubbing back and forth. After each pass, press the trigger while lifted for a fresh face.
+    originalName: 
+    clip: {fileID: 8300000, guid: 31cbe6092c98349b1a7647176085bdfb, type: 3}
+  - id: VOICE_045
+    text: The four passes are finished. Find CONTINUE at the far right of the bench, aim at it, and press the trigger.
+    originalName: 
+    clip: {fileID: 8300000, guid: 89ed2c0e9cba74938b857a5ca790723a, type: 3}
+  - id: VOICE_046
+    text: You have finished both practice trials. You can ask about the wipe choices or return along the corridor to the elevator landing.
+    originalName: 
+    clip: {fileID: 8300000, guid: 90d7002c3c3644691a2a167a0c7766d5, type: 3}
+  - id: VOICE_047
+    text: The training plate is in the dark rectangular tray in the centre of the workbench, below the instructions.
+    originalName: 
+    clip: {fileID: 8300000, guid: caf93cd618baf421c9fc6505378af5b5, type: 3}
+  - id: VOICE_048
+    text: The CONTINUE button is on the far right of the workbench. Aim at it and press the trigger.
+    originalName: 
+    clip: {fileID: 8300000, guid: a88b61292be8d4362bbc83c8ac51418b, type: 3}
+  - id: VOICE_049
+    text: Do you mean the plate, a wipe, or the CONTINUE button?
+    originalName: 
+    clip: {fileID: 8300000, guid: 2fc82c60848194fe790b83880bbb97d1, type: 3}
+  - id: VOICE_050
+    text: 'Which item are you looking for: the inspection lamp, the plate, or a wipe?'
+    originalName: 
+    clip: {fileID: 8300000, guid: 9690db541493d4091823b89dde5c5456, type: 3}
+  - id: VOICE_051
+    text: This exercise does not cover chemical, ultrasonic or oven operation. Ask trained staff for the approved local procedure.
+    originalName: 
+    clip: {fileID: 8300000, guid: 19740a85cb9c344b7bd508388c98936c, type: 3}
+  - id: VOICE_052
+    text: Fingerprints and skin oils are molecular contamination. They may remain invisible after wiping. This exercise does not certify that a part is clean.
+    originalName: 
+    clip: {fileID: 8300000, guid: dfc4967fe48394de29b89dc1145e373f, type: 3}
+  - id: VOICE_053
+    text: Grip the inspection lamp, hold the trigger, and aim at the training plate for just over one second. The highlighted particles are demonstration visuals, not a cleanliness measurement.
+    originalName: 
+    clip: {fileID: 8300000, guid: 93da11231df3847f689d44440a389b09, type: 3}
+  - id: VOICE_054
+    text: Lift the wipe, then press the trigger to expose a fresh face. After the first pass flip, after the second refold, and after the third flip again.
+    originalName: 
+    clip: {fileID: 8300000, guid: 5231265f15b69420e9d52fff03ea6d5d, type: 3}
+  - id: VOICE_055
+    text: Make four parallel, slightly overlapping passes from left to right. Lift at the end of each pass, then use a fresh face. Do not scrub back and forth.
+    originalName: 
+    clip: {fileID: 8300000, guid: 77da820448bae45ec8a4fd433d17b09e, type: 3}
+  - id: VOICE_056
+    text: For Class A, use Anticon Gold polyester. KIMTECH W4 polypropylene is for Class B and below, not Class A. Anticon Gold is not recommended for Class B.
+    originalName: 
+    clip: {fileID: 8300000, guid: 7aa1bae49cc394a94a2c998542340dc7, type: 3}
+  - id: VOICE_057
+    text: This face is ready. Make the next pass.
+    originalName: 
+    clip: {fileID: 8300000, guid: d223894ffd7da472c9e96a94bd6b75b1, type: 3}
+  - id: VOICE_058
+    text: Now lift the wipe to finish this pass.
+    originalName: 
+    clip: {fileID: 8300000, guid: 5f45e4acd6d41487bb8a6aaea5912168, type: 3}
+  - id: VOICE_059
+    text: "B1 \u2014 Arrived. Leave the cabin through the open door."
+    originalName: 
+    clip: {fileID: 8300000, guid: aecd7db46b2d94bfb9fbc31b62a80f70, type: 3}
+  - id: VOICE_060
+    text: Going down to B1. Please stay inside the cabin.
+    originalName: 
+    clip: {fileID: 8300000, guid: f1a7cb36267d846bca3ba1314820bce3, type: 3}
+  - id: VOICE_061
+    text: Journey unavailable. Step outside and try the B1 button again.
+    originalName: 
+    clip: {fileID: 8300000, guid: e5e870b8e1d1e4104af2a4677fb1118c, type: 3}
+  - id: VOICE_062
+    text: Enter the cabin, aim at B1 and press the controller trigger to go down.
+    originalName: 
+    clip: {fileID: 8300000, guid: 64585dbd9267748f686119a27f71c863, type: 3}
+  - id: VOICE_063
+    text: You are already holding the inspection lamp.
+    originalName: 
+    clip: {fileID: 8300000, guid: 0b7cf0026aa834f8d9d105b90f1930c3, type: 3}
+  - id: VOICE_064
+    text: The inspection lamp has moved away from its labelled place. Look around the bench and on the floor nearby.
+    originalName: 
+    clip: {fileID: 8300000, guid: fe483ba663dd14973a1f8faefc552c43, type: 3}
+  - id: VOICE_065
+    text: You are already holding the Anticon Gold wipe.
+    originalName: 
+    clip: {fileID: 8300000, guid: 780ccdc1394c945979f5b60d63ebc82e, type: 3}
+  - id: VOICE_066
+    text: The Anticon Gold wipe has moved away from its labelled place. Look around the bench and on the floor nearby.
+    originalName: 
+    clip: {fileID: 8300000, guid: bd5d46ad426e34ccb8a9499d51d9200d, type: 3}
+  - id: VOICE_067
+    text: You are already holding the KIMTECH W4 wipe.
+    originalName: 
+    clip: {fileID: 8300000, guid: 686bc20d41cf9442aaad51652c6ace34, type: 3}
+  - id: VOICE_068
+    text: The KIMTECH W4 wipe has moved away from its labelled place. Look around the bench and on the floor nearby.
+    originalName: 
+    clip: {fileID: 8300000, guid: 31b226d1c2d374768991eddf06871896, type: 3}
+  - id: VOICE_069
+    text: So far, I have not yet detected forward movement. Try a small turn. Follow the arrows toward the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 0758917f9d1aa433b9485764384e735f, type: 3}
+  - id: VOICE_070
+    text: So far, I have not yet detected forward movement. Try a small turn. You have also called the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 391806e9c45334daaab5718372b19199, type: 3}
+  - id: VOICE_071
+    text: So far, I have not yet detected forward movement, and turned. Follow the arrows toward the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 9151608e8b9b948ed95cbd6063124ea1, type: 3}
+  - id: VOICE_072
+    text: So far, I have not yet detected forward movement, and turned. You have also called the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 230ea875062fc4239b71e7c7dfd25636, type: 3}
+  - id: VOICE_073
+    text: So far, I have not yet detected forward movement, moved backward. Try a small turn. Follow the arrows toward the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 49d157faf74d846a8ade438b72896db6, type: 3}
+  - id: VOICE_074
+    text: So far, I have not yet detected forward movement, moved backward. Try a small turn. You have also called the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: 73d341498d9124e5aaf56ecc8225055d, type: 3}
+  - id: VOICE_075
+    text: So far, I have not yet detected forward movement, moved backward, and turned. Follow the arrows toward the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: f02e51b3502f24296925b08b7d7712bc, type: 3}
+  - id: VOICE_076
+    text: So far, I have not yet detected forward movement, moved backward, and turned. You have also called the elevator.
+    originalName: 
+    clip: {fileID: 8300000, guid: f43dc680d5acd457999281ba35bc5a76, type: 3}
+  - id: VOICE_085
+    text: The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label. Aim at that wipe and use grip to pick it up.
+    originalName: 
+    clip: {fileID: 8300000, guid: f788ac254f343421092dda2b7e3293d1, type: 3}
+  - id: VOICE_086
+    text: The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label. Aim at that wipe and use grip to pick it up.
+    originalName: 
+    clip: {fileID: 8300000, guid: 6585fee53b9e2485a9e3a299b59af08e, type: 3}
+  - id: VOICE_087
+    text: You're welcome!
+    originalName: 
+    clip: {fileID: 8300000, guid: 1b37abacc21594939937acbe83a9c05f, type: 3}

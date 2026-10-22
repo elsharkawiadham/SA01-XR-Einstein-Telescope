@@ -8,7 +8,7 @@ using GroupProject.Opening;
 
 namespace GroupProject.Elevator
 {
-    /// <summary>Closed-cabin descent: retain the tracked XR rig while exchanging the landing additively.</summary>
+    /// <summary>Closed-cabin descent: retain the tracked XR rig while revealing the lower floor in the same scene.</summary>
     public sealed class ElevatorRide : MonoBehaviour
     {
         public enum Phase { Waiting, Boarding, Closing, Descending, Opening, Arrived, Failed }
@@ -19,7 +19,7 @@ namespace GroupProject.Elevator
         public TMP_Text display;
         public AudioSource motor, announcements;
         public AudioClip boardingClip, descendingClip, arrivalClip;
-        public string destinationScene = "cleanroom_jacy";
+        public GameObject destinationRoot;
         [Min(.1f)] public float doorSeconds = 2, travelSeconds = 45;
         public Phase State { get; private set; }
         public bool IsTravelling => State == Phase.Closing || State == Phase.Descending || State == Phase.Opening;
@@ -30,7 +30,7 @@ namespace GroupProject.Elevator
         Vector3 closedDoor;
         readonly List<Behaviour> suspended = new List<Behaviour>();
         bool announced;
-        void Awake() { closedDoor = callButton.door.localPosition; }
+        void Awake() { closedDoor = callButton.door.localPosition; if(enabled&&destinationRoot)destinationRoot.SetActive(false); }
         void Update()
         {
             if (State == Phase.Waiting && callButton.Called) State = Phase.Boarding;
@@ -106,16 +106,13 @@ namespace GroupProject.Elevator
                 }
                 yield return null;
             }
-            AsyncOperation loading = null;
-            try { if (Application.CanStreamedLevelBeLoaded(destinationScene)) loading = SceneManager.LoadSceneAsync(destinationScene, LoadSceneMode.Additive); }
-            catch (System.Exception error) { Debug.LogException(error); }
-            if (loading == null)
+            if (!destinationRoot)
             {
-                if (motor) motor.Stop();
-                if (display) display.text = "SERVICE UNAVAILABLE\nPLEASE RETRY";
-                yield return Door(true); RestoreMovement(); State = Phase.Failed; yield break;
+                if(motor)motor.Stop();
+                if(display)display.text="DESTINATION NOT CONFIGURED";
+                yield return Door(true);RestoreMovement();State=Phase.Failed;yield break;
             }
-            while (!loading.isDone) yield return null;
+            destinationRoot.SetActive(true);
             // Keep the cabin, tracked camera, controller interactors and AI alive. Only retire departure geometry.
             foreach (var renderer in departureRoot.GetComponentsInChildren<Renderer>(true))
                 if (!renderer.transform.IsChildOf(transform)) renderer.enabled = false;
@@ -123,7 +120,7 @@ namespace GroupProject.Elevator
                 if (!collider.transform.IsChildOf(transform)) collider.enabled = false;
             foreach (var light in departureRoot.GetComponentsInChildren<Light>(true))
                 if (!light.transform.IsChildOf(transform)) light.enabled = false;
-            SceneManager.SetActiveScene(SceneManager.GetSceneByName(destinationScene));
+
             if (motor) motor.Stop();
             State = Phase.Opening; if (display) display.text = "B1 / -300 m\nARRIVED";
             Announce(arrivalClip); yield return Door(true);

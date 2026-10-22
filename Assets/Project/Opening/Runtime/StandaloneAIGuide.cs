@@ -27,6 +27,7 @@ namespace GroupProject.Opening
         public bool Ready { get; private set; }
         public bool IsBusy { get; private set; }
         public string LastReply { get; private set; }
+        public string LastQuestion { get; private set; }
         public string Failure { get; private set; }
         IAsrService recognition;
         ITtsService synthesis;
@@ -109,22 +110,38 @@ namespace GroupProject.Opening
         }
         async Task<string> Reply(string prompt)
         {
+            // Recognized questions do not need the small model to guess an intent.
+            string direct=GroundedReply(prompt, "UNKNOWN");
+            if(!direct.StartsWith("I am not sure"))return direct;
             var task=agent.Chat(prompt,addToHistory:false);
             if(await Task.WhenAny(task,Task.Delay(45000,lifetime.Token))!=task){if(model && model.started)agent.CancelRequests();throw new TimeoutException("AI reply timed out.");}
             string result=await task;lifetime.Token.ThrowIfCancellationRequested();
             if(string.IsNullOrWhiteSpace(result))throw new InvalidOperationException("Empty AI response.");
             return GroundedReply(prompt, result.Trim());
         }
-        string GroundedReply(string question, string category)
+        public string GroundedReply(string question, string category)
         {
+            string social=SocialReply(question);if(social!=null)return social;
+            var preparation=FindFirstObjectByType<GroupProject.Preparation.PreparationJourney>();
+            if(preparation){string answer=preparation.Answer(question);if(!string.IsNullOrEmpty(answer))return answer;}
+            // Chapters answer from client-reviewed facts before the opening-route fallback.
+            var cleaning=GroupProject.Cleaning.CleaningStation.Active;
+            if(cleaning){string answer=cleaning.Answer(question);if(!string.IsNullOrEmpty(answer))return answer;}
             // Never speak model-generated controller claims. Resolve only to authored facts.
             var ride = elevator ? elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>() : null;
             string q=question.ToLowerInvariant();
             if(q.Contains("turn") || q.Contains("rotat")) category="TURN";
             else if(q.Contains("button") || q.Contains("door") || q.Contains("floor") || q.Contains("press")) category="ELEVATOR";
-            else if(q.Contains("where") || q.Contains("find") || q.Contains("lost")) category="ROUTE";
+            else if((q.Contains("where") || q.Contains("find")) && (q.Contains("elevator") || q.Contains("go")) || q.Contains("lost")) category="ROUTE";
             else if(q.Contains("backward") || q.Contains("forward") || q.Contains("walk") || q.Contains("strafe") || q.Contains("sideways")) category="MOVE";
-            else if(q.Contains("doing") || q.Contains("progress") || q.Contains("completed")) category="PROGRESS";
+            else if(q.Contains("how am i doing") || q.Contains("my progress") || q.Contains("have i completed")) category="PROGRESS";
+            else if(q.Contains("help") || q.Contains("controls")) category="HELP";
+            else if(q.Contains("what") && (q.Contains("next") || q.Contains("do")))category="HELP";
+            else {
+                // Honour the classifier for paraphrases, while keeping progress explicit.
+                category=(category??"UNKNOWN").Trim().Trim('.', '!', ' ', '\n').ToUpperInvariant();
+                if(category!="TURN" && category!="MOVE" && category!="ELEVATOR" && category!="ROUTE" && category!="HELP")category="UNKNOWN";
+            }
             switch(category.Trim().Trim('.', '!', ' ', '\n').ToUpperInvariant())
             {
                 case "TURN": return "Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.";
@@ -138,12 +155,34 @@ namespace GroupProject.Opening
                 case "PROGRESS": return "So far, " + (movedForward ? "you have moved forward" : "I have not yet detected forward movement") +
                     (movedBack ? ", moved backward" : "") + (turned ? ", and turned" : ". Try a small turn") +
                     (elevator && elevator.Called ? ". You have also called the elevator." : ". Follow the arrows toward the elevator.");
-                case "HELP": return "Use the left joystick to walk and the right joystick to turn. Hold B on the right controller to ask a question, then release it.";
-                default: return "I can help with walking, turning, finding the elevator, or your progress. What would you like to practise?";
+                case "HELP":
+                    if(cleaning)return cleaning.HelpForCurrentStep();
+                    if(ride && elevator.Called)return ride.Instruction;
+                    return "Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.";
+                default: return "I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?";
             }
+        }
+        public static string SocialReply(string question)
+        {
+            string q=System.Text.RegularExpressions.Regex.Replace((question??"").ToLowerInvariant(),"[^a-z0-9 ]"," ");
+            q=System.Text.RegularExpressions.Regex.Replace(q,@"\s+"," ").Trim();
+            if(System.Text.RegularExpressions.Regex.IsMatch(q,@"^(?:(?:hello|hi|hey) )?how are you(?: doing)?(?: today)?$") || q=="how do you feel" || q=="are you okay")return "I'm ready to help, thanks for asking! How are you finding the training?";
+            if(q=="hello" || q=="hi" || q=="hey" || q=="hello parrot")return "Hello! I'm your cleanroom guide. You can ask me where things are or how to use them.";
+            if(q=="thanks" || q=="thank you")return "You're welcome!";
+            return null;
         }
         async Task Speak(string text,int version)
         {
+            var recording=GroupProject.Guide.RecordedVoiceLibrary.ForText(text);
+            if(recording)
+            {
+                if(version!=speechVersion)return;
+                LastReply=text;Status(text+"\n\nHold "+TalkKey+" to ask after the guide finishes.");
+                speaker.clip=recording;speaker.Play();
+                try{do{await Task.Delay(30,lifetime.Token);}while(speaker&&speaker.isPlaying&&version==speechVersion);}
+                finally{if(speaker&&speaker.clip==recording){speaker.Stop();speaker.clip=null;}}
+                return;
+            }
             using(var result=await synthesis.GenerateAsync(text,lifetime.Token))
             {
                 lifetime.Token.ThrowIfCancellationRequested();
@@ -171,7 +210,7 @@ namespace GroupProject.Opening
             }
             bool pressed=false;
             InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton,out pressed);
-            if(DesktopPreview.Active) pressed|=Keyboard.current!=null&&Keyboard.current.vKey.isPressed;
+            if(DesktopPreview.Active) pressed|=QuestControllerPreview.Speak;
             if(pressed&&!held)StartRecording();
             if(!pressed&&held&&recording)FinishRecording();
             held=pressed;
@@ -223,6 +262,7 @@ namespace GroupProject.Opening
                 Status("Understanding your question...");
                 var heard=await recognition.RecognizeAsync(samples,rate);lifetime.Token.ThrowIfCancellationRequested();
                 if(heard==null||string.IsNullOrWhiteSpace(heard.Text)){Status("I did not catch that. Please try again.");return;}
+                LastQuestion=heard.Text;
                 Status("You: "+heard.Text+"\nThinking...");
                 string reply=await Reply(heard.Text);
                 await Speak(reply,version);

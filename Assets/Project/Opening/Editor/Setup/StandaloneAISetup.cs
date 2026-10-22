@@ -19,7 +19,7 @@ public static class StandaloneAISetup
         GuideSceneSetup.Configure();
         Directory.CreateDirectory("Builds");
         var report=BuildPipeline.BuildPlayer(new BuildPlayerOptions {
-            scenes=new[]{Root+"/Scenes/01_Opening.unity", ElevatorSceneSetup.ArrivalPath},
+            scenes=new[]{OpeningProjectSetup.ScenePath},
             locationPathName="Builds/OpeningQuest.apk",target=BuildTarget.Android,options=BuildOptions.None
         });
         if(report.summary.result!=UnityEditor.Build.Reporting.BuildResult.Succeeded)
@@ -46,7 +46,7 @@ public static class StandaloneAISetup
             else if(p.Contains("osx-arm64")){importer.SetCompatibleWithEditor(true);importer.SetEditorData("OS","OSX");importer.SetEditorData("CPU","ARM64");importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX,true);importer.SetPlatformData(BuildTarget.StandaloneOSX,"CPU","ARM64");}
             importer.SaveAndReimport();
         }
-        var scene=EditorSceneManager.OpenScene(Root+"/Scenes/01_Opening.unity");
+        var scene=EditorSceneManager.OpenScene(OpeningProjectSetup.ScenePath);
         var root=GameObject.Find("Scene01_Opening_Adham");
         string source="Assets/StreamingAssets/qwen2.5-0.5b-instruct-q4_k_m.gguf";
         if(!File.Exists(source))throw new FileNotFoundException("Run Tools/setup_offline_guide.py first",source);
@@ -56,7 +56,7 @@ public static class StandaloneAISetup
         LLMManager.SetDownloadOnStart(false);
         LLMManager.SaveToDisk();
         var installed=root.GetComponentInChildren<StandaloneAIGuide>(true);
-        if(installed){ConfigureAudio(installed);installed.agent.systemPrompt=StandaloneAIGuide.SystemPrompt; installed.model.model=modelFile;EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);return;}
+        if(installed){installed.model.remote=false;installed.agent.remote=false;ConfigureAudio(installed);installed.agent.systemPrompt=StandaloneAIGuide.SystemPrompt; installed.model.model=modelFile;EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);return;}
         var ai=new GameObject("Standalone_AI_Guide");ai.SetActive(false);ai.transform.SetParent(root.transform,false);
         var model=ai.AddComponent<LLM>();model.dontDestroyOnLoad=false;model.remote=false;model.numThreads=2;model.numGPULayers=0;model.contextSize=2048;model.parallelPrompts=1;model.batchSize=128;
         model.model=modelFile;

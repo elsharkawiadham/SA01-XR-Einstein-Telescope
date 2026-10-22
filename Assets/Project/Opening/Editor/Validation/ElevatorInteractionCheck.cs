@@ -17,7 +17,7 @@ public static class ElevatorInteractionCheck
     static Vector3 closed;
     static ElevatorInteractionCheck() { EditorApplication.update += Tick; }
     public static void Run() {
-        EditorSceneManager.OpenScene("Assets/Project/Opening/Scenes/01_Opening.unity");
+        EditorSceneManager.OpenScene(OpeningProjectSetup.ScenePath);
         var desktop=UnityEngine.Object.FindFirstObjectByType<DesktopPreview>();if(desktop)desktop.enabled=false;
         var ai=UnityEngine.Object.FindFirstObjectByType<StandaloneAIGuide>();
         if(ai){ai.opening.aiGuide=null;ai.tutorial.aiGuide=null;ai.elevator.aiGuide=null;ai.gameObject.SetActive(false);}

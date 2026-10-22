@@ -88,12 +88,14 @@ namespace GroupProject.Opening
             body.height = 1.65f; body.radius = .2f; body.center = new Vector3(0, .825f, 0);
             body.stepOffset = .2f; body.minMoveDistance = 0; body.enabled = true;
             pitch = 0; gravity = 0; IsDesktop = true; Active = true;
+            if(!GetComponent<QuestControllerPreview>())gameObject.AddComponent<QuestControllerPreview>();
+            Cursor.lockState=CursorLockMode.None;Cursor.visible=true;
         }
 
         void RestoreXR()
         {
             if (!IsDesktop) return;
-            IsDesktop = false; Active = false;
+            IsDesktop = false; Active = false; QuestControllerPreview.ResetControls();
             if (offset) offset.localPosition = savedOffset;
             if (view) { view.transform.localPosition = savedHeadPosition; view.transform.localRotation = savedHeadRotation; }
             if (body) { body.height = savedHeight; body.radius = savedRadius; body.stepOffset = savedStep; body.minMoveDistance = savedMinimumMove; body.center = savedCenter; body.enabled = savedBodyEnabled; }
@@ -103,35 +105,18 @@ namespace GroupProject.Opening
             ReleaseCursor();
         }
 
+        float nextTurn;
         void Update()
         {
-            RefreshMode();
-            if (!IsDesktop) return;
-            var keyboard = Keyboard.current;
-            var mouse = Mouse.current;
-            if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame) { ReleaseCursor(); return; }
-            if (!captured)
-            {
-                if (mouse != null && mouse.leftButton.wasPressedThisFrame) { CapturePointer(); }
-                return;
-            }
-            Vector2 movement = Vector2.zero;
-            if (keyboard != null)
-            {
-                movement.x = (keyboard.dKey.isPressed ? 1 : 0) - (keyboard.aKey.isPressed ? 1 : 0);
-                movement.y = (keyboard.wKey.isPressed ? 1 : 0) - (keyboard.sKey.isPressed ? 1 : 0);
-                if (keyboard.leftArrowKey.wasPressedThisFrame) transform.Rotate(0, -30, 0);
-                if (keyboard.rightArrowKey.wasPressedThisFrame) transform.Rotate(0, 30, 0);
-            }
-            if (mouse != null)
-            {
-                Vector2 delta = mouse.delta.ReadValue() * mouseSensitivity;
-                transform.Rotate(0, delta.x, 0);
-                pitch = Mathf.Clamp(pitch - delta.y, -75, 75);
-                view.transform.localRotation = Quaternion.Euler(pitch, 0, 0);
-            }
-            Move(movement, Time.deltaTime);
-            if ((keyboard != null && keyboard.eKey.wasPressedThisFrame) || (mouse != null && mouse.leftButton.wasPressedThisFrame)) TryInteract();
+            RefreshMode();if(!IsDesktop)return;
+            var turn=QuestControllerPreview.Turn;
+            if(Mathf.Abs(turn.x)>.6f && Time.unscaledTime>=nextTurn){transform.Rotate(0,Mathf.Sign(turn.x)*30,0);nextTurn=Time.unscaledTime+.4f;}
+            var aim=QuestControllerPreview.Aim;
+            transform.Rotate(0,aim.x*45*Time.deltaTime,0);
+            pitch=Mathf.Clamp(pitch-aim.y*45*Time.deltaTime,-75,75);
+            view.transform.localRotation=Quaternion.Euler(pitch,0,0);
+            Move(QuestControllerPreview.Move,Time.deltaTime);
+            if(QuestControllerPreview.TriggerPressed)TryInteract();
         }
 
         public void Move(Vector2 movement, float seconds)
@@ -182,21 +167,13 @@ namespace GroupProject.Opening
                 GUI.Box(new Rect(12, 12, width, 140), GUIContent.none);
                 GUI.Label(new Rect(24, 20, width - 24, 124), message, hintStyle);
             }
-            GUI.Box(new Rect(12, Screen.height - 72, Screen.width - 24, 60), GUIContent.none);
-            GUI.Label(new Rect(20, Screen.height - 70, Screen.width - 40, 56), captured
-                ? "KEYBOARD TEST CONTROLS   •   WASD move   •   Mouse look   •   ← / → turn\nE / Click interact   •   Hold V ask the guide   •   Esc release mouse"
-                : "KEYBOARD TEST CONTROLS — Click inside the Game view to start\nWASD move • Mouse look • E interact • Hold V ask • Esc release mouse", hintStyle);
-            if (captured)
-            {
-                GUI.Label(new Rect(Screen.width / 2f - 12, Screen.height / 2f - 15, 24, 30), "+", crosshairStyle);
-                var floor = AimedFloorButton();
-                if (floor) GUI.Label(new Rect(Screen.width / 2f - 170, Screen.height / 2f + 60, 340, 36), "E / Click — B1 lower floor", hintStyle);
-                var target = AimedButton();
-                if (target) GUI.Label(new Rect(Screen.width / 2f - 170, Screen.height / 2f + 22, 340, 36), target.Called ? "Elevator called" : "E / Click — Call elevator", hintStyle);
-            }
+            GUI.Label(new Rect(Screen.width/2f-12,Screen.height/2f-15,24,30),"+",crosshairStyle);
+            var floor=AimedFloorButton();var target=AimedButton();
+            string hint=floor?"Trigger — B1 lower floor":target?(target.Called?"Elevator called":"Trigger — Call elevator"):"";
+            GUI.Label(new Rect(Screen.width/2f-170,Screen.height/2f+25,340,36),hint,hintStyle);
         }
 
-        public void CapturePointer() { if (!IsDesktop) return; captured = true; Cursor.lockState = CursorLockMode.Locked; Cursor.visible = false; }
+        public void CapturePointer() { if (!IsDesktop) return; captured = true; Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
         void ReleaseCursor() { captured = false; Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
         void OnApplicationFocus(bool focused) { if (!focused && IsDesktop) ReleaseCursor(); }
         void OnDisable() { RestoreXR(); }

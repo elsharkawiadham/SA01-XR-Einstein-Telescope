@@ -18,7 +18,7 @@ public static class LocomotionGuideCheck
     static LocomotionGuideCheck(){EditorApplication.update+=Tick;}
     static void Assert(bool ok,string why){if(!ok)throw new Exception(why);}
     public static void Run(){
-        var scene=EditorSceneManager.OpenScene("Assets/Project/Opening/Scenes/01_Opening.unity");
+        var scene=EditorSceneManager.OpenScene(OpeningProjectSetup.ScenePath);
         var desktop=UnityEngine.Object.FindFirstObjectByType<DesktopPreview>();if(desktop)desktop.enabled=false;
         var c=UnityEngine.Object.FindFirstObjectByType<ElevatorCallButton>();
         Physics.SyncTransforms();

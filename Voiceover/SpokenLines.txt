@@ -1,0 +1,263 @@
+PARROT VOICE SCRIPT
+Record each ID as a separate file. Expanded variants cover state-dependent replies. These are words to record, not generated audio files.
+
+VOICE_001 | Cleaning
+Inspect this Class A training plate. Grip the inspection lamp, then hold the trigger and aim at the plate.
+
+VOICE_002 | Cleaning
+Inspect the plate with the lamp before choosing a wipe.
+
+VOICE_003 | Cleaning
+KIMTECH W4 is not suitable for Class A. Choose Anticon Gold polyester.
+
+VOICE_004 | Cleaning
+Anticon Gold is intended for Class A; the client does not recommend it for Class B. Choose KIMTECH W4 here.
+
+VOICE_005 | Cleaning
+Use four parallel, slightly overlapping passes. Pull from left to right and lift at each end. Use a fresh face for each pass.
+
+VOICE_006 | Cleaning
+Lift the wipe off the plate before changing its face.
+
+VOICE_007 | Cleaning
+Refolded to a fresh face. Make the third pass.
+
+VOICE_008 | Cleaning
+Flipped to a fresh face. Make the next pass.
+
+VOICE_009 | Cleaning
+Four passes completed. Visible particles are reduced; this does not certify cleanliness. Fingerprints and other molecular contamination may remain invisible. Select CONTINUE.
+
+VOICE_010 | Cleaning
+Pass complete. Lifted correctly. Press the trigger to refold to a fresh face.
+
+VOICE_011 | Cleaning
+Pass complete. Lifted correctly. Press the trigger to flip to a fresh face.
+
+VOICE_012 | Cleaning
+That face has already been used. Lift, then press the trigger for a fresh face.
+
+VOICE_013 | Cleaning
+Lift and start at the left edge of the next parallel pass.
+
+VOICE_014 | Cleaning
+Avoid scrubbing back and forth or crossing the passes. Lift and retry this pass from the left.
+
+VOICE_015 | Cleaning
+Now try a Class B plate independently. Inspect, choose a suitable wipe, then repeat the four-pass technique.
+
+VOICE_016 | Cleaning
+Rehearsal complete. You practised inspection, wipe selection, fresh faces and parallel passes. Follow the approved local procedure for real cleaning; ask trained staff about solvents, ultrasonic baths and baking.
+
+VOICE_017 | Cleaning
+Particles are visible in this demonstration. Choose the wipe suitable for Class A. Grip a wipe to pick it up.
+
+VOICE_018 | Cleaning
+Particles are visible in this demonstration. Choose the wipe suitable for Class B. Grip a wipe to pick it up.
+
+VOICE_019 | Opening / Elevator
+Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.
+
+VOICE_020 | Opening / Elevator
+To push the button, aim at the down arrow and click with the controller trigger.
+
+VOICE_021 | Opening / Elevator
+Welcome aboard. Select B one on the cabin panel to go down.
+
+VOICE_022 | Opening / Elevator
+Doors closing. Going down to level B one. Please stay inside the cabin.
+
+VOICE_023 | Opening / Elevator
+Level B one. You have arrived. The doors are opening. You may leave the elevator.
+
+VOICE_024 | Opening
+Push the left stick forward to walk ahead.
+
+VOICE_025 | Opening
+Pull the left stick back to move backward.
+
+VOICE_026 | Opening
+Move it left or right to step sideways.
+
+VOICE_027 | Opening
+Flick left or right to turn in small steps.
+
+VOICE_028 | Opening
+Walk forward. Turn left at the corner to find the elevator.
+
+VOICE_029 | Guide Q&A
+Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.
+
+VOICE_030 | Guide Q&A
+Use the left joystick to move forward or backward. Move it left or right to step sideways.
+
+VOICE_031 | Guide Q&A
+Enter the cabin through the open door.
+
+VOICE_032 | Guide Q&A
+Go close to the elevator. Aim at the down arrow and press the controller trigger to open the door.
+
+VOICE_033 | Guide Q&A
+You have reached the left corridor. Follow the floor arrows toward the elevator.
+
+VOICE_034 | Guide Q&A
+Follow the floor arrows forward to the corner. Then turn left to find the elevator.
+
+VOICE_035 | Guide Q&A
+Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.
+
+VOICE_036 | Guide Q&A
+I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?
+
+VOICE_037 | Guide Q&A
+I'm ready to help, thanks for asking! How are you finding the training?
+
+VOICE_038 | Guide Q&A
+Hello! I'm your cleanroom guide. You can ask me where things are or how to use them.
+
+VOICE_039 | Cleaning
+Look down at the far left of the workbench, while facing the instructions. The purple tool beneath INSPECTION is the lamp. Aim at it and use the grip to pick it up.
+
+VOICE_040 | Cleaning
+The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label.
+
+VOICE_041 | Cleaning
+The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label.
+
+VOICE_042 | Cleaning
+Let's inspect it together. Look down at the purple lamp on the far left of the bench. Aim at it and press grip to pick it up. Hold the trigger and point the lamp at the plate in the centre tray for just over a second.
+
+VOICE_043 | Cleaning
+Lift the wipe clear of the plate, then press the trigger to expose a fresh face. Lower it at the left end of the next pass.
+
+VOICE_044 | Cleaning
+Place the wipe at the left edge of the plate. Pull it steadily to the right, then lift it clear. Avoid scrubbing back and forth. After each pass, press the trigger while lifted for a fresh face.
+
+VOICE_045 | Cleaning
+The four passes are finished. Find CONTINUE at the far right of the bench, aim at it, and press the trigger.
+
+VOICE_046 | Cleaning
+You have finished both practice trials. You can ask about the wipe choices or return along the corridor to the elevator landing.
+
+VOICE_047 | Cleaning
+The training plate is in the dark rectangular tray in the centre of the workbench, below the instructions.
+
+VOICE_048 | Cleaning
+The CONTINUE button is on the far right of the workbench. Aim at it and press the trigger.
+
+VOICE_049 | Cleaning
+Do you mean the plate, a wipe, or the CONTINUE button?
+
+VOICE_050 | Cleaning
+Which item are you looking for: the inspection lamp, the plate, or a wipe?
+
+VOICE_051 | Cleaning
+This exercise does not cover chemical, ultrasonic or oven operation. Ask trained staff for the approved local procedure.
+
+VOICE_052 | Cleaning
+Fingerprints and skin oils are molecular contamination. They may remain invisible after wiping. This exercise does not certify that a part is clean.
+
+VOICE_053 | Cleaning
+Grip the inspection lamp, hold the trigger, and aim at the training plate for just over one second. The highlighted particles are demonstration visuals, not a cleanliness measurement.
+
+VOICE_054 | Cleaning
+Lift the wipe, then press the trigger to expose a fresh face. After the first pass flip, after the second refold, and after the third flip again.
+
+VOICE_055 | Cleaning
+Make four parallel, slightly overlapping passes from left to right. Lift at the end of each pass, then use a fresh face. Do not scrub back and forth.
+
+VOICE_056 | Cleaning
+For Class A, use Anticon Gold polyester. KIMTECH W4 polypropylene is for Class B and below, not Class A. Anticon Gold is not recommended for Class B.
+
+VOICE_057 | Cleaning
+This face is ready. Make the next pass.
+
+VOICE_058 | Cleaning
+Now lift the wipe to finish this pass.
+
+VOICE_059 | Elevator
+B1 — Arrived. Leave the cabin through the open door.
+
+VOICE_060 | Elevator
+Going down to B1. Please stay inside the cabin.
+
+VOICE_061 | Elevator
+Journey unavailable. Step outside and try the B1 button again.
+
+VOICE_062 | Elevator
+Enter the cabin, aim at B1 and press the controller trigger to go down.
+
+VOICE_063 | Cleaning
+You are already holding the inspection lamp.
+
+VOICE_064 | Cleaning
+The inspection lamp has moved away from its labelled place. Look around the bench and on the floor nearby.
+
+VOICE_065 | Cleaning
+You are already holding the Anticon Gold wipe.
+
+VOICE_066 | Cleaning
+The Anticon Gold wipe has moved away from its labelled place. Look around the bench and on the floor nearby.
+
+VOICE_067 | Cleaning
+You are already holding the KIMTECH W4 wipe.
+
+VOICE_068 | Cleaning
+The KIMTECH W4 wipe has moved away from its labelled place. Look around the bench and on the floor nearby.
+
+VOICE_069 | Guide Q&A
+So far, I have not yet detected forward movement. Try a small turn. Follow the arrows toward the elevator.
+
+VOICE_070 | Guide Q&A
+So far, I have not yet detected forward movement. Try a small turn. You have also called the elevator.
+
+VOICE_071 | Guide Q&A
+So far, I have not yet detected forward movement, and turned. Follow the arrows toward the elevator.
+
+VOICE_072 | Guide Q&A
+So far, I have not yet detected forward movement, and turned. You have also called the elevator.
+
+VOICE_073 | Guide Q&A
+So far, I have not yet detected forward movement, moved backward. Try a small turn. Follow the arrows toward the elevator.
+
+VOICE_074 | Guide Q&A
+So far, I have not yet detected forward movement, moved backward. Try a small turn. You have also called the elevator.
+
+VOICE_075 | Guide Q&A
+So far, I have not yet detected forward movement, moved backward, and turned. Follow the arrows toward the elevator.
+
+VOICE_076 | Guide Q&A
+So far, I have not yet detected forward movement, moved backward, and turned. You have also called the elevator.
+
+VOICE_077 | Guide Q&A
+So far, you have moved forward. Try a small turn. Follow the arrows toward the elevator.
+
+VOICE_078 | Guide Q&A
+So far, you have moved forward. Try a small turn. You have also called the elevator.
+
+VOICE_079 | Guide Q&A
+So far, you have moved forward, and turned. Follow the arrows toward the elevator.
+
+VOICE_080 | Guide Q&A
+So far, you have moved forward, and turned. You have also called the elevator.
+
+VOICE_081 | Guide Q&A
+So far, you have moved forward, moved backward. Try a small turn. Follow the arrows toward the elevator.
+
+VOICE_082 | Guide Q&A
+So far, you have moved forward, moved backward. Try a small turn. You have also called the elevator.
+
+VOICE_083 | Guide Q&A
+So far, you have moved forward, moved backward, and turned. Follow the arrows toward the elevator.
+
+VOICE_084 | Guide Q&A
+So far, you have moved forward, moved backward, and turned. You have also called the elevator.
+
+VOICE_085 | Cleaning
+The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label. Aim at that wipe and use grip to pick it up.
+
+VOICE_086 | Cleaning
+The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label. Aim at that wipe and use grip to pick it up.
+
+VOICE_087 | Guide Q&A
+You're welcome!

@@ -14,9 +14,10 @@ public static class StandaloneAICheck
 {
     static bool running;
     static StandaloneAICheck(){EditorApplication.update+=Tick;}
+    public static void ConfigureAndRun(){StandaloneAISetup.Configure();Run();}
     public static void Run()
     {
-        EditorSceneManager.OpenScene("Assets/Project/Opening/Scenes/01_Opening.unity");
+        EditorSceneManager.OpenScene(OpeningProjectSetup.ScenePath);
         var desktop=UnityEngine.Object.FindFirstObjectByType<DesktopPreview>();if(desktop)desktop.enabled=false;
         UnityEngine.Object.FindFirstObjectByType<OpeningSequence>().enabled=false;
         SessionState.SetBool("Adham.AICheck",true);
@@ -57,7 +58,27 @@ public static class StandaloneAICheck
             if(!reply.Contains("right joystick") || reply.Contains("trigger"))throw new Exception("Incorrect turning advice: "+reply);
             bool spoken=await guide.SpeakInstruction("Welcome. Follow the floor arrows and walk forward toward the corner.");
             if(!spoken)throw new Exception("Automatic instruction fell back");
-            string report="PASS: native local TTS -> ASR -> LLM -> TTS and automatic narration completed.\nRecognized question: "+heard+"\nAnswer: "+reply+"\nAutomatic instruction: "+guide.LastReply+"\nElapsed seconds: "+(EditorApplication.timeSinceStartup-start).ToString("F1")+"\nEditor synthetic-audio test; physical microphone, Quest controls, standalone build and performance NOT tested.\n";
+            string automaticReply=guide.LastReply;
+            if(guide.model.remote || guide.agent.remote)throw new Exception("Remote mode must be disabled");
+            guide.elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>().destinationRoot.SetActive(true);
+            var body=guide.playerRoot.GetComponent<CharacterController>();bool enabled=body && body.enabled;if(enabled)body.enabled=false;
+            guide.playerRoot.position=new Vector3(28,.25f,17.9f);if(enabled)body.enabled=true;
+            await Task.Delay(300);
+            if(!GroupProject.Cleaning.CleaningStation.Active)throw new Exception("Cleaning Q&A context not active");
+            string[] questions={"Which wipe should I use for class A?","How do I change the wipe face?","What oven temperature should I use?"};
+            string[] expected={"Anticon Gold","Lift the wipe","approved local procedure"};
+            string cleaningReport="";
+            for(int i=0;i<questions.Length;i++)
+            {
+                using(var audio=await tts.GenerateAsync(questions[i]))
+                {
+                    var replyTask=(Task)typeof(StandaloneAIGuide).GetMethod("Answer",flags).Invoke(guide,new object[]{audio.Samples,audio.SampleRate});
+                    if(await Task.WhenAny(replyTask,Task.Delay(90000))!=replyTask)throw new Exception("Cleaning answer timeout");await replyTask;
+                }
+                if(!guide.LastReply.Contains(expected[i]))throw new Exception("Cleaning reply mismatch: "+guide.LastReply);
+                cleaningReport+="\nCleaning question: "+questions[i]+"\nSpoken reply: "+guide.LastReply;
+            }
+            string report="PASS: native local TTS -> ASR -> LLM -> TTS and automatic narration completed.\nRecognized question: "+heard+"\nAnswer: "+reply+"\nAutomatic instruction: "+automaticReply+"\nElapsed seconds: "+(EditorApplication.timeSinceStartup-start).ToString("F1")+cleaningReport+"\nEditor synthetic-audio test; physical microphone, Quest controls, standalone build and performance NOT tested.\n";
             Directory.CreateDirectory("Logs");File.WriteAllText("Logs/StandaloneAICheck.txt",report);Debug.Log(report);
             SessionState.SetBool("Adham.AICheck",false);SessionState.SetInt("Adham.AICheckExit",0);EditorApplication.isPlaying=false;
         }

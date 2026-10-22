@@ -1,0 +1,478 @@
+{
+  "entries": [
+    {
+      "id": "VOICE_001",
+      "text": "Inspect this Class A training plate. Grip the inspection lamp, then hold the trigger and aim at the plate.",
+      "originalName": "Cleaning_00",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_001.mp3"
+    },
+    {
+      "id": "VOICE_002",
+      "text": "Inspect the plate with the lamp before choosing a wipe.",
+      "originalName": "Cleaning_01",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_002.mp3"
+    },
+    {
+      "id": "VOICE_003",
+      "text": "KIMTECH W4 is not suitable for Class A. Choose Anticon Gold polyester.",
+      "originalName": "Cleaning_02",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_003.mp3"
+    },
+    {
+      "id": "VOICE_004",
+      "text": "Anticon Gold is intended for Class A; the client does not recommend it for Class B. Choose KIMTECH W4 here.",
+      "originalName": "Cleaning_03",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_004.mp3"
+    },
+    {
+      "id": "VOICE_005",
+      "text": "Use four parallel, slightly overlapping passes. Pull from left to right and lift at each end. Use a fresh face for each pass.",
+      "originalName": "Cleaning_04",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_005.mp3"
+    },
+    {
+      "id": "VOICE_006",
+      "text": "Lift the wipe off the plate before changing its face.",
+      "originalName": "Cleaning_05",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_006.mp3"
+    },
+    {
+      "id": "VOICE_007",
+      "text": "Refolded to a fresh face. Make the third pass.",
+      "originalName": "Cleaning_06",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_007.mp3"
+    },
+    {
+      "id": "VOICE_008",
+      "text": "Flipped to a fresh face. Make the next pass.",
+      "originalName": "Cleaning_07",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_008.mp3"
+    },
+    {
+      "id": "VOICE_009",
+      "text": "Four passes completed. Visible particles are reduced; this does not certify cleanliness. Fingerprints and other molecular contamination may remain invisible. Select CONTINUE.",
+      "originalName": "Cleaning_08",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_009.mp3"
+    },
+    {
+      "id": "VOICE_010",
+      "text": "Pass complete. Lifted correctly. Press the trigger to refold to a fresh face.",
+      "originalName": "Cleaning_09",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_010.mp3"
+    },
+    {
+      "id": "VOICE_011",
+      "text": "Pass complete. Lifted correctly. Press the trigger to flip to a fresh face.",
+      "originalName": "Cleaning_10",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_011.mp3"
+    },
+    {
+      "id": "VOICE_012",
+      "text": "That face has already been used. Lift, then press the trigger for a fresh face.",
+      "originalName": "Cleaning_11",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_012.mp3"
+    },
+    {
+      "id": "VOICE_013",
+      "text": "Lift and start at the left edge of the next parallel pass.",
+      "originalName": "Cleaning_12",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_013.mp3"
+    },
+    {
+      "id": "VOICE_014",
+      "text": "Avoid scrubbing back and forth or crossing the passes. Lift and retry this pass from the left.",
+      "originalName": "Cleaning_13",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_014.mp3"
+    },
+    {
+      "id": "VOICE_015",
+      "text": "Now try a Class B plate independently. Inspect, choose a suitable wipe, then repeat the four-pass technique.",
+      "originalName": "Cleaning_14",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_015.mp3"
+    },
+    {
+      "id": "VOICE_016",
+      "text": "Rehearsal complete. You practised inspection, wipe selection, fresh faces and parallel passes. Follow the approved local procedure for real cleaning; ask trained staff about solvents, ultrasonic baths and baking.",
+      "originalName": "Cleaning_15",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_016.mp3"
+    },
+    {
+      "id": "VOICE_017",
+      "text": "Particles are visible in this demonstration. Choose the wipe suitable for Class A. Grip a wipe to pick it up.",
+      "originalName": "Cleaning_16",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_017.mp3"
+    },
+    {
+      "id": "VOICE_018",
+      "text": "Particles are visible in this demonstration. Choose the wipe suitable for Class B. Grip a wipe to pick it up.",
+      "originalName": "Cleaning_17",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_018.mp3"
+    },
+    {
+      "id": "VOICE_019",
+      "text": "Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.",
+      "originalName": "Welcome_Short",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_019.mp3"
+    },
+    {
+      "id": "VOICE_020",
+      "text": "To push the button, aim at the down arrow and click with the controller trigger.",
+      "originalName": "ElevatorHint_Prototype",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_020.mp3"
+    },
+    {
+      "id": "VOICE_021",
+      "text": "Welcome aboard. Select B one on the cabin panel to go down.",
+      "originalName": "Boarding",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_021.mp3"
+    },
+    {
+      "id": "VOICE_022",
+      "text": "Doors closing. Going down to level B one. Please stay inside the cabin.",
+      "originalName": "Descending",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_022.mp3"
+    },
+    {
+      "id": "VOICE_023",
+      "text": "Level B one. You have arrived. The doors are opening. You may leave the elevator.",
+      "originalName": "Arrival",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_023.mp3"
+    },
+    {
+      "id": "VOICE_024",
+      "text": "Push the left stick forward to walk ahead.",
+      "originalName": "Move_Forward",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_024.mp3"
+    },
+    {
+      "id": "VOICE_025",
+      "text": "Pull the left stick back to move backward.",
+      "originalName": "Move_Backward",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_025.mp3"
+    },
+    {
+      "id": "VOICE_026",
+      "text": "Move it left or right to step sideways.",
+      "originalName": "Move_Sideways",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_026.mp3"
+    },
+    {
+      "id": "VOICE_027",
+      "text": "Flick left or right to turn in small steps.",
+      "originalName": "Move_Turn",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_027.mp3"
+    },
+    {
+      "id": "VOICE_028",
+      "text": "Walk forward. Turn left at the corner to find the elevator.",
+      "originalName": "Move_Explore",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_028.mp3"
+    },
+    {
+      "id": "VOICE_029",
+      "text": "Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_029.mp3"
+    },
+    {
+      "id": "VOICE_030",
+      "text": "Use the left joystick to move forward or backward. Move it left or right to step sideways.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_030.mp3"
+    },
+    {
+      "id": "VOICE_031",
+      "text": "Enter the cabin through the open door.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_031.mp3"
+    },
+    {
+      "id": "VOICE_032",
+      "text": "Go close to the elevator. Aim at the down arrow and press the controller trigger to open the door.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_032.mp3"
+    },
+    {
+      "id": "VOICE_033",
+      "text": "You have reached the left corridor. Follow the floor arrows toward the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_033.mp3"
+    },
+    {
+      "id": "VOICE_034",
+      "text": "Follow the floor arrows forward to the corner. Then turn left to find the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_034.mp3"
+    },
+    {
+      "id": "VOICE_035",
+      "text": "Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_035.mp3"
+    },
+    {
+      "id": "VOICE_036",
+      "text": "I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_036.mp3"
+    },
+    {
+      "id": "VOICE_037",
+      "text": "I'm ready to help, thanks for asking! How are you finding the training?",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_037.mp3"
+    },
+    {
+      "id": "VOICE_038",
+      "text": "Hello! I'm your cleanroom guide. You can ask me where things are or how to use them.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_038.mp3"
+    },
+    {
+      "id": "VOICE_039",
+      "text": "Look down at the far left of the workbench, while facing the instructions. The purple tool beneath INSPECTION is the lamp. Aim at it and use the grip to pick it up.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_039.mp3"
+    },
+    {
+      "id": "VOICE_040",
+      "text": "The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_040.mp3"
+    },
+    {
+      "id": "VOICE_041",
+      "text": "The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_041.mp3"
+    },
+    {
+      "id": "VOICE_042",
+      "text": "Let's inspect it together. Look down at the purple lamp on the far left of the bench. Aim at it and press grip to pick it up. Hold the trigger and point the lamp at the plate in the centre tray for just over a second.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_042.mp3"
+    },
+    {
+      "id": "VOICE_043",
+      "text": "Lift the wipe clear of the plate, then press the trigger to expose a fresh face. Lower it at the left end of the next pass.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_043.mp3"
+    },
+    {
+      "id": "VOICE_044",
+      "text": "Place the wipe at the left edge of the plate. Pull it steadily to the right, then lift it clear. Avoid scrubbing back and forth. After each pass, press the trigger while lifted for a fresh face.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_044.mp3"
+    },
+    {
+      "id": "VOICE_045",
+      "text": "The four passes are finished. Find CONTINUE at the far right of the bench, aim at it, and press the trigger.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_045.mp3"
+    },
+    {
+      "id": "VOICE_046",
+      "text": "You have finished both practice trials. You can ask about the wipe choices or return along the corridor to the elevator landing.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_046.mp3"
+    },
+    {
+      "id": "VOICE_047",
+      "text": "The training plate is in the dark rectangular tray in the centre of the workbench, below the instructions.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_047.mp3"
+    },
+    {
+      "id": "VOICE_048",
+      "text": "The CONTINUE button is on the far right of the workbench. Aim at it and press the trigger.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_048.mp3"
+    },
+    {
+      "id": "VOICE_049",
+      "text": "Do you mean the plate, a wipe, or the CONTINUE button?",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_049.mp3"
+    },
+    {
+      "id": "VOICE_050",
+      "text": "Which item are you looking for: the inspection lamp, the plate, or a wipe?",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_050.mp3"
+    },
+    {
+      "id": "VOICE_051",
+      "text": "This exercise does not cover chemical, ultrasonic or oven operation. Ask trained staff for the approved local procedure.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_051.mp3"
+    },
+    {
+      "id": "VOICE_052",
+      "text": "Fingerprints and skin oils are molecular contamination. They may remain invisible after wiping. This exercise does not certify that a part is clean.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_052.mp3"
+    },
+    {
+      "id": "VOICE_053",
+      "text": "Grip the inspection lamp, hold the trigger, and aim at the training plate for just over one second. The highlighted particles are demonstration visuals, not a cleanliness measurement.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_053.mp3"
+    },
+    {
+      "id": "VOICE_054",
+      "text": "Lift the wipe, then press the trigger to expose a fresh face. After the first pass flip, after the second refold, and after the third flip again.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_054.mp3"
+    },
+    {
+      "id": "VOICE_055",
+      "text": "Make four parallel, slightly overlapping passes from left to right. Lift at the end of each pass, then use a fresh face. Do not scrub back and forth.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_055.mp3"
+    },
+    {
+      "id": "VOICE_056",
+      "text": "For Class A, use Anticon Gold polyester. KIMTECH W4 polypropylene is for Class B and below, not Class A. Anticon Gold is not recommended for Class B.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_056.mp3"
+    },
+    {
+      "id": "VOICE_057",
+      "text": "This face is ready. Make the next pass.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_057.mp3"
+    },
+    {
+      "id": "VOICE_058",
+      "text": "Now lift the wipe to finish this pass.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_058.mp3"
+    },
+    {
+      "id": "VOICE_059",
+      "text": "B1 \u2014 Arrived. Leave the cabin through the open door.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_059.mp3"
+    },
+    {
+      "id": "VOICE_060",
+      "text": "Going down to B1. Please stay inside the cabin.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_060.mp3"
+    },
+    {
+      "id": "VOICE_061",
+      "text": "Journey unavailable. Step outside and try the B1 button again.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_061.mp3"
+    },
+    {
+      "id": "VOICE_062",
+      "text": "Enter the cabin, aim at B1 and press the controller trigger to go down.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_062.mp3"
+    },
+    {
+      "id": "VOICE_063",
+      "text": "You are already holding the inspection lamp.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_063.mp3"
+    },
+    {
+      "id": "VOICE_064",
+      "text": "The inspection lamp has moved away from its labelled place. Look around the bench and on the floor nearby.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_064.mp3"
+    },
+    {
+      "id": "VOICE_065",
+      "text": "You are already holding the Anticon Gold wipe.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_065.mp3"
+    },
+    {
+      "id": "VOICE_066",
+      "text": "The Anticon Gold wipe has moved away from its labelled place. Look around the bench and on the floor nearby.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_066.mp3"
+    },
+    {
+      "id": "VOICE_067",
+      "text": "You are already holding the KIMTECH W4 wipe.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_067.mp3"
+    },
+    {
+      "id": "VOICE_068",
+      "text": "The KIMTECH W4 wipe has moved away from its labelled place. Look around the bench and on the floor nearby.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_068.mp3"
+    },
+    {
+      "id": "VOICE_069",
+      "text": "So far, I have not yet detected forward movement. Try a small turn. Follow the arrows toward the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_069.mp3"
+    },
+    {
+      "id": "VOICE_070",
+      "text": "So far, I have not yet detected forward movement. Try a small turn. You have also called the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_070.mp3"
+    },
+    {
+      "id": "VOICE_071",
+      "text": "So far, I have not yet detected forward movement, and turned. Follow the arrows toward the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_071.mp3"
+    },
+    {
+      "id": "VOICE_072",
+      "text": "So far, I have not yet detected forward movement, and turned. You have also called the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_072.mp3"
+    },
+    {
+      "id": "VOICE_073",
+      "text": "So far, I have not yet detected forward movement, moved backward. Try a small turn. Follow the arrows toward the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_073.mp3"
+    },
+    {
+      "id": "VOICE_074",
+      "text": "So far, I have not yet detected forward movement, moved backward. Try a small turn. You have also called the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_074.mp3"
+    },
+    {
+      "id": "VOICE_075",
+      "text": "So far, I have not yet detected forward movement, moved backward, and turned. Follow the arrows toward the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_075.mp3"
+    },
+    {
+      "id": "VOICE_076",
+      "text": "So far, I have not yet detected forward movement, moved backward, and turned. You have also called the elevator.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_076.mp3"
+    },
+    {
+      "id": "VOICE_085",
+      "text": "The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label. Aim at that wipe and use grip to pick it up.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_085.mp3"
+    },
+    {
+      "id": "VOICE_086",
+      "text": "The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label. Aim at that wipe and use grip to pick it up.",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_086.mp3"
+    },
+    {
+      "id": "VOICE_087",
+      "text": "You're welcome!",
+      "originalName": "",
+      "path": "Assets/Project/Guide/Audio/Generated/VOICE_087.mp3"
+    }
+  ]
+}

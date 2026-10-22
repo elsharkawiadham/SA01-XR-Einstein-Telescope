@@ -8,7 +8,7 @@ using GroupProject.Opening;
 
 public static class OpeningProjectSetup
 {
-    public const string ScenePath = "Assets/Project/Opening/Scenes/01_Opening.unity";
+    public const string ScenePath = "Assets/Project/Scenes/01_Opening.unity";
     [MenuItem("Tools/Opening Scene/Open Scene")]
     public static void Open()
     {
@@ -24,12 +24,9 @@ public static class OpeningProjectSetup
         if (!desktop) desktop = rig.AddComponent<DesktopPreview>();
         desktop.view = opening.headsetCamera;
         desktop.tutorial = opening.locomotionGuide; desktop.guide = opening.aiGuide;
-        string audio = "Assets/Project/Opening/Audio/Desktop/";
-        desktop.tutorial.desktopSteps = new[] {"Forward", "Backward", "Sideways", "Turn", "Explore"}
-            .Select(name => AssetDatabase.LoadAssetAtPath<AudioClip>(audio + name + ".wav")).ToArray();
-        if(desktop.tutorial.desktopSteps.Any(clip => !clip))throw new Exception("Desktop narration clip missing");
-        var elevator = UnityEngine.Object.FindFirstObjectByType<ElevatorCallButton>();
-        elevator.desktopHintClip = AssetDatabase.LoadAssetAtPath<AudioClip>(audio + "Elevator.wav");
+        desktop.tutorial.desktopSteps=System.Array.Empty<AudioClip>();
+        var elevator=UnityEngine.Object.FindFirstObjectByType<ElevatorCallButton>();
+        elevator.desktopHintClip=null;
         // The saved scene is the source of truth; delete superseded inactive corridor modules.
         var root = GameObject.Find("Scene01_Opening_Adham");
         var unused = root.GetComponentsInChildren<Transform>(true)

@@ -11,10 +11,20 @@ namespace GroupProject.Opening
         public AudioSource welcome;
         public LocomotionGuide locomotionGuide;
         public StandaloneAIGuide aiGuide;
+        public const string WelcomeText="Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.";
+        public const float ExplorationSeconds=20f;
+        void Awake()
+        {
+            if(!enabled)return;
+            var parrot=FindFirstObjectByType<GroupProject.Guide.ParrotCompanion>();
+            if(parrot)parrot.ArriveAfter(ExplorationSeconds);
+            if(headsetCamera){var rig=headsetCamera.GetComponentInParent<Unity.XR.CoreUtils.XROrigin>();if(rig && !rig.GetComponent<ControllerPresence>())rig.gameObject.AddComponent<ControllerPresence>();}
+        }
         Material instance;
         GameObject overlay;
         IEnumerator Start()
         {
+            float spawned=Time.unscaledTime;
             if (!headsetCamera || !fadeMaterial) yield break;
             overlay = GameObject.CreatePrimitive(PrimitiveType.Quad);
             overlay.name = "Opening fade (runtime)";
@@ -34,9 +44,10 @@ namespace GroupProject.Opening
                 yield return null;
             }
             Destroy(overlay);
+            while(Time.unscaledTime-spawned<ExplorationSeconds)yield return null;
             bool spoken=false;
             if(aiGuide){
-                var speech=aiGuide.SpeakInstruction("Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.");
+                var speech=aiGuide.SpeakInstruction(WelcomeText);
                 while(!speech.IsCompleted)yield return null;
                 spoken=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion && speech.Result;
             }

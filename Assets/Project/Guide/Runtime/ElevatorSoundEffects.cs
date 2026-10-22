@@ -11,7 +11,7 @@ namespace GroupProject.Guide
         public AudioClip button,doorStop,startMotor,stopMotor,arrival;
         public int CuesPlayed { get; private set; }
         Vector3 lastDoor;bool called,moving;ElevatorRide.Phase phase;
-        void Start(){lastDoor=call.door.position;phase=ride.State;}
+        void Start(){if(doorLoop)doorLoop.volume*=.3f;if(effects)effects.volume*=.3f;if(ride && ride.motor)ride.motor.volume*=.3f;lastDoor=call.door.position;phase=ride.State;}
         void Cue(AudioClip clip){if(clip){effects.PlayOneShot(clip);CuesPlayed++;}}
         void LateUpdate()
         {

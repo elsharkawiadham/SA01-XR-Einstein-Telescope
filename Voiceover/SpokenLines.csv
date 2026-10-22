@@ -1,0 +1,88 @@
+ID,Scene,Type,Spoken text,Source,Existing audio
+VOICE_001,Cleaning,Recorded narration,"Inspect this Class A training plate. Grip the inspection lamp, then hold the trigger and aim at the plate.",Assets/Project/Cleaning/Audio/Cleaning_00.txt,Assets/Project/Cleaning/Audio/Cleaning_00.wav
+VOICE_002,Cleaning,Recorded narration,Inspect the plate with the lamp before choosing a wipe.,Assets/Project/Cleaning/Audio/Cleaning_01.txt,Assets/Project/Cleaning/Audio/Cleaning_01.wav
+VOICE_003,Cleaning,Recorded narration,KIMTECH W4 is not suitable for Class A. Choose Anticon Gold polyester.,Assets/Project/Cleaning/Audio/Cleaning_02.txt,Assets/Project/Cleaning/Audio/Cleaning_02.wav
+VOICE_004,Cleaning,Recorded narration,Anticon Gold is intended for Class A; the client does not recommend it for Class B. Choose KIMTECH W4 here.,Assets/Project/Cleaning/Audio/Cleaning_03.txt,Assets/Project/Cleaning/Audio/Cleaning_03.wav
+VOICE_005,Cleaning,Recorded narration,"Use four parallel, slightly overlapping passes. Pull from left to right and lift at each end. Use a fresh face for each pass.",Assets/Project/Cleaning/Audio/Cleaning_04.txt,Assets/Project/Cleaning/Audio/Cleaning_04.wav
+VOICE_006,Cleaning,Recorded narration,Lift the wipe off the plate before changing its face.,Assets/Project/Cleaning/Audio/Cleaning_05.txt,Assets/Project/Cleaning/Audio/Cleaning_05.wav
+VOICE_007,Cleaning,Recorded narration,Refolded to a fresh face. Make the third pass.,Assets/Project/Cleaning/Audio/Cleaning_06.txt,Assets/Project/Cleaning/Audio/Cleaning_06.wav
+VOICE_008,Cleaning,Recorded narration,Flipped to a fresh face. Make the next pass.,Assets/Project/Cleaning/Audio/Cleaning_07.txt,Assets/Project/Cleaning/Audio/Cleaning_07.wav
+VOICE_009,Cleaning,Recorded narration,Four passes completed. Visible particles are reduced; this does not certify cleanliness. Fingerprints and other molecular contamination may remain invisible. Select CONTINUE.,Assets/Project/Cleaning/Audio/Cleaning_08.txt,Assets/Project/Cleaning/Audio/Cleaning_08.wav
+VOICE_010,Cleaning,Recorded narration,Pass complete. Lifted correctly. Press the trigger to refold to a fresh face.,Assets/Project/Cleaning/Audio/Cleaning_09.txt,Assets/Project/Cleaning/Audio/Cleaning_09.wav
+VOICE_011,Cleaning,Recorded narration,Pass complete. Lifted correctly. Press the trigger to flip to a fresh face.,Assets/Project/Cleaning/Audio/Cleaning_10.txt,Assets/Project/Cleaning/Audio/Cleaning_10.wav
+VOICE_012,Cleaning,Recorded narration,"That face has already been used. Lift, then press the trigger for a fresh face.",Assets/Project/Cleaning/Audio/Cleaning_11.txt,Assets/Project/Cleaning/Audio/Cleaning_11.wav
+VOICE_013,Cleaning,Recorded narration,Lift and start at the left edge of the next parallel pass.,Assets/Project/Cleaning/Audio/Cleaning_12.txt,Assets/Project/Cleaning/Audio/Cleaning_12.wav
+VOICE_014,Cleaning,Recorded narration,Avoid scrubbing back and forth or crossing the passes. Lift and retry this pass from the left.,Assets/Project/Cleaning/Audio/Cleaning_13.txt,Assets/Project/Cleaning/Audio/Cleaning_13.wav
+VOICE_015,Cleaning,Recorded narration,"Now try a Class B plate independently. Inspect, choose a suitable wipe, then repeat the four-pass technique.",Assets/Project/Cleaning/Audio/Cleaning_14.txt,Assets/Project/Cleaning/Audio/Cleaning_14.wav
+VOICE_016,Cleaning,Recorded narration,"Rehearsal complete. You practised inspection, wipe selection, fresh faces and parallel passes. Follow the approved local procedure for real cleaning; ask trained staff about solvents, ultrasonic baths and baking.",Assets/Project/Cleaning/Audio/Cleaning_15.txt,Assets/Project/Cleaning/Audio/Cleaning_15.wav
+VOICE_017,Cleaning,Recorded narration,Particles are visible in this demonstration. Choose the wipe suitable for Class A. Grip a wipe to pick it up.,Assets/Project/Cleaning/Audio/Cleaning_16.txt,Assets/Project/Cleaning/Audio/Cleaning_16.wav
+VOICE_018,Cleaning,Recorded narration,Particles are visible in this demonstration. Choose the wipe suitable for Class B. Grip a wipe to pick it up.,Assets/Project/Cleaning/Audio/Cleaning_17.txt,Assets/Project/Cleaning/Audio/Cleaning_17.wav
+VOICE_019,Opening / Elevator,Recorded narration,"Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.",GuideSceneSetup.cs,Assets/Project/Opening/Audio/Welcome_Short.wav
+VOICE_020,Opening / Elevator,Recorded narration,"To push the button, aim at the down arrow and click with the controller trigger.",GuideSceneSetup.cs,Assets/Project/Opening/Audio/ElevatorHint_Prototype.wav
+VOICE_021,Opening / Elevator,Recorded narration,Welcome aboard. Select B one on the cabin panel to go down.,GuideSceneSetup.cs,Assets/Project/Elevator/Audio/Boarding.wav
+VOICE_022,Opening / Elevator,Recorded narration,Doors closing. Going down to level B one. Please stay inside the cabin.,GuideSceneSetup.cs,Assets/Project/Elevator/Audio/Descending.wav
+VOICE_023,Opening / Elevator,Recorded narration,Level B one. You have arrived. The doors are opening. You may leave the elevator.,GuideSceneSetup.cs,Assets/Project/Elevator/Audio/Arrival.wav
+VOICE_024,Opening,Locomotion instruction,Push the left stick forward to walk ahead.,Assets/Project/Opening/Runtime/LocomotionGuide.cs,Assets/Project/Opening/Audio/Move_Forward.wav
+VOICE_025,Opening,Locomotion instruction,Pull the left stick back to move backward.,Assets/Project/Opening/Runtime/LocomotionGuide.cs,Assets/Project/Opening/Audio/Move_Backward.wav
+VOICE_026,Opening,Locomotion instruction,Move it left or right to step sideways.,Assets/Project/Opening/Runtime/LocomotionGuide.cs,Assets/Project/Opening/Audio/Move_Sideways.wav
+VOICE_027,Opening,Locomotion instruction,Flick left or right to turn in small steps.,Assets/Project/Opening/Runtime/LocomotionGuide.cs,Assets/Project/Opening/Audio/Move_Turn.wav
+VOICE_028,Opening,Locomotion instruction,Walk forward. Turn left at the corner to find the elevator.,Assets/Project/Opening/Runtime/LocomotionGuide.cs,Assets/Project/Opening/Audio/Move_Explore.wav
+VOICE_029,Guide Q&A,Narration / Q&A,Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_030,Guide Q&A,Narration / Q&A,Use the left joystick to move forward or backward. Move it left or right to step sideways.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_031,Guide Q&A,Narration / Q&A,Enter the cabin through the open door.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_032,Guide Q&A,Narration / Q&A,Go close to the elevator. Aim at the down arrow and press the controller trigger to open the door.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_033,Guide Q&A,Narration / Q&A,You have reached the left corridor. Follow the floor arrows toward the elevator.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_034,Guide Q&A,Narration / Q&A,Follow the floor arrows forward to the corner. Then turn left to find the elevator.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_035,Guide Q&A,Narration / Q&A,"Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.",Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_036,Guide Q&A,Narration / Q&A,"I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?",Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_037,Guide Q&A,Narration / Q&A,"I'm ready to help, thanks for asking! How are you finding the training?",Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_038,Guide Q&A,Narration / Q&A,Hello! I'm your cleanroom guide. You can ask me where things are or how to use them.,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,
+VOICE_039,Cleaning,Narration / Q&A,"Look down at the far left of the workbench, while facing the instructions. The purple tool beneath INSPECTION is the lamp. Aim at it and use the grip to pick it up.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_040,Cleaning,Narration / Q&A,"The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_041,Cleaning,Narration / Q&A,"The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_042,Cleaning,Narration / Q&A,Let's inspect it together. Look down at the purple lamp on the far left of the bench. Aim at it and press grip to pick it up. Hold the trigger and point the lamp at the plate in the centre tray for just over a second.,Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_043,Cleaning,Narration / Q&A,"Lift the wipe clear of the plate, then press the trigger to expose a fresh face. Lower it at the left end of the next pass.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_044,Cleaning,Narration / Q&A,"Place the wipe at the left edge of the plate. Pull it steadily to the right, then lift it clear. Avoid scrubbing back and forth. After each pass, press the trigger while lifted for a fresh face.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_045,Cleaning,Narration / Q&A,"The four passes are finished. Find CONTINUE at the far right of the bench, aim at it, and press the trigger.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_046,Cleaning,Narration / Q&A,You have finished both practice trials. You can ask about the wipe choices or return along the corridor to the elevator landing.,Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_047,Cleaning,Narration / Q&A,"The training plate is in the dark rectangular tray in the centre of the workbench, below the instructions.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_048,Cleaning,Narration / Q&A,The CONTINUE button is on the far right of the workbench. Aim at it and press the trigger.,Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_049,Cleaning,Narration / Q&A,"Do you mean the plate, a wipe, or the CONTINUE button?",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_050,Cleaning,Narration / Q&A,"Which item are you looking for: the inspection lamp, the plate, or a wipe?",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_051,Cleaning,Narration / Q&A,"This exercise does not cover chemical, ultrasonic or oven operation. Ask trained staff for the approved local procedure.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_052,Cleaning,Narration / Q&A,Fingerprints and skin oils are molecular contamination. They may remain invisible after wiping. This exercise does not certify that a part is clean.,Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_053,Cleaning,Narration / Q&A,"Grip the inspection lamp, hold the trigger, and aim at the training plate for just over one second. The highlighted particles are demonstration visuals, not a cleanliness measurement.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_054,Cleaning,Narration / Q&A,"Lift the wipe, then press the trigger to expose a fresh face. After the first pass flip, after the second refold, and after the third flip again.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_055,Cleaning,Narration / Q&A,"Make four parallel, slightly overlapping passes from left to right. Lift at the end of each pass, then use a fresh face. Do not scrub back and forth.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_056,Cleaning,Narration / Q&A,"For Class A, use Anticon Gold polyester. KIMTECH W4 polypropylene is for Class B and below, not Class A. Anticon Gold is not recommended for Class B.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
+VOICE_057,Cleaning,Narration / Q&A,This face is ready. Make the next pass.,Assets/Project/Cleaning/Runtime/CleaningExercise.cs,
+VOICE_058,Cleaning,Narration / Q&A,Now lift the wipe to finish this pass.,Assets/Project/Cleaning/Runtime/CleaningExercise.cs,
+VOICE_059,Elevator,Narration / Q&A,B1 — Arrived. Leave the cabin through the open door.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
+VOICE_060,Elevator,Narration / Q&A,Going down to B1. Please stay inside the cabin.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
+VOICE_061,Elevator,Narration / Q&A,Journey unavailable. Step outside and try the B1 button again.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
+VOICE_062,Elevator,Narration / Q&A,"Enter the cabin, aim at B1 and press the controller trigger to go down.",Assets/Project/Elevator/Runtime/ElevatorRide.cs,
+VOICE_063,Cleaning,Expanded dynamic line,You are already holding the inspection lamp.,CleaningStation.cs,
+VOICE_064,Cleaning,Expanded dynamic line,The inspection lamp has moved away from its labelled place. Look around the bench and on the floor nearby.,CleaningStation.cs,
+VOICE_065,Cleaning,Expanded dynamic line,You are already holding the Anticon Gold wipe.,CleaningStation.cs,
+VOICE_066,Cleaning,Expanded dynamic line,The Anticon Gold wipe has moved away from its labelled place. Look around the bench and on the floor nearby.,CleaningStation.cs,
+VOICE_067,Cleaning,Expanded dynamic line,You are already holding the KIMTECH W4 wipe.,CleaningStation.cs,
+VOICE_068,Cleaning,Expanded dynamic line,The KIMTECH W4 wipe has moved away from its labelled place. Look around the bench and on the floor nearby.,CleaningStation.cs,
+VOICE_069,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement. Try a small turn. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_070,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement. Try a small turn. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_071,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, and turned. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_072,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, and turned. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_073,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, moved backward. Try a small turn. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_074,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, moved backward. Try a small turn. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_075,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, moved backward, and turned. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_076,Guide Q&A,Expanded dynamic line,"So far, I have not yet detected forward movement, moved backward, and turned. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_077,Guide Q&A,Expanded dynamic line,"So far, you have moved forward. Try a small turn. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_078,Guide Q&A,Expanded dynamic line,"So far, you have moved forward. Try a small turn. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_079,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, and turned. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_080,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, and turned. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_081,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, moved backward. Try a small turn. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_082,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, moved backward. Try a small turn. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_083,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, moved backward, and turned. Follow the arrows toward the elevator.",StandaloneAIGuide.cs,
+VOICE_084,Guide Q&A,Expanded dynamic line,"So far, you have moved forward, moved backward, and turned. You have also called the elevator.",StandaloneAIGuide.cs,
+VOICE_085,Cleaning,Expanded dynamic line,"The Anticon Gold wipe is to the left of the central tray, beside the lamp, beneath the gold ANTICON GOLD label. Aim at that wipe and use grip to pick it up.",CleaningStation.cs,
+VOICE_086,Cleaning,Expanded dynamic line,"The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTECH W4 label. Aim at that wipe and use grip to pick it up.",CleaningStation.cs,
+VOICE_087,Guide Q&A,Narration / Q&A,You're welcome!,Assets/Project/Opening/Runtime/StandaloneAIGuide.cs,

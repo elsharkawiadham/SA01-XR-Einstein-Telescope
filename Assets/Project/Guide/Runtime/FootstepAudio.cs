@@ -26,7 +26,7 @@ namespace GroupProject.Guide
             distance+=travelled;
             if(distance<stride||Time.time-lastStep<.25f)return;
             distance%=stride;lastStep=Time.time;source.transform.position=hit.point+Vector3.up*.05f;
-            source.pitch=1+(index%3-1)*.035f;source.PlayOneShot(steps[index++%steps.Length],.7f);StepsPlayed++;
+            source.pitch=1+(index%3-1)*.035f;source.PlayOneShot(steps[index++%steps.Length],.22f);StepsPlayed++;
         }
     }
 }
