@@ -57,7 +57,7 @@ VOICE_055,Cleaning,Narration / Q&A,"Make four parallel, slightly overlapping pas
 VOICE_056,Cleaning,Narration / Q&A,"For Class A, use Anticon Gold polyester. KIMTECH W4 polypropylene is for Class B and below, not Class A. Anticon Gold is not recommended for Class B.",Assets/Project/Cleaning/Runtime/CleaningStation.cs,
 VOICE_057,Cleaning,Narration / Q&A,This face is ready. Make the next pass.,Assets/Project/Cleaning/Runtime/CleaningExercise.cs,
 VOICE_058,Cleaning,Narration / Q&A,Now lift the wipe to finish this pass.,Assets/Project/Cleaning/Runtime/CleaningExercise.cs,
-VOICE_059,Elevator,Narration / Q&A,B1 — Arrived. Leave the cabin through the open door.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
+VOICE_059,Elevator,Narration / Q&A,B1: Arrived. Leave the cabin through the open door.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
 VOICE_060,Elevator,Narration / Q&A,Going down to B1. Please stay inside the cabin.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
 VOICE_061,Elevator,Narration / Q&A,Journey unavailable. Step outside and try the B1 button again.,Assets/Project/Elevator/Runtime/ElevatorRide.cs,
 VOICE_062,Elevator,Narration / Q&A,"Enter the cabin, aim at B1 and press the controller trigger to go down.",Assets/Project/Elevator/Runtime/ElevatorRide.cs,

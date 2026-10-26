@@ -23,7 +23,7 @@ namespace GroupProject.Elevator
         [Min(.1f)] public float doorSeconds = 2, travelSeconds = 45;
         public Phase State { get; private set; }
         public bool IsTravelling => State == Phase.Closing || State == Phase.Descending || State == Phase.Opening;
-        public string Instruction => State == Phase.Arrived ? "B1 — Arrived. Leave the cabin through the open door."
+        public string Instruction => State == Phase.Arrived ? "B1: Arrived. Leave the cabin through the open door."
             : IsTravelling ? "Going down to B1. Please stay inside the cabin."
             : State == Phase.Failed ? "Journey unavailable. Step outside and try the B1 button again."
             : "Enter the cabin, aim at B1 and press the controller trigger to go down.";

@@ -176,7 +176,7 @@ VOICE_058 | Cleaning
 Now lift the wipe to finish this pass.
 
 VOICE_059 | Elevator
-B1 — Arrived. Leave the cabin through the open door.
+B1: Arrived. Leave the cabin through the open door.
 
 VOICE_060 | Elevator
 Going down to B1. Please stay inside the cabin.

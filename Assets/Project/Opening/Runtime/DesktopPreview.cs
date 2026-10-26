@@ -169,7 +169,7 @@ namespace GroupProject.Opening
             }
             GUI.Label(new Rect(Screen.width/2f-12,Screen.height/2f-15,24,30),"+",crosshairStyle);
             var floor=AimedFloorButton();var target=AimedButton();
-            string hint=floor?"Trigger — B1 lower floor":target?(target.Called?"Elevator called":"Trigger — Call elevator"):"";
+            string hint=floor?"Trigger: B1 lower floor":target?(target.Called?"Elevator called":"Trigger: Call elevator"):"";
             GUI.Label(new Rect(Screen.width/2f-170,Screen.height/2f+25,340,36),hint,hintStyle);
         }
 

@@ -246,7 +246,7 @@ MonoBehaviour:
     originalName: 
     clip: {fileID: 8300000, guid: 5f45e4acd6d41487bb8a6aaea5912168, type: 3}
   - id: VOICE_059
-    text: "B1 \u2014 Arrived. Leave the cabin through the open door."
+    text: "B1: Arrived. Leave the cabin through the open door."
     originalName: 
     clip: {fileID: 8300000, guid: aecd7db46b2d94bfb9fbc31b62a80f70, type: 3}
   - id: VOICE_060

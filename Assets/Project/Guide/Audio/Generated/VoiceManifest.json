@@ -350,7 +350,7 @@
     },
     {
       "id": "VOICE_059",
-      "text": "B1 \u2014 Arrived. Leave the cabin through the open door.",
+      "text": "B1: Arrived. Leave the cabin through the open door.",
       "originalName": "",
       "path": "Assets/Project/Guide/Audio/Generated/VOICE_059.mp3"
     },
