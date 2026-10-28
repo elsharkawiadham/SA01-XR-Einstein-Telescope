@@ -55,6 +55,7 @@ namespace GroupProject.Opening
             if (hintVoice) hintVoice.Stop();
             if (indicator && calledMaterial) indicator.sharedMaterial = calledMaterial;
             if (proximityVisual) proximityVisual.SetActive(true);
+            GetComponent<GroupProject.Guide.InteractionFeedback>()?.Pulse(true);
             onCalled.Invoke();
             return true;
         }

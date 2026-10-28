@@ -261,3 +261,21 @@ The KIMTECH W4 wipe is to the right of the central tray, beneath the teal KIMTEC
 
 VOICE_087 | Guide Q&A
 You're welcome!
+
+VOICE_088 | Training guidance
+This is a training version of the Einstein Telescope cleanroom environment. You will practise preparing yourself and cleaning a training component.
+
+VOICE_089 | Training guidance
+Follow the corridor to the elevator, then visit the changing room, air shower and cleaning station. I will guide you one step at a time. Hold B to ask for help.
+
+VOICE_090 | Training guidance
+Find the UI button and click on it to go down.
+
+VOICE_091 | Training guidance
+The B1 button is on the lit side panel. Aim at B1 and press your controller trigger.
+
+VOICE_092 | Training guidance
+Your checklist tracks five preparation and cleaning tasks. They help you practise keeping contamination out of the cleaning area. Each item ticks off when you finish it.
+
+VOICE_093 | Training guidance
+The glowing handles show which lockers open. Aim at a handle and press the trigger. Store your jacket, then grip a garment and follow its fitting target.

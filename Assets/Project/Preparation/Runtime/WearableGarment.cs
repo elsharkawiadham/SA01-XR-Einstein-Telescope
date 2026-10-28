@@ -7,6 +7,7 @@ using GroupProject.Opening;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 namespace GroupProject.Preparation
 {
+    [DefaultExecutionOrder(200)]
     [RequireComponent(typeof(XRGrabInteractable),typeof(Rigidbody))]
     public sealed class WearableGarment : MonoBehaviour
     {
@@ -27,7 +28,16 @@ namespace GroupProject.Preparation
         readonly RaycastHit[] floorHits=new RaycastHit[24];
         Vector3 home; Quaternion homeRotation; bool dropping; float heldTime; int releaseGeneration;
         public string Hint => Prerequisite() ?? (ReadyToFit?"Ready: release grip to confirm.":kind==Kind.PersonalJacket?"Release your jacket inside the personal locker.":Footwear?"Release over the marked foot space. Let it settle onto the floor.":kind==Kind.LeftGlove||kind==Kind.RightGlove?"Bring the glove to the other hand, then release grip.":kind==Kind.Coverall?"Bring the suit toward your chest, then release grip.":"Bring this item near your face or head, then release grip.");
-        void Awake(){grab=GetComponent<XRGrabInteractable>();body=GetComponent<Rigidbody>();garmentMesh=GetComponent<MeshFilter>();home=transform.position;homeRotation=transform.rotation;body.isKinematic=true;body.useGravity=false;grab.throwOnDetach=false;grab.useDynamicAttach=true;}
+        void Awake(){grab=GetComponent<XRGrabInteractable>();body=GetComponent<Rigidbody>();garmentMesh=GetComponent<MeshFilter>();home=transform.position;homeRotation=transform.rotation;body.isKinematic=true;body.useGravity=false;grab.throwOnDetach=false;grab.useDynamicAttach=true;
+            // The real controller's near/far casters ignore triggers. Clothing must be a solid query target.
+            foreach(var collider in GetComponents<Collider>())collider.isTrigger=false;
+        }
+        void Start()
+        {
+            // A held garment must remain selectable without pushing the player's walking capsule.
+            var capsule=journey&&journey.ride&&journey.ride.playerRoot?journey.ride.playerRoot.GetComponent<CharacterController>():null;
+            if(capsule)foreach(var collider in GetComponents<Collider>())Physics.IgnoreCollision(collider,capsule);
+        }
         void OnEnable(){GetComponent<XRGrabInteractable>().selectEntered.AddListener(Picked);GetComponent<XRGrabInteractable>().selectExited.AddListener(Dropped);}
         void OnDisable(){GetComponent<XRGrabInteractable>().selectEntered.RemoveListener(Picked);GetComponent<XRGrabInteractable>().selectExited.RemoveListener(Dropped);}
         void Picked(SelectEnterEventArgs e){releaseGeneration++;dropping=false;selectingHand=e.interactorObject.transform;selectedSide=e.interactorObject.handedness;heldTime=0;journey?.Tell(DisplayName+" selected. "+Hint);}
@@ -63,16 +73,19 @@ namespace GroupProject.Preparation
         }
         void ReturnToLocker(){var reason=Prerequisite();ResetToLocker();journey?.Tell(reason ?? (Footwear?"Place this over the marked foot space. It has returned to its locker.":DisplayName+": move it to the highlighted target and release. Try again."));}
         public string Prerequisite(){if(!DesktopPreview.Active&&((kind==Kind.LeftGlove&&selectedSide==InteractorHandedness.Left)||(kind==Kind.RightGlove&&selectedSide==InteractorHandedness.Right)))return "Use the opposite hand to put on this glove.";if(!journey)return "Preparing dressing area.";if(kind!=Kind.PersonalJacket&&!journey.PersonalClothesStored)return "First store your personal jacket in the personal locker.";if(kind==Kind.LeftOvershoe&&!journey.HasGarment(Kind.LeftBoot))return "Put on the left boot before its overshoe.";if(kind==Kind.RightOvershoe&&!journey.HasGarment(Kind.RightBoot))return "Put on the right boot before its overshoe.";return null;}
-        Vector3 Hand(bool left){var h=journey.head;var device=InputDevices.GetDeviceAtXRNode(left?XRNode.LeftHand:XRNode.RightHand);
+        // Only use the avatar belonging to this journey. Isolated tests and other players must not share fitting targets.
+        PlayerBodyAvatar Avatar => journey&&journey.ride&&PlayerBodyAvatar.Active&&PlayerBodyAvatar.Active.playerRoot==journey.ride.playerRoot?PlayerBodyAvatar.Active:null;
+        AnimatedControllerHands Hands => journey&&journey.ride?journey.ride.playerRoot.GetComponent<AnimatedControllerHands>():null;
+        Vector3 Hand(bool left){var hands=Hands;var wrist=hands?(left?hands.LeftWrist:hands.RightWrist):null;if(wrist)return wrist.position;var h=journey.head;var device=InputDevices.GetDeviceAtXRNode(left?XRNode.LeftHand:XRNode.RightHand);
             if(!DesktopPreview.Active&&device.TryGetFeatureValue(CommonUsages.devicePosition,out Vector3 local))return h.parent?h.parent.TransformPoint(local):local;
             return h.position+Quaternion.Euler(0,h.eulerAngles.y,0)*new Vector3(left?-.22f:.22f,-.4f,.32f);}
         public Vector3 TargetPosition(){var h=journey.head;var yaw=Quaternion.Euler(0,h.eulerAngles.y,0);var basePoint=new Vector3(h.position.x,journey.ride.playerRoot.position.y,h.position.z);
             switch(kind){case Kind.PersonalJacket:return storagePoint?storagePoint.position:home;
             case Kind.Hood:case Kind.HairCap:return h.position+Vector3.up*.08f;
             case Kind.Mask:case Kind.SafetyGlasses:return h.position+h.forward*.15f-Vector3.up*(kind==Kind.Mask?.08f:0);
-            case Kind.Coverall:return h.position-Vector3.up*.48f;
-            case Kind.LeftBoot:case Kind.LeftOvershoe:return FootTarget(basePoint+yaw*new Vector3(-.16f,0,.18f));
-            case Kind.RightBoot:case Kind.RightOvershoe:return FootTarget(basePoint+yaw*new Vector3(.16f,0,.18f));
+            case Kind.Coverall:return Avatar&&Avatar.Chest?Avatar.Chest.position:h.position-Vector3.up*.48f;
+            case Kind.LeftBoot:case Kind.LeftOvershoe:return FootTarget(Avatar&&Avatar.LeftFoot?Avatar.LeftFoot.position:basePoint+yaw*new Vector3(-.16f,0,.18f));
+            case Kind.RightBoot:case Kind.RightOvershoe:return FootTarget(Avatar&&Avatar.RightFoot?Avatar.RightFoot.position:basePoint+yaw*new Vector3(.16f,0,.18f));
             case Kind.LeftGlove:return Hand(true);default:return Hand(false);}}
         Vector3 FootTarget(Vector3 point)
         {
@@ -99,12 +112,42 @@ namespace GroupProject.Preparation
             if((kind==Kind.LeftGlove||kind==Kind.RightGlove)&&selectingHand&&!DesktopPreview.Active&&Vector3.Distance(selectingHand.position,TargetPosition())<.08f&&heldTime<.4f)return false;
             return Vector3.Distance(transform.position,TargetPosition())<=radius;}
         public bool TryPlace(){if(Equipped||Stored)return true;if(Prerequisite()!=null||!InTarget())return false;
-            if(kind==Kind.PersonalJacket){Stored=true;transform.SetPositionAndRotation(TargetPosition(),storagePoint?storagePoint.rotation:homeRotation);journey.StorePersonalClothes();}
-            else{Equipped=true;journey.Equip((int)kind);}
+            if(kind==Kind.PersonalJacket){Stored=true;transform.SetPositionAndRotation(TargetPosition(),storagePoint?storagePoint.rotation:homeRotation);journey.StorePersonalClothes();if(Avatar)Avatar.SetPersonalJacketStored(true);}
+            else{Equipped=true;journey.Equip((int)kind);ApplyWornAppearance();}
             body.isKinematic=true;grab.enabled=false;foreach(var c in GetComponentsInChildren<Collider>())c.enabled=false;
             if(selectingHand){var node=selectedSide==InteractorHandedness.Right?XRNode.RightHand:XRNode.LeftHand;InputDevices.GetDeviceAtXRNode(node).SendHapticImpulse(0,.35f,.10f);}return true;}
+        void ApplyWornAppearance()
+        {
+            // The animated skin becomes the worn glove; the deforming body becomes the suit.
+            // Keep this garment's state alive for the checklist, but avoid overlapping rigid meshes.
+            if(kind==Kind.Coverall&&Avatar){Avatar.SetCoverall(true);SetRenderers(false);}
+            if((kind==Kind.LeftGlove||kind==Kind.RightGlove)&&Hands&&Hands.Initialized)
+            {Hands.SetGloved(kind==Kind.LeftGlove,true);SetRenderers(false);}
+            if(Footwear&&Avatar)Avatar.SetFootwear(kind==Kind.LeftBoot||kind==Kind.LeftOvershoe,true);
+            if(kind==Kind.LeftOvershoe||kind==Kind.RightOvershoe)
+            {
+                var boot=kind==Kind.LeftOvershoe?Kind.LeftBoot:Kind.RightBoot;
+                foreach(var item in journey.ride.destinationRoot.GetComponentsInChildren<WearableGarment>(true))
+                    if(item.kind==boot&&item.Equipped)item.SetRenderers(false);
+            }
+        }
+        void SetRenderers(bool visible){foreach(var renderer in GetComponentsInChildren<Renderer>(true))renderer.enabled=visible;}
         void LateUpdate(){if(!journey||!journey.head)return;if(Held)heldTime+=Time.deltaTime;
-            if(Equipped){transform.position=TargetPosition();transform.rotation=Quaternion.Euler(0,journey.head.eulerAngles.y,0);if(kind==Kind.LeftGlove||kind==Kind.RightGlove){var dev=InputDevices.GetDeviceAtXRNode(kind==Kind.LeftGlove?XRNode.LeftHand:XRNode.RightHand);if(!DesktopPreview.Active&&dev.TryGetFeatureValue(CommonUsages.deviceRotation,out Quaternion rot))transform.rotation=(journey.head.parent?journey.head.parent.rotation:Quaternion.identity)*rot;}if(kind==Kind.Hood||kind==Kind.Mask||kind==Kind.HairCap||kind==Kind.SafetyGlasses)foreach(var r in GetComponentsInChildren<Renderer>())r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;}
+            if(Equipped)
+            {
+                if(Avatar&&Avatar.GetGarmentPose(kind,out var position,out var rotation,out float scale))
+                {
+                    transform.localScale=Vector3.one*scale;
+                    transform.SetPositionAndRotation(Footwear?FootTarget(position):position,rotation);
+                }
+                else
+                {
+                    transform.position=TargetPosition();transform.rotation=Quaternion.Euler(0,journey.head.eulerAngles.y+180,0);
+                    if(kind==Kind.LeftGlove||kind==Kind.RightGlove){var dev=InputDevices.GetDeviceAtXRNode(kind==Kind.LeftGlove?XRNode.LeftHand:XRNode.RightHand);if(!DesktopPreview.Active&&dev.TryGetFeatureValue(CommonUsages.deviceRotation,out Quaternion rot))transform.rotation=(journey.head.parent?journey.head.parent.rotation:Quaternion.identity)*rot;}
+                }
+                if(kind==Kind.Hood||kind==Kind.Mask||kind==Kind.HairCap||kind==Kind.SafetyGlasses)
+                    foreach(var r in GetComponentsInChildren<Renderer>())r.shadowCastingMode=UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
+            }
             // Keep the jacket on the locker hook: it can now be picked up before it is stored.
             else if(!Held&&!Stored&&!dropping&&Vector3.Distance(transform.position,home)>12)ReturnToLocker();
         }

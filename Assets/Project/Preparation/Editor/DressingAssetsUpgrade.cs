@@ -32,6 +32,7 @@ public static class DressingAssetsUpgrade
             GarmentModels.Apply(item.gameObject, DressingRoomExperience.MeshKey(item.kind));
             var bounds = item.GetComponent<MeshFilter>().sharedMesh.bounds;
             var collider = item.GetComponent<BoxCollider>();
+            collider.isTrigger = false;
             collider.center = bounds.center;
             collider.size = Vector3.Max(bounds.size, Vector3.one * .07f);
             if (legacy && item.kind == WearableGarment.Kind.PersonalJacket)
@@ -50,7 +51,7 @@ public static class DressingAssetsUpgrade
         var item = new GameObject(WearableGarment.NameFor(kind));
         item.transform.SetParent(parent ? parent : root, false);
         item.transform.position = position;
-        item.AddComponent<BoxCollider>().isTrigger = true;
+        item.AddComponent<BoxCollider>().isTrigger = false;
         var body = item.AddComponent<Rigidbody>(); body.isKinematic = true; body.useGravity = false;
         var garment = item.AddComponent<WearableGarment>(); garment.kind = kind; garment.journey = journey;
         item.GetComponent<XRGrabInteractable>().throwOnDetach = false;

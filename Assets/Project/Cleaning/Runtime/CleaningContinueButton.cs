@@ -9,6 +9,6 @@ namespace GroupProject.Cleaning
         public CleaningStation station;
         void OnEnable(){GetComponent<XRSimpleInteractable>().activated.AddListener(Press);}
         void OnDisable(){GetComponent<XRSimpleInteractable>().activated.RemoveListener(Press);}
-        void Press(ActivateEventArgs args){station.Continue();}
+        void Press(ActivateEventArgs args){var before=station.Exercise.State;station.Continue();GetComponent<GroupProject.Guide.InteractionFeedback>()?.Pulse(station.Exercise.State!=before);}
     }
 }

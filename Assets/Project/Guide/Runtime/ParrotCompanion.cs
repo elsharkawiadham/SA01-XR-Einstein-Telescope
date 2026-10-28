@@ -15,13 +15,15 @@ namespace GroupProject.Guide
         public AudioSource voice;
         public TMP_Text dialogue;
         public ParrotGraphic bird;
-        public Vector3 offset=new Vector3(-.60f,-.38f,1.65f);
+        public Vector3 offset=new Vector3(-.65f,-.38f,1.65f);
         public bool Speaking => voice && voice.isPlaying;
         public string CurrentDialogue => dialogue ? dialogue.text : "";
         float[] volumes,samples=new float[128];
         bool[] wasPlaying;AudioClip[] clips;
         AudioSource active;AudioClip mirrored;float lastSpeech;
-        float arriveAt=-10;
+        float arriveAt=-10,captionUntil;
+        string caption;
+        public void PresentCaption(string text,float seconds=7){caption=text;captionUntil=Time.unscaledTime+seconds;if(dialogue)dialogue.text=text;}
         CanvasGroup presentation;
         public void ArriveAfter(float seconds){arriveAt=Time.unscaledTime+seconds;presentation=GetComponent<CanvasGroup>();if(!presentation)presentation=gameObject.AddComponent<CanvasGroup>();presentation.alpha=0;}
         void Awake()
@@ -65,6 +67,7 @@ namespace GroupProject.Guide
             if(active && (!active.isPlaying || active.clip!=mirrored)){voice.Stop();active=null;}
             float amplitude=0;
             if(voice.isPlaying){voice.GetOutputData(samples,0);foreach(float value in samples)amplitude+=value*value;amplitude=Mathf.Clamp01(Mathf.Sqrt(amplitude/samples.Length)*12);lastSpeech=Time.unscaledTime;}
+            else if(Time.unscaledTime<captionUntil && dialogue)dialogue.text=caption;
             else if(Time.unscaledTime-lastSpeech>3 && dialogue)dialogue.text=ai && ai.feedbackText ? ai.feedbackText.text : "Hold B on your right controller to ask me a question.";
             if(bird)bird.speech=Mathf.Lerp(bird.speech,amplitude,Time.unscaledDeltaTime*20);
         }

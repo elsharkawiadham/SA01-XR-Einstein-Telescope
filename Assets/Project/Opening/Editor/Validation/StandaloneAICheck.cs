@@ -56,9 +56,12 @@ public static class StandaloneAICheck
             if(string.IsNullOrWhiteSpace(guide.LastReply))throw new Exception("No spoken AI reply");
             string reply=guide.LastReply;
             if(!reply.Contains("right joystick") || reply.Contains("trigger"))throw new Exception("Incorrect turning advice: "+reply);
-            bool spoken=await guide.SpeakInstruction("Welcome. Follow the floor arrows and walk forward toward the corner.");
+            bool spoken=await guide.SpeakInstruction(TrainingGuidance.Elevator);
             if(!spoken)throw new Exception("Automatic instruction fell back");
             string automaticReply=guide.LastReply;
+            if(automaticReply!=TrainingGuidance.Elevator)throw new Exception("Required B1 wording was changed");
+            foreach(var line in new[]{TrainingGuidance.Environment,TrainingGuidance.Journey,TrainingGuidance.ElevatorControl,TrainingGuidance.Checklist,TrainingGuidance.Lockers})
+                using(var generated=await tts.GenerateAsync(line))if(!generated.IsValid)throw new Exception("New guidance synthesis failed: "+line);
             if(guide.model.remote || guide.agent.remote)throw new Exception("Remote mode must be disabled");
             guide.elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>().destinationRoot.SetActive(true);
             var body=guide.playerRoot.GetComponent<CharacterController>();bool enabled=body && body.enabled;if(enabled)body.enabled=false;

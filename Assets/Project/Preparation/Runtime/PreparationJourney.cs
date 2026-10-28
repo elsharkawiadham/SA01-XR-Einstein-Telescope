@@ -13,7 +13,7 @@ namespace GroupProject.Preparation
         public ElevatorRide ride;
         public Transform head;
         public StandaloneAIGuide guide;
-        public float showerSeconds=15, cautionSpeed=.65f, excessiveSpeed=1f;
+        public float showerSeconds=15, cautionSpeed=1.3f, excessiveSpeed=2f;
         public bool PersonalClothesStored { get; private set; }
         public bool Dressed => PersonalClothesStored && garments.Count==11;
         public bool ShowerComplete { get; private set; }
@@ -31,10 +31,10 @@ namespace GroupProject.Preparation
         public bool HasGarment(WearableGarment.Kind kind)=>garments.Contains((int)kind);
         Vector3 previous;
         Quaternion previousRotation;
-        bool briefed,showering,inspected,guided;
+        bool briefed,showering,inspected,guided,lockersExplained;
         float remaining,fastFor,nextWarning;
         public static readonly string[] Briefing={
-            "Before entering the cleaning area, prepare yourself and follow these five steps.",
+            TrainingGuidance.Checklist,
             "Put on your cleanroom clothing before entering the air shower.",
             "Enter the air shower and wait until the cycle finishes.",
             "Pick up the lamp and inspect the training plate.",
@@ -72,19 +72,20 @@ namespace GroupProject.Preparation
             if(!ShowerComplete&&head.position.x<24.6f&&(q.Contains("help")||q.Contains("next")||q.Contains("what do")||q.Contains("where do")))return Dressed?"Enter the air shower and select its start button. Stay inside until the cycle ends.":"Follow the floor line to the changing room. Open the lockers, store your jacket, then grip and fit the cleanroom clothing.";
             return null;
         }
-        public void Select(int id)
+        public bool Select(int id)
         {
-            if(!ride.destinationRoot.activeInHierarchy)return;
-            if(id<0||id>4)return;
-            if(id!=4)return;
-            if(!Dressed){speech.Enqueue("Store your jacket and put on all the cleanroom garments first.");return;}
-            if(ShowerComplete||showering)return;
-            if(!InsideShower()){speech.Enqueue("Step inside the air shower before starting.");return;}
-            showering=true;remaining=showerSeconds;speech.Enqueue("Air shower started. Stay inside until the cycle finishes.");
+            if(!ride.destinationRoot.activeInHierarchy||id!=4)return false;
+            if(!Dressed){Tell("Store your jacket and put on all the cleanroom garments first.");return false;}
+            if(ShowerComplete||showering)return false;
+            if(!InsideShower()){Tell("Step inside the air shower before starting.");return false;}
+            showering=true;remaining=showerSeconds;Tell("Air shower started. Stay inside until the cycle finishes.");return true;
         }
+        public bool AboveWarningThreshold(float speed)=>speed>excessiveSpeed;
+        public int PaceBand(float speed)=>AboveWarningThreshold(speed)?2:speed>cautionSpeed?1:0;
         bool InsideShower(){var p=head.position;return p.x>22&&p.x<24.5f&&Mathf.Abs(p.z-19.3f)<.85f;}
         void Update()
         {
+            if(!lockersExplained&&dressing&&dressing.InChangingRoom&&!PersonalClothesStored){lockersExplained=true;Tell(TrainingGuidance.Lockers);}
             if(!briefed&&ride.State==ElevatorRide.Phase.Descending){briefed=true;hud.gameObject.SetActive(true);foreach(var line in Briefing)speech.Enqueue(line);}
             var delta=head.position-previous;previous=head.position;delta.y=0;
             float instant=Time.deltaTime>0?delta.magnitude/Time.deltaTime:0;
@@ -92,8 +93,8 @@ namespace GroupProject.Preparation
             previousRotation=ride.playerRoot.rotation;
             Speed=Mathf.Lerp(Speed,instant,1-Mathf.Exp(-Time.deltaTime*4));
             bool walking=briefed&&ride.State==ElevatorRide.Phase.Arrived;
-            fastFor=walking&&Speed>excessiveSpeed?fastFor+Time.deltaTime:0;
-            if(fastFor>2&&Time.time>nextWarning&&speech.Count==0&&guide&&guide.Ready&&!guide.IsBusy){var parrot=FindFirstObjectByType<ParrotCompanion>();if(!parrot||!parrot.Speaking){speech.Enqueue("Please walk slowly and keep your movements gentle.");nextWarning=Time.time+20;fastFor=0;}}
+            fastFor=walking&&AboveWarningThreshold(Speed)?fastFor+Time.deltaTime:0;
+            if(fastFor>2&&AboveWarningThreshold(Speed)&&Time.time>nextWarning&&speech.Count==0&&guide&&guide.Ready&&!guide.IsBusy){var parrot=FindFirstObjectByType<ParrotCompanion>();if(!parrot||!parrot.Speaking){speech.Enqueue("Please walk slowly and keep your movements gentle.");nextWarning=Time.time+20;fastFor=0;}}
             speedText.text=walking?"PACE  "+(Speed>excessiveSpeed?"Too fast":Speed>cautionSpeed?"Slow down":"Good pace"):"Move slowly • Keep clean items off the floor";
             speedText.color=Speed>excessiveSpeed?new Color(.75f,.12f,.08f):Speed>cautionSpeed?new Color(.55f,.32f,0):new Color(.12f,.40f,.24f);
             if(showering){if(!InsideShower()){showering=false;remaining=showerSeconds;speech.Enqueue("The cycle stopped. Return inside and start again.");}else{remaining-=Time.deltaTime;if(remaining<=0){showering=false;ShowerComplete=true;cleanGate.SetActive(false);speech.Enqueue("Air shower complete. Follow the route to the inspection lamp.");}}}
@@ -115,6 +116,6 @@ namespace GroupProject.Preparation
             g.transform.position=Vector3.MoveTowards(g.transform.position,target,Mathf.Max(0,deltaTime)*1.8f);
             g.transform.rotation=Quaternion.Euler(0,head.eulerAngles.y,0);
         }
-        void LateUpdate(){if(hud){if(briefed)hud.gameObject.SetActive(!dressing||!dressing.InChangingRoom);hud.position=head.TransformPoint(new Vector3(-.67f,.70f,1.35f));hud.rotation=head.rotation;}}
+        void LateUpdate(){if(hud){if(briefed)hud.gameObject.SetActive(!dressing||!dressing.InChangingRoom);hud.position=head.TransformPoint(new Vector3(-.72f,.70f,1.35f));hud.rotation=head.rotation;}}
     }
 }

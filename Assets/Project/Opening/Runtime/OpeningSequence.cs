@@ -56,6 +56,13 @@ namespace GroupProject.Opening
                 yield return null;
                 while(welcome.isPlaying) yield return null;
             }
+            foreach(var line in new[]{TrainingGuidance.Environment,TrainingGuidance.Journey})
+            {
+                bool delivered=false;
+                if(aiGuide&&aiGuide.Ready){var speech=aiGuide.SpeakInstruction(line);while(!speech.IsCompleted)yield return null;delivered=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion&&speech.Result;}
+                if(!delivered){var companion=FindAnyObjectByType<GroupProject.Guide.ParrotCompanion>();if(companion)companion.PresentCaption(line,9);yield return new WaitForSecondsRealtime(9);}
+                yield return new WaitForSecondsRealtime(.6f);
+            }
             if(locomotionGuide) locomotionGuide.Begin();
         }
         void OnDestroy()

@@ -8,7 +8,7 @@ namespace GroupProject.Preparation
         public PreparationJourney journey;
         DressingChecklist list; LineRenderer ring; TMP_Text targetText; Material markerMaterial;
         public WearableGarment Held {get;private set;}
-        public bool InChangingRoom => journey.ride.destinationRoot.activeInHierarchy && journey.head.position.x>10 && journey.head.position.x<22 && journey.head.position.z>15 && journey.head.position.z<23.5f;
+        public bool InChangingRoom => journey && journey.ride && journey.ride.destinationRoot && journey.head && journey.ride.destinationRoot.activeInHierarchy && journey.head.position.x>10 && journey.head.position.x<22 && journey.head.position.z>15 && journey.head.position.z<23.5f;
         WearableGarment[] items;
         public void Initialize(PreparationJourney owner){journey=owner;
             var root=owner.ride.destinationRoot.transform.Find("02_Preparation_Interactive/01_ChangingRoom");if(!root)return;
@@ -29,7 +29,7 @@ namespace GroupProject.Preparation
             var col=w.GetComponent<BoxCollider>();if(col){col.center=mesh.bounds.center;col.size=Vector3.Max(mesh.bounds.size,Vector3.one*.07f);}
         }
         void Add(Transform parent,WearableGarment.Kind kind,Vector3 pos){foreach(var w in parent.GetComponentsInChildren<WearableGarment>(true))if(w.kind==kind)return;
-            var g=new GameObject(WearableGarment.NameFor(kind));g.SetActive(false);g.transform.SetParent(parent,false);g.transform.position=pos;g.AddComponent<MeshFilter>();g.AddComponent<MeshRenderer>();var c=g.AddComponent<BoxCollider>();c.isTrigger=true;var body=g.AddComponent<Rigidbody>();body.isKinematic=true;var item=g.AddComponent<WearableGarment>();item.kind=kind;item.journey=journey;ApplyVisual(item);g.SetActive(true);
+            var g=new GameObject(WearableGarment.NameFor(kind));g.SetActive(false);g.transform.SetParent(parent,false);g.transform.position=pos;g.AddComponent<MeshFilter>();g.AddComponent<MeshRenderer>();var c=g.AddComponent<BoxCollider>();c.isTrigger=false;var body=g.AddComponent<Rigidbody>();body.isKinematic=true;var item=g.AddComponent<WearableGarment>();item.kind=kind;item.journey=journey;ApplyVisual(item);g.SetActive(true);
         }
         void Update(){if(list==null)return;Held=null;if(items!=null)foreach(var w in items)if(w&&w.Held){Held=w;break;}
             bool visible=InChangingRoom;list.Show(visible);list.Refresh(Held,Held?Held.Hint:"Open a locker with the trigger. Grip one item to see where it belongs.",Held&&Held.ReadyToFit);
@@ -41,7 +41,7 @@ namespace GroupProject.Preparation
             for(int i=0;i<49;i++){float angle=i*Mathf.PI*2/48;var offset=floor?new Vector3(Mathf.Cos(angle)*radius,-.1f,Mathf.Sin(angle)*radius):new Vector3(Mathf.Cos(angle)*radius,Mathf.Sin(angle)*radius,0);ring.SetPosition(i,centre+yaw*offset);}
             targetText.text=Held.DisplayName+"\n"+(Held.ReadyToFit?"READY: release grip":floor?"Place above this foot space":"Bring item here");targetText.color=color;targetText.transform.SetPositionAndRotation(centre+Vector3.up*.25f,journey.head.rotation);
         }
-        void LateUpdate(){if(list)list.transform.SetPositionAndRotation(journey.head.TransformPoint(new Vector3(-.66f,.70f,1.35f)),journey.head.rotation);}
+        void LateUpdate(){if(list)list.transform.SetPositionAndRotation(journey.head.TransformPoint(new Vector3(-.71f,.70f,1.35f)),journey.head.rotation);}
         void OnDestroy(){if(markerMaterial)Destroy(markerMaterial);}
     }
 }

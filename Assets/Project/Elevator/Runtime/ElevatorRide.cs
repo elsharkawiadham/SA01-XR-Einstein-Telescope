@@ -16,7 +16,9 @@ namespace GroupProject.Elevator
         public Transform playerHead, playerRoot;
         public BoxCollider safeCabin;
         public Transform departureRoot;
-        public TMP_Text display;
+        public TMP_Text display,overheadFloor;
+        public float DescentProgress {get;private set;}
+        public string FloorCaption => State==Phase.Opening||State==Phase.Arrived?"B1  /  -300 m":State==Phase.Descending?"G  >  B1\n"+Mathf.RoundToInt(-300*DescentProgress)+" m":"G  /  GROUND";
         public AudioSource motor, announcements;
         public AudioClip boardingClip, descendingClip, arrivalClip;
         public GameObject destinationRoot;
@@ -35,9 +37,20 @@ namespace GroupProject.Elevator
         {
             if (State == Phase.Waiting && callButton.Called) State = Phase.Boarding;
             if (State == Phase.Boarding && InsideCabin() && !announced)
-            { announced = true; Announce(boardingClip); }
+            { announced = true; StartCoroutine(BoardingInstruction()); }
+            if(overheadFloor)overheadFloor.text=FloorCaption;
             if (display && (State == Phase.Waiting || State == Phase.Boarding))
                 display.text = "G  /  B1 (-300 m)\n" + (InsideCabin() ? "SELECT B1 TO DESCEND" : "STEP INSIDE");
+        }
+        IEnumerator BoardingInstruction()
+        {
+            foreach(var line in new[]{TrainingGuidance.Elevator,TrainingGuidance.ElevatorControl})
+            {
+                if(State!=Phase.Boarding)yield break;
+                var guide=callButton.aiGuide;bool delivered=false;
+                if(guide&&guide.Ready&&!guide.IsBusy){var speech=guide.SpeakInstruction(line);while(!speech.IsCompleted&&State==Phase.Boarding)yield return null;if(State!=Phase.Boarding)yield break;delivered=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion&&speech.Result;}
+                if(!delivered){var parrot=FindAnyObjectByType<GroupProject.Guide.ParrotCompanion>();if(parrot)parrot.PresentCaption(line,7);float until=Time.unscaledTime+7;while(Time.unscaledTime<until&&State==Phase.Boarding)yield return null;}
+            }
         }
         public bool InsideCabin()
         {
@@ -51,6 +64,7 @@ namespace GroupProject.Elevator
         {
             if ((State != Phase.Boarding && State != Phase.Failed) || !callButton.Called || !InsideCabin()) return false;
             if (Vector3.Distance(callButton.door.localPosition, closedDoor + callButton.openOffset) > .03f) return false;
+            State=Phase.Closing; // Set synchronously so two input events cannot schedule two journeys.
             StartCoroutine(Journey()); return true;
         }
         void Announce(AudioClip clip)
@@ -98,9 +112,10 @@ namespace GroupProject.Elevator
             if (motor) motor.Play();
             for (float elapsed = 0; elapsed < travelSeconds; elapsed += Time.deltaTime)
             {
+                DescentProgress=Mathf.SmoothStep(0,1,elapsed/travelSeconds);
                 if (display)
                 {
-                    float progress = Mathf.SmoothStep(0, 1, elapsed / travelSeconds);
+                    float progress = DescentProgress;
                     int depth = Mathf.RoundToInt(-300 * progress);
                     display.text = "GOING DOWN / B1\n" + depth + " m / -300 m\n" + Mathf.CeilToInt(travelSeconds - elapsed) + " s";
                 }
@@ -112,7 +127,7 @@ namespace GroupProject.Elevator
                 if(display)display.text="DESTINATION NOT CONFIGURED";
                 yield return Door(true);RestoreMovement();State=Phase.Failed;yield break;
             }
-            destinationRoot.SetActive(true);
+            DescentProgress=1;destinationRoot.SetActive(true);
             // Keep the cabin, tracked camera, controller interactors and AI alive. Only retire departure geometry.
             foreach (var renderer in departureRoot.GetComponentsInChildren<Renderer>(true))
                 if (!renderer.transform.IsChildOf(transform)) renderer.enabled = false;
