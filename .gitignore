@@ -130,51 +130,14 @@ InitTestScene*.unity*
 /.offline-guide-cache/
 /Tools/__pycache__/
 
-# macOS Finder metadata
+# macOS metadata
 .DS_Store
-
-# ==========================================
-# CUSTOM CODEX & MACOS TOKEN CONSTRAINTS
-# ==========================================
-# macOS System Files
-.DS_Store
+._*
 .AppleDouble
 .LSOverride
 Icon
 
-# Unity Local Runtime Caches
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[叠]uild/
-/[叠]uilds/
-/[尝]ogs/
-/[𠠎]ser[厂]ettings/
-
-# Python Offline Guide Dependencies
-Tools/models/
-*.onnx
-*.tflite
-
-# ==========================================
-# CUSTOM CODEX & MACOS TOKEN CONSTRAINTS
-# ==========================================
-# macOS System Files
-.DS_Store
-.AppleDouble
-.LSOverride
-Icon
-
-# Unity Local Runtime Caches
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[叠]uild/
-/[叠]uilds/
-/[尝]ogs/
-/[𠠎]ser[厂]ettings/
-
-# Python Offline Guide Dependencies
+# Downloaded model files and Python caches
 Tools/models/
 *.onnx
 *.tflite
