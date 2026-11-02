@@ -41,6 +41,6 @@ Wait until the parrot finishes speaking, then ask a short question such as “Wh
 
 This is a **testing prototype**, not a certified cleanroom procedure. The particles, dressing actions and air-shower duration are teaching approximations. Follow the client's approved procedures for real work.
 
-Editor interaction and offline speech checks have been exercised. Windows packaging is in progress; final Quest Link hardware validation remains outstanding. The planned ET Pathfinder extension is marked “coming soon”.
+Editor interaction and offline speech checks have been exercised. A Windows x64 Meta Link build has succeeded, and the packaged local AI and speech engines have passed a startup check. Synthetic controller tests cover onboarding, walking, smooth turning and teleportation. Final physical Quest Link validation remains outstanding. The planned ET Pathfinder extension is marked “coming soon”.
 
 For dependencies, licences and asset attribution, editing instructions, research rationale and detailed test/build limitations, see [TECHNICAL.md](TECHNICAL.md). Third-party licence notices remain with their assets.

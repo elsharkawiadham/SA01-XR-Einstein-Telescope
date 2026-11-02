@@ -1,3 +1,13 @@
+## Windows validation — 2 November 2026
+
+Windows x64 Mono packaging succeeded with zero build errors. Shader warnings remain (mainly package compute-shader variants and deprecated pragmas). Packaged startup loaded the local language model, TTS and ASR engines. ImmersiveControlsCheck and XRMovementRepairCheck passed using synthetic Quest inputs; movement checks now measure simulation time, and the character controller minimum movement distance is zero so high-frame-rate analog walking is not discarded. Physical headset, microphone and subjective comfort acceptance remain outstanding. Earlier build failures below are historical.
+
+## Windows Meta Link build
+
+Use Unity 6000.6.0f1. Set `ET_WINDOWS_BUILD_DIR` to an output directory, then run Unity with `-batchmode -quit -projectPath <project> -buildTarget Win64 -executeMethod WindowsLinkBuild.Run -logFile <log>`. The entry point builds only `01_Opening.unity` as a Windows x64 player using Mono and LZ4HC. Mono avoids the optional IL2CPP toolchain requirement. Run the offline setup first on a fresh checkout: downloaded model and native library binaries remain excluded from Git.
+
+The packaged executable must stay beside its entire `_Data` directory and generated DLLs. Connect Meta Link and select Meta as the active OpenXR runtime before launching. A successful build and desktop startup do not establish physical headset comfort or tracking acceptance.
+
 # Current facility revision
 
 **30 October 2026 controls correction:** The original illustrated controller panel and existing movement recordings are retained. All 13 controls must be pressed and released; indicators turn green before movement unlocks. Additional prompts use the existing local guide voice engine. Left-stick continuous walking, right-stick smooth turning and A-button teleport remain available together after onboarding. The avatar uses a standard 1.65 m eye-height baseline with device-relative tracking, without wearer-height sampling or body resizing. Head tracking and crouching remain active; the neck connects the head to the torso through head rotations.
@@ -64,7 +74,7 @@ For developers and assessors. For the purpose, controls and quick start, see [RE
 
 ## Scene and editing
 
-The single main scene is `Assets/Project/Scenes/01_Opening.unity`. It contains the opening, elevator, changing room, shower room and cleaning station, with one shared player and parrot. It is the only scene in Build Settings and the configured Play Mode start scene. Open this scene to edit or demonstrate the project.
+The single main scene is `Assets/Project/Scenes/01_Opening.unity`. It contains the opening, elevator, changing room, shower room and terminal hallway, with one shared player and parrot. It is the only scene in Build Settings and the configured Play Mode start scene. Open this scene to edit or demonstrate the project.
 
 The elevator reveals the lower-floor group after descent; it does not load another scene. `02_LowerFloor` is intentionally inactive before arrival. Original scene snapshots live in `Assets/Project/Scenes/Archive` for recovery and are excluded from builds.
 

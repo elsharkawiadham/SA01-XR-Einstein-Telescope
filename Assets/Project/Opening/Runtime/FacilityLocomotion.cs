@@ -37,6 +37,8 @@ namespace GroupProject.Opening
         void Update(){if(!initialized)Initialize();else Refresh();}
         public void Refresh(){
             if(!initialized)return;bool allow=!DesktopPreview.Active&&!LocomotionGuide.Locked;
+            // Preserve small analog movements at high frame rates, including after desktop restores the capsule.
+            if(allow&&TryGetComponent<CharacterController>(out var capsule))capsule.minMoveDistance=0;
             if(move.enabled!=allow)move.enabled=allow;if(turn.enabled!=allow)turn.enabled=allow;
             if(allow){if(!walkAction.enabled)walkAction.Enable();if(!turnAction.enabled)turnAction.Enable();}
             else{if(walkAction.enabled)walkAction.Disable();if(turnAction.enabled)turnAction.Disable();}

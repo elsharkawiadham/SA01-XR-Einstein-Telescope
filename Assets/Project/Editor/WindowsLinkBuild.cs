@@ -11,6 +11,8 @@ public static class WindowsLinkBuild
         string folder = Environment.GetEnvironmentVariable("ET_WINDOWS_BUILD_DIR");
         if (string.IsNullOrWhiteSpace(folder)) throw new InvalidOperationException("Set ET_WINDOWS_BUILD_DIR to the output folder.");
         Directory.CreateDirectory(folder);
+        // Windows PCVR supports Mono; no optional IL2CPP toolchain is required on the build machine.
+        PlayerSettings.SetScriptingBackend(UnityEditor.Build.NamedBuildTarget.Standalone, ScriptingImplementation.Mono2x);
         var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions {
             scenes = new[] { "Assets/Project/Scenes/01_Opening.unity" },
             locationPathName = Path.Combine(folder, "ET-Training.exe"),

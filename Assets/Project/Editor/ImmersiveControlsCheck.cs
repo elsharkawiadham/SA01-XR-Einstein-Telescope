@@ -38,6 +38,10 @@ public static class ImmersiveControlsCheck
     static void Move(ElevatorRide r,Vector3 head){var body=r.playerRoot.GetComponent<CharacterController>();bool was=body&&body.enabled;if(was)body.enabled=false;r.playerRoot.position+=head-r.playerHead.position;if(was)body.enabled=true;Physics.SyncTransforms();}
     static TrainingControls Input(int i){var s=new TrainingControls();switch(i){case 0:s.move=Vector2.up;break;case 1:s.move=Vector2.down;break;case 2:s.move=Vector2.left;break;case 3:s.move=Vector2.right;break;case 4:s.turn=Vector2.left;break;case 5:s.turn=Vector2.right;break;case 6:s.leftTrigger=true;break;case 7:s.rightTrigger=true;break;case 8:s.leftGrip=true;break;case 9:s.rightGrip=true;break;case 10:s.teleport=true;break;case 11:s.speak=true;break;case 12:s.checklist=true;break;}return s;}
     static void Stick(TouchController device,Vector2 value){using(StateEvent.From(device,out var e)){device.thumbstick.WriteValueIntoEvent(value,e);InputSystem.QueueEvent(e);}}
+    static async Task SimulateSeconds(float seconds){
+        float start=Time.time;double deadline=EditorApplication.timeSinceStartup+30;
+        while(Time.time-start<seconds){Need(EditorApplication.timeSinceStartup<deadline,"Unity stopped advancing simulation frames");await Task.Delay(10);}
+    }
     static async Task CheckXR(ElevatorRide ride,DesktopPreview desktop){
         desktop.enabled=false;
         var rig=ride.playerRoot;
@@ -53,11 +57,11 @@ public static class ImmersiveControlsCheck
             Need(!DesktopPreview.Active&&locomotion.MoveProvider.enabled&&locomotion.TurnProvider.enabled,"XR providers disabled after desktop restore");
             for(int pass=0;pass<2;pass++){
                 if(pass==1){rig.rotation=Quaternion.identity;Need(rig.GetComponent<FacilityTeleport>().TryTeleport(new Vector3(-4,0,8)),"XR teleport rejected");await Task.Delay(100);}
-                var start=rig.position;Stick(left,Vector2.up);await Task.Delay(350);
+                var start=rig.position;Stick(left,Vector2.up);await SimulateSeconds(.35f);
                 File.AppendAllText("Logs/XRInputDiagnostic.txt","pass="+pass+" device="+left.thumbstick.ReadValue()+" action="+locomotion.MoveProvider.leftHandMoveInput.ReadValue()+" controls="+locomotion.MoveProvider.leftHandMoveInput.inputAction.controls.Count+" enabled="+locomotion.MoveProvider.enabled+" active="+locomotion.MoveProvider.gameObject.activeInHierarchy+" start="+start+" end="+rig.position+" transformer="+rig.GetComponentInChildren<UnityEngine.XR.Interaction.Toolkit.Locomotion.XRBodyTransformer>(true).enabled+"\n");
                 Stick(left,Vector2.zero);await Task.Delay(80);
                 Need(Vector3.ProjectOnPlane(rig.position-start,Vector3.up).magnitude>.06f,"Actual XR continuous walking failed, pass "+pass);
-                var rotation=rig.rotation;Stick(right,Vector2.right);await Task.Delay(300);Stick(right,Vector2.zero);await Task.Delay(80);
+                var rotation=rig.rotation;Stick(right,Vector2.right);await SimulateSeconds(.3f);Stick(right,Vector2.zero);await Task.Delay(80);
                 float angle=Quaternion.Angle(rotation,rig.rotation);Need(angle>2&&angle<26,"Actual XR smooth turn failed: "+angle+", pass "+pass);
             }
             var avatar=rig.GetComponent<PlayerBodyAvatar>();
