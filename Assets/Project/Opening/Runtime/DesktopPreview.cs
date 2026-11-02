@@ -102,15 +102,15 @@ namespace GroupProject.Opening
             foreach (var behaviour in suspended) if (behaviour) behaviour.enabled = true;
             foreach (var controller in hiddenControllers) if (controller) controller.SetActive(true);
             suspended.Clear(); hiddenControllers.Clear();
+            if(TryGetComponent<StartingViewHeight>(out var standardHeight))standardHeight.Apply(0);
             ReleaseCursor();
         }
 
-        float nextTurn;
         void Update()
         {
             RefreshMode();if(!IsDesktop)return;
             var turn=QuestControllerPreview.Turn;
-            if(Mathf.Abs(turn.x)>.6f && Time.unscaledTime>=nextTurn){transform.Rotate(0,Mathf.Sign(turn.x)*30,0);nextTurn=Time.unscaledTime+.4f;}
+            if (!MovementLocked && !LocomotionGuide.Locked) transform.RotateAround(view.transform.position, Vector3.up, SmoothStickTurnProvider.TurnDelta(turn.x, Time.deltaTime));
             var aim=QuestControllerPreview.Aim;
             transform.Rotate(0,aim.x*45*Time.deltaTime,0);
             pitch=Mathf.Clamp(pitch-aim.y*45*Time.deltaTime,-75,75);
@@ -121,7 +121,7 @@ namespace GroupProject.Opening
 
         public void Move(Vector2 movement, float seconds)
         {
-            if (!IsDesktop || !body || !body.enabled || MovementLocked) return;
+            if (!IsDesktop || !body || !body.enabled || MovementLocked || LocomotionGuide.Locked) return;
             movement = Vector2.ClampMagnitude(movement, 1);
             gravity = body.isGrounded ? -2 : Mathf.Max(gravity - 9.81f * seconds, -20);
             Vector3 motion = (transform.right * movement.x + transform.forward * movement.y) * moveSpeed;
@@ -146,6 +146,7 @@ namespace GroupProject.Opening
 
         public bool TryInteract()
         {
+            if(LocomotionGuide.Locked)return false;
             var button = IsDesktop ? AimedButton() : null;
             if (button) return button.TryCall();
             var floor = IsDesktop ? AimedFloorButton() : null;
@@ -169,7 +170,7 @@ namespace GroupProject.Opening
             }
             GUI.Label(new Rect(Screen.width/2f-12,Screen.height/2f-15,24,30),"+",crosshairStyle);
             var floor=AimedFloorButton();var target=AimedButton();
-            string hint=floor?"Trigger: B1 lower floor":target?(target.Called?"Elevator called":"Trigger: Call elevator"):"";
+            string hint=floor?(floor.ride.AtB1?"Trigger: G / ground floor":"Trigger: B1 lower floor"):target?(target.Called?"Trigger: Open lift":"Trigger: Call elevator"):"";
             GUI.Label(new Rect(Screen.width/2f-170,Screen.height/2f+25,340,36),hint,hintStyle);
         }
 

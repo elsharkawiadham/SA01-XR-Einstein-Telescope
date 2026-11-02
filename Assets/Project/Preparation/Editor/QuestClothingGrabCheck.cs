@@ -39,6 +39,7 @@ public static class QuestClothingGrabCheck
         Require(Application.isBatchMode, "Run this check in batch mode with the project closed; it opens the saved scene.");
         Require(!EditorApplication.isPlaying, "The check must start outside Play Mode.");
         EditorSceneManager.OpenScene(ProjectAssembly.Main);
+        if(UnityEngine.XR.Management.XRGeneralSettings.Instance)UnityEngine.XR.Management.XRGeneralSettings.Instance.InitManagerOnStart=false;
         Directory.CreateDirectory("Logs");
         if (File.Exists(Report)) File.Delete(Report);
 
@@ -77,7 +78,7 @@ public static class QuestClothingGrabCheck
         {
             await Test();
             File.WriteAllText(Report,
-                "PASS: twelve saved garments have detectable solid colliders; trigger-only failure reproduced; " +
+                "PASS: eleven cleanroom garments have detectable solid colliders; trigger-only failure reproduced; " +
                 "both saved NearFar controllers find clothing by near touch and by aiming through the open locker; original Select actions consume synthetic " +
                 "OpenXR grip input; both hands pick up, move, release, recover after cancellation and re-grab " +
                 "through XRI without SetPreview or SelectEnter. Invalid fitting returns clothing to its locker. " +
@@ -119,7 +120,11 @@ public static class QuestClothingGrabCheck
             foreach (var door in UnityEngine.Object.FindObjectsByType<LockerDoor>(FindObjectsSortMode.None))
                 if (!door.IsOpen) door.Toggle();
             Physics.SyncTransforms();
-            await Frames(90);
+            double doorsDeadline=EditorApplication.timeSinceStartup+8;
+            while(UnityEngine.Object.FindObjectsByType<LockerDoor>().Any(d=>d.hinge&&Quaternion.Angle(d.hinge.localRotation,Quaternion.Euler(0,d.openAngle,0))>.5f)){
+                Require(EditorApplication.timeSinceStartup<doorsDeadline,"Locker doors did not finish opening");await Task.Delay(20);
+            }
+            await Frames(5);
             Require(!DesktopPreview.Active, "Desktop preview must not intercept this hardware input regression.");
             // The Input System switches from editor state on the first player update.
             // Add test devices after that transition, otherwise they belong to the discarded editor state.
@@ -131,8 +136,8 @@ public static class QuestClothingGrabCheck
             await Frames(5);
             Require(leftDevice.added && rightDevice.added,"Synthetic devices were removed after initialization: "+string.Join(",",InputSystem.devices.Select(d=>d.name)));
 
-            var garments = UnityEngine.Object.FindObjectsByType<WearableGarment>(FindObjectsSortMode.None);
-            Require(garments.Length == 12, "Expected all twelve saved locker garments, found " + garments.Length + ".");
+            var garments = UnityEngine.Object.FindObjectsByType<WearableGarment>(FindObjectsSortMode.None).Where(g=>g.kind!=WearableGarment.Kind.PersonalJacket).ToArray();
+            Require(garments.Length == 11, "Expected all eleven cleanroom pickup garments, found " + garments.Length + ".");
             foreach (var garment in garments)
             {
                 var colliders = garment.GetComponents<Collider>();
@@ -191,7 +196,7 @@ public static class QuestClothingGrabCheck
         collider.isTrigger = false;
         Physics.SyncTransforms();
         await Frames(8);
-        Require(Candidates(near).Contains(grab), handedness + " solid hood is absent from actual XRI valid targets.");
+        Require(Candidates(near).Contains(grab), handedness + " solid hood is absent from actual XRI valid targets. Interactor enabled="+near.enabled+"; hand contact="+AnimatedControllerHands.Active.LeftContact);
         await GrabMoveRelease(controller, near, device, garment, home);
 
         // A controller/interactor interruption must restore a usable garment rather than leave it stranded.

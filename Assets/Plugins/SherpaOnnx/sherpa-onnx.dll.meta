@@ -20,8 +20,13 @@ PluginImporter:
     Editor:
       enabled: 1
       settings:
+        CPU: AnyCPU
         DefaultValueInitialized: true
+        OS: AnyOS
     OSXUniversal:
+      enabled: 1
+      settings: {}
+    Win64:
       enabled: 1
       settings: {}
     WindowsStoreApps:

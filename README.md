@@ -1,6 +1,24 @@
+**30 October 2026 controls correction:** The original illustrated controller panel and existing movement recordings are retained. All 13 controls must be pressed and released; indicators turn green before movement unlocks. Additional prompts use the existing local guide voice engine. Left-stick continuous walking, right-stick smooth turning and A-button teleport remain available together after onboarding. The avatar uses a standard 1.65 m eye-height baseline with device-relative tracking, without wearer-height sampling or body resizing. Head tracking and crouching remain active; the neck connects the head to the torso through head rotations.
+
+Hold **right A**, aim at a clear floor and release to teleport. Red arcs reject blocked destinations, closed doors, unsupported edges and the final facility boundary. Ground, cabin, lower landing, changing room, shower and terminal hallway floors are supported. The elevator remains walkable during travel. Guide stations cover the opening, ground corner, cabin, B1 landing, changing approach, shower exit and terminal hallway; they use fixed world positions. Duplicate controller meshes are hidden, visible palms stop at solid geometry, and supported controllers receive a short haptic pulse on contact. The dressing room remains quiet.
+
+`ImmersiveControlsCheck.Run` checks the new flow in the saved scene; reports and rendered previews are written to `Logs`. These are editor checks, not physical headset/haptic acceptance or an Android build.
+
 # Einstein Telescope — VR Cleanroom Training
 
-A Unity group project for introducing users to an Einstein Telescope cleanroom environment. The goal is to practise VR movement, follow a guided elevator journey, and learn basic surface-cleaning choices and technique with a talking parrot guide.
+A Unity group project for introducing users to an Einstein Telescope cleanroom environment. The current experience covers VR movement, a guided elevator journey, cleanroom dressing and an interlocked air shower. It ends at the locked **ET facility room (coming soon)** door. The cleaning demo has been removed from the playable scene and build route.
+
+**Return navigation and interface update:** The elevator travels **G ↔ B1**. At B1, call the lift with the up arrow, enter fully and select **G** on the cabin control. The depth/countdown display is above the door. Returning to G preserves clothing and completed tasks; B1 can be visited again. After the air shower completes, select **OPEN ENTRY DOOR** to walk back into the dressing room. The completed cycle and open exit are retained.
+
+The dressing room is now self-guided: entering stops speech, clears pending clothing prompts and suppresses spoken Q&A/instructions until the user leaves. Use the locker panels and fitting targets. Both checklists sit farther inward and can be hidden/shown with **left-controller X**, **keyboard X**, a mouse click on their header, or **aim + trigger** on the header. The smaller general checklist no longer contains pace. A separate numeric pace display remains visible at the lower centre even when the checklist is hidden. The guide stays at fixed stations on G and B1, with a fixed orientation; it no longer follows the camera or player. Floor arrows are narrow and placed approximately four metres apart.
+
+**Facility finish update:** Narration synthesis runs at 0.82 speed, with existing recorded narration at 0.90 playback rate. The lift has silver door leaves, an illuminated surround and a visible outfit mirror. The call arrow appears within 2 m. On either landing the doors close after five seconds clear of the cabin/doorway. Entering the doorway reopens them; the landing call can reopen the cabin.
+
+Follow lockers **01 Personal clothes → 02 Coverall → 03 Head protection → 04 Gloves → 05 Footwear**. Locker 01 starts empty. Open it and activate **STORE CLOTHES** to transfer the avatar's current shirt/jacket and folded trousers into storage and show its neutral base layer. Each locker has an instruction panel, a green completion check and an indication of the next task. Numbers guide the prototype sequence; the existing per-item placement targets and checks remain in use.
+
+The route now uses directional floor arrows, a consistent framed sign family, cyan accent strips and 29 credited ETpathfinder wall panels. Continuous structural backing closes modular floor, wall and ceiling seams around the route. The terminal door remains solid and non-interactive, with the original generated transparent `Assets/Project/Facility/Art/NoEntryTape.png` asset. Photo credits, sources and the generation prompt are in `Assets/Project/Facility/Art/CREDITS.md`. Use **Tools > Training Rooms > Apply Facility Visual and Locker Update** to reapply these saved scene details. `FacilityPolishCheck.Run` validates the new flow and enclosure coverage and writes renders/reports to `Logs/`.
+
+**28 October 2026 update:** Right-stick turning is now proportional smooth turning at up to 45 degrees/second, with a centre deadzone and immediate stop on release. Both checklists follow the camera within its view bounds. In the shower, select **Close door**, wait for closure, then select **Start shower**. **Open door** cancels the cycle so the user can return. The second door slides open only after completion; follow the modular hallway to the permanently locked facility door. Windows offline speech/model dependencies are now installed in this local Testing checkout. Physical headset comfort, stereo visibility and microphone acceptance still require a hardware session.
 
 The target device is **Meta Quest 3 running standalone**. A Quest controller preview is available for development and demonstrations. This is a training prototype, not a certified cleaning procedure or a finished reproduction of the client's facility.
 
@@ -13,33 +31,34 @@ The target device is **Meta Quest 3 running standalone**. A Quest controller pre
 3. Open it and let Unity finish importing. A fresh checkout needs internet to restore packages and, if required, download the offline voice models.
 4. Choose **Tools > Opening Scene > Open Scene**, then press **Play**. Use the virtual Quest controls in the **Game** view.
 
-The single main scene is `Assets/Project/Scenes/01_Opening.unity`. It contains the opening, elevator, changing room, shower room and cleaning station, with one shared player and parrot. It is the only scene in Build Settings and the configured Play Mode start scene. Open this scene to edit or demonstrate the project.
+The single main scene is `Assets/Project/Scenes/01_Opening.unity`. It contains the opening, elevator, changing room, shower room and terminal hallway, with one shared player and parrot. It is the only scene in Build Settings and the configured Play Mode start scene. Open this scene to edit or demonstrate the project.
 
 The elevator reveals the lower-floor group after descent; it does not load another scene. `02_LowerFloor` is intentionally inactive before arrival. Original scene snapshots live in `Assets/Project/Scenes/Archive` for recovery and are excluded from builds.
 
 ### What to demonstrate
 
-- The eyes-opening reveal begins at spawn. Explore freely for 20 seconds before the parrot arrives. Movement instructions wait for you to perform each action before continuing.
+- The reveal is followed by a required control check. Artificial movement stays locked until all 13 controls have been tried and released. Green rows show completion. Facility context narration follows the check.
 - Follow the lit corridor and floor markers, then turn left to discover the elevator.
 - Approach the down-arrow button and interact. Step fully into the cabin, then select **B1**.
 - The simulated descent to **-300 m** lasts 45 seconds, plus door movement and loading. The camera stays in a stationary cabin.
-- On the arrival landing, follow the teal floor line through the preparation corridor into the changing room, then through the shower room, and finally into the cleaning area. There is no direct landing-to-bench shortcut. Walk back along the same route to return.
-- Inspect the training plate, choose a suitable wipe, and complete four parallel, slightly overlapping passes with a fresh face for each pass. Complete the guided Class A trial, then the Class B trial.
+- On the arrival landing, follow the cyan floor arrows into the changing room. Open locker 01 and select **Store clothes**, then use the numbered task panels to fit all eleven cleanroom garments.
+- Step fully inside the shower, select **Close door**, wait for it to close, then select **Start shower**. The entry remains closed during the cycle. **Open door** cancels it.
+- After completion, the exit opens into a lit hallway using the opening scene's modular environment kit. Follow it to **ET facility room (coming soon)**. This solid, non-interactive door marks the end and remains out of bounds.
 
 **Current layout:** Editable changing and air-shower rooms are under `02_LowerFloor/02_Preparation_Interactive/01_ChangingRoom` and `02_AirShower`. They use the modular sci-fi environment kit from the opening. Open lockers with the controller trigger; grip your personal jacket and release it inside the personal locker, then grip and release each cleanroom item near its body area: hood and mask at the head, coverall at the torso, gloves at each hand and boots at each foot. The eleven outfit pieces are based on the client clothing reference. Fit all eleven and store personal clothing to unlock the air shower. The worn suit uses a deforming body mesh; headwear and footwear use rigid attachments. This is not fabric simulation or tracked legs. Start it from inside; leaving cancels the cycle. Directional air particles, status lighting and a spatial fan accompany the configurable 15-second demonstration cycle. Exact gowning sequence and real cycle duration remain unverified. The client GLB remains an inactive reference.
 
-### Jump directly to cleaning
+### Current route maintenance
 
-- **Tools > Cleaning > Preview With Shared Player**: quick interaction preview without AI initialization.
-- **Tools > Cleaning > Preview With Offline Q&A**: the same preview with spoken questions enabled.
+- **Tools > Training Rooms > Apply Comfort and Facility Route Update** reapplies the current saved scene changes.
+- `TrainingRevisionCheck.Run` checks turning, checklist bounds, shower interlocks/cancellation, walking clearance and the locked endpoint. Results and rendered views are written to `Logs/`.
 
-These previews start at the bench. Stopping Play reopens the saved opening scene. Preview positions are not saved into that scene.
+Cleaning source assets and earlier checks remain as development history; the demo is excluded from the current experience. The checklist now tracks three tasks: clothing, air shower and reaching the facility door.
 
 ## Controls
 
-All instructions use Meta Quest controls: left joystick to move, right joystick to turn, grip to pick up/release, trigger to interact or use the held tool, and hold right B to ask the guide. Raise the held wipe before pressing trigger to expose a fresh face.
+All instructions use Meta Quest controls: left joystick to move, right joystick to turn smoothly, grip to pick up/release clothing, trigger to interact, and hold right B to ask the guide. Release the right stick to stop turning. Left X or the checklist header hides/shows the active list.
 
-Without a headset, Play mode automatically shows a mouse-operated **Quest controller preview**. Drag the left/right virtual joysticks to move/turn. Drag the head/hand aim pad to aim the centre reticle. Select Grip to pick up or release. Toggle Trigger on/off to simulate holding/releasing it. Toggle Raise hand to lift the held wipe. Hold B to speak and release to send. Aim at CONTINUE and activate Trigger to advance after cleaning.
+Without a headset, Play mode automatically shows a mouse-operated **Quest controller preview**. Drag the left/right virtual joysticks to move/turn. Drag the head/hand aim pad to aim the centre reticle. Select Grip to pick up or release. Toggle Trigger on/off to interact. Hold B to speak and release to send.
 
 This preview simulates the interaction controls, not tracked six-degree-of-freedom controllers or Quest performance. It is hidden on a running headset.
 
@@ -53,19 +72,18 @@ On a **fresh clone**, close Unity and run this from the repository root using Py
 python3 Tools/setup_offline_guide.py
 ```
 
-This downloads checksum-verified models and native libraries for Apple Silicon and Quest ARM64. Reopen Unity, allow LLMUnity's native setup to finish, then choose **Tools > Opening Scene > Configure Standalone AI**. Large dependencies are excluded from Git, so each fresh checkout needs this one-time setup. Windows editor speech requires matching Sherpa 1.13.0 Windows x64 native libraries; the supplied provisioning script targets Mac Apple Silicon and Quest.
+The script defaults to the host platform. On Windows use `py -3 Tools/setup_offline_guide.py --platform windows`; for a Quest build use `--platform quest`, or `--platform all` to install all supported native libraries. It verifies pinned model/library checksums. Reopen Unity, allow LLMUnity's native setup to finish, then choose **Tools > Opening Scene > Configure Standalone AI**. Large dependencies are excluded from Git, so each fresh checkout needs this setup. Windows x64 native libraries are restricted to the Windows editor/player; the managed binding supports Windows, macOS and Android.
 
 Wait for the guide to prepare and finish speaking before asking. Allow microphone permission when prompted. Hold B, speak, then release; recordings stop after 12 seconds. Example questions:
 
 - “How do I turn?”
-- “Which wipe should I use for Class A?”
-- “How do I use the inspection lamp?”
-- “How do I change the wipe face?”
+- “How do I put on the clothing?”
+- “How do I start the air shower?”
 - “What should I do next?”
 
-If models are unavailable, recorded instructions and the cleaning exercise still work. Spoken questions need the local backend to be ready. If voice initialization fails, confirm that provisioning completed and read the Unity Console.
+If models are unavailable, recorded instructions and the preparation interactions still work. Spoken questions need the local backend to be ready. If voice initialization fails, confirm that provisioning completed and read the Unity Console.
 
-## Training content and limits
+## Earlier cleaning module reference (excluded from the current route)
 
 The cleaning exercise follows the client's *Cleaning and decontamination* slides: Anticon Gold polyester for Class A; KIMTECH W4 polypropylene for Class B and below, not Class A. The client does not recommend Anticon Gold for Class B. Wiping uses parallel, slightly overlapping passes with a lift at the end and fresh faces in the sequence flip, refold, flip.
 
@@ -116,6 +134,8 @@ Packages are pinned in `Packages/manifest.json` and `Packages/packages-lock.json
 - Client slides and the cleanroom GLB are supplied project reference materials. Imported asset packs retain their own terms and notices.
 
 ## Voice replacement
+
+The development notes below include earlier cleaning-demo and Mac validation history. The current route and Windows setup described above supersede those earlier experience descriptions.
 
 `Voiceover/SpokenLines.csv` contains the authored narration and Q&A wording, including expanded dynamic variants, for recording a replacement voice. Keep the IDs with your exported audio. This export does not replace the current clips automatically. Controller-held gloves are simple prototype visuals; they are not a fully rigged hand-animation asset.
 

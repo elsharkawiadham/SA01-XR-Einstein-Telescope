@@ -49,6 +49,8 @@ namespace GroupProject.Opening
         void Selected(SelectEnterEventArgs args) { TryCall(); }
         public bool TryCall()
         {
+            var arrival=GetComponentInParent<GroupProject.Elevator.ElevatorArrivalControl>();
+            if(arrival&&arrival.ride.AtLanding){bool accepted=IsInRange()&&arrival.Reopen();if(accepted)GetComponent<GroupProject.Guide.InteractionFeedback>()?.Pulse(true);return accepted;}
             if (Called || !IsInRange()) return false;
             Called = true;
             if(aiGuide)aiGuide.CancelSpeech();
@@ -92,6 +94,7 @@ namespace GroupProject.Opening
                 if (hintVoice && hintVoice.isPlaying) hintVoice.Stop();
                 return;
             }
+            if (locomotionGuide && locomotionGuide.Completed) return;
             if (HintPlayed || (welcomeVoice && welcomeVoice.isPlaying) || (locomotionGuide && locomotionGuide.IsRunning) || (aiGuide && aiGuide.IsBusy)) return;
             waiting += Time.deltaTime;
             if (waiting >= hintDelay && hintVoice && hintVoice.clip)

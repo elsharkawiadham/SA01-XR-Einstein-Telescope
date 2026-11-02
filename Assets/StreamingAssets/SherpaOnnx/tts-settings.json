@@ -7,7 +7,7 @@
       "modelSource": 0,
       "numThreads": 2,
       "provider": "cpu",
-      "speed": 1.0,
+      "speed": 0.82,
       "maxNumSentences": 1,
       "vitsModel": "en_US-lessac-low.onnx",
       "vitsTokens": "tokens.txt",

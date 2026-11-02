@@ -41,7 +41,8 @@ public static class StandaloneAISetup
         {
             if(!(AssetImporter.GetAtPath(p) is PluginImporter importer))continue;
             importer.SetCompatibleWithAnyPlatform(false);
-            if(p.EndsWith(".dll")){importer.SetCompatibleWithEditor(true);importer.SetCompatibleWithPlatform(BuildTarget.Android,true);importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX,true);}
+            if(p.Contains("win-x64")){importer.SetCompatibleWithEditor(true);importer.SetEditorData("OS","Windows");importer.SetEditorData("CPU","x86_64");importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64,true);importer.SetPlatformData(BuildTarget.StandaloneWindows64,"CPU","x86_64");}
+            else if(p.EndsWith(".dll")){importer.SetCompatibleWithEditor(true);importer.SetEditorData("OS","AnyOS");importer.SetEditorData("CPU","AnyCPU");importer.SetCompatibleWithPlatform(BuildTarget.StandaloneWindows64,true);importer.SetCompatibleWithPlatform(BuildTarget.Android,true);importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX,true);}
             else if(p.Contains("arm64-v8a")){importer.SetCompatibleWithEditor(false);importer.SetCompatibleWithPlatform(BuildTarget.Android,true);importer.SetPlatformData(BuildTarget.Android,"CPU","ARM64");}
             else if(p.Contains("osx-arm64")){importer.SetCompatibleWithEditor(true);importer.SetEditorData("OS","OSX");importer.SetEditorData("CPU","ARM64");importer.SetCompatibleWithPlatform(BuildTarget.StandaloneOSX,true);importer.SetPlatformData(BuildTarget.StandaloneOSX,"CPU","ARM64");}
             importer.SaveAndReimport();

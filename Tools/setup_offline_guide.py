@@ -9,6 +9,8 @@ import shutil
 import subprocess
 import tarfile
 import zipfile
+import argparse
+import platform
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 CACHE = ROOT / '.offline-guide-cache'
@@ -30,6 +32,9 @@ FILES = {
     'mac.zip': (
         'https://api.nuget.org/v3-flatcontainer/org.k2fsa.sherpa.onnx.runtime.osx-arm64/1.13.0/org.k2fsa.sherpa.onnx.runtime.osx-arm64.1.13.0.nupkg',
         'f9b18d3938f7ef2e0610b532deeef272886e7325621c17f17d594acd4a045389'),
+    'win.zip': (
+        'https://api.nuget.org/v3-flatcontainer/org.k2fsa.sherpa.onnx.runtime.win-x64/1.13.0/org.k2fsa.sherpa.onnx.runtime.win-x64.1.13.0.nupkg',
+        'ae6ecdddfa98dedaf6288227addd697777178d4f581e22b9b7072bcf0252fa9b'),
     'android.tar.bz2': (
         'https://github.com/k2-fsa/sherpa-onnx/releases/download/v1.13.0/sherpa-onnx-v1.13.0-android.tar.bz2',
         'd2268fd5baf4cce691d0008a3dd8ed988b4375e3435e3af9eb2be372dffd9321'),
@@ -77,8 +82,15 @@ def extract_model(archive, destination):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--platform', choices=['windows', 'mac', 'quest', 'all'],
+                        default='windows' if platform.system() == 'Windows' else 'mac')
+    args = parser.parse_args()
     CACHE.mkdir(exist_ok=True)
-    paths = {name: download(name, *details) for name, details in FILES.items()}
+    native = {'windows': ['win.zip'], 'mac': ['mac.zip'], 'quest': ['android.tar.bz2'],
+              'all': ['win.zip', 'mac.zip', 'android.tar.bz2']}[args.platform]
+    selected = ['qwen2.5-0.5b-instruct-q4_k_m.gguf', 'asr.tar.bz2', 'tts.tar.bz2', 'managed.zip'] + native
+    paths = {name: download(name, *FILES[name]) for name in selected}
     model = 'qwen2.5-0.5b-instruct-q4_k_m.gguf'
     STREAM.mkdir(parents=True, exist_ok=True)
     if not (STREAM / model).exists() or digest(STREAM / model) != FILES[model][1]:
@@ -87,15 +99,19 @@ def main():
     extract_model(paths['tts.tar.bz2'], STREAM / 'SherpaOnnx/tts-models')
     with zipfile.ZipFile(paths['managed.zip']) as archive:
         write(NATIVE / 'sherpa-onnx.dll', archive.read('lib/netstandard2.0/sherpa-onnx.dll'))
-    with zipfile.ZipFile(paths['mac.zip']) as archive:
-        for name in archive.namelist():
-            if name.endswith('.dylib') and name.startswith('runtimes/osx-arm64/native/'):
-                write(NATIVE / 'osx-arm64' / pathlib.PurePosixPath(name).name, archive.read(name))
-    with tarfile.open(paths['android.tar.bz2']) as archive:
-        for entry in archive.getmembers():
-            if entry.isfile() and '/arm64-v8a/' in entry.name and entry.name.endswith('.so'):
-                write(NATIVE / 'arm64-v8a' / pathlib.PurePosixPath(entry.name).name, archive.extractfile(entry).read())
-    print('Models and Sherpa libraries verified and installed for Quest ARM64 and Apple Silicon editor.')
+    for key, folder, suffix in [('mac.zip', 'osx-arm64', '.dylib'), ('win.zip', 'win-x64', '.dll')]:
+        if key not in paths:
+            continue
+        with zipfile.ZipFile(paths[key]) as archive:
+            for name in archive.namelist():
+                if name.endswith(suffix) and name.startswith(f'runtimes/{folder}/native/'):
+                    write(NATIVE / folder / pathlib.PurePosixPath(name).name, archive.read(name))
+    if 'android.tar.bz2' in paths:
+        with tarfile.open(paths['android.tar.bz2']) as archive:
+            for entry in archive.getmembers():
+                if entry.isfile() and '/arm64-v8a/' in entry.name and entry.name.endswith('.so'):
+                    write(NATIVE / 'arm64-v8a' / pathlib.PurePosixPath(entry.name).name, archive.extractfile(entry).read())
+    print('Models and Sherpa libraries verified and installed for:', args.platform)
     print('Open Unity; allow LLMUnity to finish its native-runtime setup. Then run Tools > Opening Scene > Configure Standalone AI.')
 
 

@@ -61,5 +61,6 @@ public static class GuideSceneSetup
         sfx.button=Clip("Button");sfx.doorStop=Clip("DoorLatch");sfx.startMotor=Clip("MotorStart");sfx.stopMotor=Clip("MotorStop");sfx.arrival=Clip("ArrivalChime");ride.motor.clip=Clip("MotorLoop");ride.motor.volume=.55f;
         EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
         File.WriteAllText("Logs/GuideSetup.txt","PASS: parrot texture, animated UI, dialogue cloud, all five narration channels, four footsteps and seven elevator effects configured. Quest instructions retained for desktop preview.");
+        FacilityPolishSetup.Run();
     }
 }

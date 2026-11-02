@@ -12,7 +12,7 @@ namespace GroupProject.Opening
         public LocomotionGuide locomotionGuide;
         public StandaloneAIGuide aiGuide;
         public const string WelcomeText="Welcome. Take a moment to look around and get comfortable. Let us explore moving forward, backward, and turning.";
-        public const float ExplorationSeconds=20f;
+        public const float ExplorationSeconds=0f;
         void Awake()
         {
             if(!enabled)return;
@@ -25,7 +25,8 @@ namespace GroupProject.Opening
         IEnumerator Start()
         {
             float spawned=Time.unscaledTime;
-            if (!headsetCamera || !fadeMaterial) yield break;
+            if (!headsetCamera) yield break;
+            if(fadeMaterial) {
             overlay = GameObject.CreatePrimitive(PrimitiveType.Quad);
             overlay.name = "Opening fade (runtime)";
             Destroy(overlay.GetComponent<Collider>());
@@ -44,26 +45,24 @@ namespace GroupProject.Opening
                 yield return null;
             }
             Destroy(overlay);
-            while(Time.unscaledTime-spawned<ExplorationSeconds)yield return null;
-            bool spoken=false;
-            if(aiGuide){
-                var speech=aiGuide.SpeakInstruction(WelcomeText);
-                while(!speech.IsCompleted)yield return null;
-                spoken=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion && speech.Result;
             }
-            if (!spoken && welcome) {
-                welcome.Play();
-                yield return null;
-                while(welcome.isPlaying) yield return null;
+            if(locomotionGuide) {
+                locomotionGuide.Begin();
+                while(!locomotionGuide.Completed)yield return null;
             }
             foreach(var line in new[]{TrainingGuidance.Environment,TrainingGuidance.Journey})
             {
                 bool delivered=false;
                 if(aiGuide&&aiGuide.Ready){var speech=aiGuide.SpeakInstruction(line);while(!speech.IsCompleted)yield return null;delivered=speech.Status==System.Threading.Tasks.TaskStatus.RanToCompletion&&speech.Result;}
-                if(!delivered){var companion=FindAnyObjectByType<GroupProject.Guide.ParrotCompanion>();if(companion)companion.PresentCaption(line,9);yield return new WaitForSecondsRealtime(9);}
+                if(!delivered){
+                    var clip=Resources.Load<AudioClip>(line==TrainingGuidance.Environment?"Onboarding/Context0":"Onboarding/Context1");
+                    var companion=FindAnyObjectByType<GroupProject.Guide.ParrotCompanion>();if(companion)companion.PresentCaption(line,15);
+                    if(clip&&welcome){welcome.clip=clip;welcome.pitch=.9f;welcome.Play();yield return null;while(welcome.isPlaying)yield return null;}
+                    else yield return new WaitForSecondsRealtime(9);
+                }
                 yield return new WaitForSecondsRealtime(.6f);
             }
-            if(locomotionGuide) locomotionGuide.Begin();
+
         }
         void OnDestroy()
         {

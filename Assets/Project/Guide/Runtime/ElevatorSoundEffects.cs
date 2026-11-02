@@ -22,8 +22,8 @@ namespace GroupProject.Guide
             if(ride.State!=phase)
             {
                 if(ride.State==ElevatorRide.Phase.Closing)Cue(button);
-                if(ride.State==ElevatorRide.Phase.Descending)Cue(startMotor);
-                if(phase==ElevatorRide.Phase.Descending){Cue(stopMotor);if(ride.State==ElevatorRide.Phase.Opening)Cue(arrival);}
+                if(ride.State==ElevatorRide.Phase.Descending||ride.State==ElevatorRide.Phase.Ascending)Cue(startMotor);
+                if(phase==ElevatorRide.Phase.Descending||phase==ElevatorRide.Phase.Ascending){Cue(stopMotor);if(ride.State==ElevatorRide.Phase.Opening)Cue(arrival);}
                 phase=ride.State;
             }
         }

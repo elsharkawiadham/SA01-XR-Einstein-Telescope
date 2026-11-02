@@ -32,7 +32,7 @@ namespace GroupProject.Preparation
             var g=new GameObject(WearableGarment.NameFor(kind));g.SetActive(false);g.transform.SetParent(parent,false);g.transform.position=pos;g.AddComponent<MeshFilter>();g.AddComponent<MeshRenderer>();var c=g.AddComponent<BoxCollider>();c.isTrigger=false;var body=g.AddComponent<Rigidbody>();body.isKinematic=true;var item=g.AddComponent<WearableGarment>();item.kind=kind;item.journey=journey;ApplyVisual(item);g.SetActive(true);
         }
         void Update(){if(list==null)return;Held=null;if(items!=null)foreach(var w in items)if(w&&w.Held){Held=w;break;}
-            bool visible=InChangingRoom;list.Show(visible);list.Refresh(Held,Held?Held.Hint:"Open a locker with the trigger. Grip one item to see where it belongs.",Held&&Held.ReadyToFit);
+            bool visible=InChangingRoom;list.Show(visible);list.Refresh(Held,Held?Held.Hint:!journey.PersonalClothesStored?"Open locker 01 and select STORE CLOTHES.":"Follow the numbered task panels. Grip a cleanroom item to see its fitting target.",Held&&Held.ReadyToFit);
             if(!visible||!Held){ring.enabled=false;targetText.gameObject.SetActive(false);return;}
             ring.enabled=true;targetText.gameObject.SetActive(true);var centre=Held.TargetPosition();var yaw=Quaternion.Euler(0,journey.head.eulerAngles.y,0);
             // A floating placement ring marks footwear drop location; no arbitrary floor drop succeeds.
@@ -41,7 +41,7 @@ namespace GroupProject.Preparation
             for(int i=0;i<49;i++){float angle=i*Mathf.PI*2/48;var offset=floor?new Vector3(Mathf.Cos(angle)*radius,-.1f,Mathf.Sin(angle)*radius):new Vector3(Mathf.Cos(angle)*radius,Mathf.Sin(angle)*radius,0);ring.SetPosition(i,centre+yaw*offset);}
             targetText.text=Held.DisplayName+"\n"+(Held.ReadyToFit?"READY: release grip":floor?"Place above this foot space":"Bring item here");targetText.color=color;targetText.transform.SetPositionAndRotation(centre+Vector3.up*.25f,journey.head.rotation);
         }
-        void LateUpdate(){if(list)list.transform.SetPositionAndRotation(journey.head.TransformPoint(new Vector3(-.71f,.70f,1.35f)),journey.head.rotation);}
+        void LateUpdate(){if(list)ChecklistPlacement.Place(list.transform,journey.head,400,600,34);}
         void OnDestroy(){if(markerMaterial)Destroy(markerMaterial);}
     }
 }

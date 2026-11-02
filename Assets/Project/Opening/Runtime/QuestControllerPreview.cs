@@ -5,13 +5,13 @@ namespace GroupProject.Opening
     public sealed class QuestControllerPreview : MonoBehaviour
     {
         public static Vector2 Move, Turn, Aim;
-        public static bool Trigger, Speak, Lift;
+        public static bool Trigger, Speak, Lift, LeftTrigger, LeftGrip, RightGrip, Teleport, Checklist;
         static int gripFrame=-10, triggerFrame=-10;
         public static bool GripPressed => Time.frameCount==gripFrame+1;
         public static bool TriggerPressed => Time.frameCount==triggerFrame+1;
         int dragging;
         Vector2 anchor;
-        public static void ResetControls(){Move=Turn=Aim=Vector2.zero;Trigger=Speak=Lift=false;gripFrame=triggerFrame=-10;}
+        public static void ResetControls(){Move=Turn=Aim=Vector2.zero;Trigger=Speak=Lift=LeftTrigger=LeftGrip=RightGrip=Teleport=Checklist=false;gripFrame=triggerFrame=-10;}
         void OnEnable(){ResetControls();}
         void OnDisable(){ResetControls();}
         void OnApplicationFocus(bool focus){if(!focus){ResetControls();dragging=0;}}
@@ -25,8 +25,13 @@ namespace GroupProject.Opening
             Pad(new Rect(70,h-165,110,110),1,"Move",ref Move);
             GUI.Box(new Rect(w-237,h-270,225,258),"RIGHT QUEST CONTROLLER");
             Pad(new Rect(w-180,h-230,110,110),2,"Turn",ref Turn);
-            if(GUI.Button(new Rect(w-225,h-110,96,32),"Grip"))gripFrame=Time.frameCount;
-            bool trigger=GUI.Toggle(new Rect(w-120,h-110,96,32),Trigger,"Trigger");
+            bool grip=GUI.RepeatButton(new Rect(w-225,h-110,96,32),"Hold grip");
+            if(grip&&!RightGrip)gripFrame=Time.frameCount;RightGrip=grip;
+            LeftGrip=GUI.RepeatButton(new Rect(12,h-45,100,32),"Left grip");
+            LeftTrigger=GUI.RepeatButton(new Rect(120,h-45,110,32),"Left trigger");
+            Teleport=GUI.RepeatButton(new Rect(w-225,h-310,200,32),"Hold A / Teleport");
+            Checklist=GUI.RepeatButton(new Rect(12,h-250,210,32),"X / Checklist");
+            bool trigger=GUI.RepeatButton(new Rect(w-120,h-110,96,32),"Hold trigger");
             if(trigger&&!Trigger)triggerFrame=Time.frameCount;Trigger=trigger;
             Speak=GUI.RepeatButton(new Rect(w-225,h-70,96,32),"Hold B · Ask");
             Lift=GUI.Toggle(new Rect(w-120,h-70,110,32),Lift,"Raise hand");

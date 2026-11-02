@@ -77,7 +77,7 @@ namespace GroupProject.Preparation
             Add(head, WearableGarment.Kind.Hood, "Hood", "Hood fitted.", 0, 1);
             Add(head, WearableGarment.Kind.SafetyGlasses, "Safety glasses", "Safety glasses fitted.", 1, 1);
             var body = Group(sheet, "02   BODY", -201, 66);
-            Add(body, WearableGarment.Kind.PersonalJacket, "Jacket stored", "Personal jacket stored.", 0, 0);
+            Add(body, WearableGarment.Kind.PersonalJacket, "Clothes stored", "Personal clothes stored.", 0, 0);
             Add(body, WearableGarment.Kind.Coverall, "Coverall", "Coverall fitted.", 1, 0);
             var hands = Group(sheet, "03   HANDS", -275, 66);
             Add(hands, WearableGarment.Kind.LeftGlove, "Left glove", "Left glove fitted.", 0, 0);
@@ -91,9 +91,10 @@ namespace GroupProject.Preparation
             var footer = Panel("Action feedback", sheet, 20, -461, 354, 116, new Color(.88f, .94f, .95f));
             feedbackStripe = Panel("Action state", footer, 0, 0, 4, 116, Active).GetComponent<Image>();
             status = Text(footer, "YOUR NEXT ACTION", 14, -10, 328, 22, 16, Active, FontStyles.Bold);
-            instruction = Text(footer, "Store your personal jacket in the locker.", 14, -37, 326, 70, 18, Ink);
+            instruction = Text(footer, "Open locker 01 and select STORE CLOTHES.", 14, -37, 326, 70, 18, Ink);
             tab = Panel("Outfit list toggle", rect, 0, 34, 400, 30, new Color(.10f, .25f, .30f));
-            toggle = Text(tab, "X  Hide outfit list", 12, -3, 376, 26, 18, Color.white, FontStyles.Bold);
+            toggle = Text(tab, "HIDE OUTFIT LIST  [X / Trigger]", 12, -3, 376, 26, 18, Color.white, FontStyles.Bold);
+            ChecklistToggleButton.Attach(tab,null,this);
             SetVisible(Visible);
         }
 
@@ -125,6 +126,9 @@ namespace GroupProject.Preparation
                 tick = tick.gameObject,
                 label = Text(cell, label, 31, -4, 132, 23, 18, Ink)
             };
+            item.label.enableAutoSizing=true;
+            item.label.fontSizeMin=12;
+            item.label.fontSizeMax=18;
             items.Add(item);
         }
 
@@ -171,21 +175,23 @@ namespace GroupProject.Preparation
         public void Show(bool value)
         {
             if (canvas) canvas.enabled = value;
+            if(tab)tab.gameObject.SetActive(value);
         }
 
         public void SetVisible(bool value)
         {
             Visible = value;
             if (paper) paper.gameObject.SetActive(value);
-            if (toggle) toggle.text = value ? "X  Hide outfit list" : "X  Show outfit list";
+            if (toggle) toggle.text = value ? "HIDE OUTFIT LIST  [X / Trigger]" : "SHOW OUTFIT LIST  [X / Trigger]";
         }
 
         void Update()
         {
             if (!canvas || !canvas.enabled) { wasPressed = false; return; }
-            InputDevices.GetDeviceAtXRNode(XRNode.LeftHand).TryGetFeatureValue(UnityEngine.XR.CommonUsages.primaryButton, out bool pressed);
+            if(GroupProject.Opening.LocomotionGuide.Locked)return;bool pressed=GroupProject.Opening.TrainingControls.Read().checklist;
             if (pressed && !wasPressed) SetVisible(!Visible);
             wasPressed = pressed;
+
             if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame && Camera.main &&
                 RectTransformUtility.RectangleContainsScreenPoint(tab, Mouse.current.position.ReadValue(), Camera.main))
                 SetVisible(!Visible);

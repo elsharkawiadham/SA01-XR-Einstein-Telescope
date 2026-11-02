@@ -55,7 +55,8 @@ public static class LecturerFeedbackSetup
         Box(lower,"Pathfinder future right post",new Vector3(27.23f,1.4f,20.25f),new Vector3(.06f,2.3f,.07f),amber,false);
         Text(lower,"Pathfinder future sign","ET PATHFINDER\nCOMING SOON\nFollow the teal route to cleaning",new Vector3(26.65f,1.65f,20.2f),Vector3.back,1.05f,.8f,1.5f);
         EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
-        Directory.CreateDirectory("Logs");File.WriteAllText("Logs/LecturerFeedbackSetup.txt","PASS: targeted saved-scene updates, mirrors, control cues, 1.3/2.0 m/s thresholds, future branch barrier. Existing rooms and rig retained.");
+        TrainingRevisionSetup.Run();
+        Directory.CreateDirectory("Logs");File.WriteAllText("Logs/LecturerFeedbackSetup.txt","PASS: mirrors, control cues and 1.3/2.0 m/s thresholds; current comfort, interlocked shower and terminal facility hallway reapplied.");
     }
     static Transform Group(Transform parent,string name){var old=parent.Find(name);if(old)UnityEngine.Object.DestroyImmediate(old.gameObject);var g=new GameObject(name);g.transform.SetParent(parent,false);return g.transform;}
     static Material Material(string name,Color c){string p=Art+name+".mat";var m=AssetDatabase.LoadAssetAtPath<Material>(p);if(!m){m=new Material(Shader.Find("Universal Render Pipeline/Unlit"));AssetDatabase.CreateAsset(m,p);}m.SetColor("_BaseColor",c);EditorUtility.SetDirty(m);return m;}

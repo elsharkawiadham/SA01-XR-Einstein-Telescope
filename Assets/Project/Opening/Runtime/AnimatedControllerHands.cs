@@ -32,17 +32,19 @@ namespace GroupProject.Opening
         }
         sealed class Hand
         {
-            public bool left, gloved, materialAssigned;
+            public bool left, gloved, materialAssigned, wasBlocked;
             public Transform mount, wrist;
             public SkinnedMeshRenderer[] renderers;
             public readonly List<Joint> joints = new List<Joint>();
             public readonly Dictionary<Renderer, bool> controllerRenderers = new Dictionary<Renderer, bool>();
             public XRBaseInteractor[] interactors;
-            public float grip, trigger, thumb;
+            public float grip, trigger, thumb, nextHaptic;
+            public readonly HashSet<XRBaseInteractor> blockedInteractors=new HashSet<XRBaseInteractor>();
         }
         Hand left, right;
         bool initialized, leftGloved, rightGloved, previewGrip, warnedMissingAssets;
         float nextVisualScan, nextInitialization;
+        public string LeftContact {get;private set;}
         public bool Initialized => initialized;
         public Transform LeftWrist => left?.wrist;
         public Transform RightWrist => right?.wrist;
@@ -138,9 +140,9 @@ namespace GroupProject.Opening
             if (!controller) return;
             foreach (var renderer in controller.GetComponentsInChildren<Renderer>(true))
             {
-                // Leave ray lines, reticles and interaction components active. Only hardware model meshes are hidden.
+                // Keep ray lines and interaction logic; remove duplicate controller/ghost hand meshes.
                 if (!(renderer is MeshRenderer || renderer is SkinnedMeshRenderer)) continue;
-                bool hardwareVisual = false;
+                bool hardwareVisual = true;
                 for (var t = renderer.transform; t && t != controller; t = t.parent)
                 {
                     string n = t.name.ToLowerInvariant();
@@ -194,6 +196,9 @@ namespace GroupProject.Opening
             // The original flag is restored when this visual system is disabled or destroyed.
             foreach (var entry in hand.controllerRenderers) if (entry.Key) entry.Key.forceRenderingOff = true;
             bool preview = DesktopPreview.Active;
+            var trackedDevice=InputDevices.GetDeviceAtXRNode(hand.left?XRNode.LeftHand:XRNode.RightHand);
+            bool tracked=trackedDevice.isValid&&trackedDevice.TryGetFeatureValue(CommonUsages.isTracked,out bool hasPose)&&hasPose;
+            hand.mount.gameObject.SetActive(preview||tracked);
             if (preview && head)
             {
                 // This is a visual companion to the virtual controls, not simulated headset tracking.
@@ -207,6 +212,22 @@ namespace GroupProject.Opening
                 hand.mount.SetPositionAndRotation(controller.TransformPoint(wristOffset), controller.rotation * Quaternion.Euler(wristEuler));
             else return;
 
+            if(head) {
+                var centreOffset=hand.mount.rotation*new Vector3(0,0,.07f);
+                var shoulder=head.position+Quaternion.Euler(0,head.eulerAngles.y,0)*new Vector3(hand.left?-.16f:.16f,-.23f,-.02f);
+                var centre=HandWallContact.Resolve(transform,shoulder,hand.mount.position+centreOffset,out bool blocked);
+                if(hand.left)LeftContact=HandWallContact.LastBarrier?HandWallContact.LastBarrier.name+" "+HandWallContact.LastBarrier.bounds:"none";
+                hand.mount.position=centre-centreOffset;
+                if(blocked) {
+                    if(!LocomotionGuide.Locked && Vector3.Distance(centre,controller.TransformPoint(wristOffset)+centreOffset)>.12f)foreach(var interactor in hand.interactors)if(interactor&&interactor.enabled){hand.blockedInteractors.Add(interactor);interactor.enabled=false;}
+                    if(!preview&&!hand.wasBlocked&&Time.unscaledTime>=hand.nextHaptic){
+                        var controllerDevice=InputDevices.GetDeviceAtXRNode(hand.left?XRNode.LeftHand:XRNode.RightHand);
+                        if(controllerDevice.TryGetHapticCapabilities(out var caps)&&caps.supportsImpulse)controllerDevice.SendHapticImpulse(0,.25f,.045f);
+                        hand.nextHaptic=Time.unscaledTime+.35f;
+                    }
+                } else if(!LocomotionGuide.Locked){foreach(var interactor in hand.blockedInteractors)if(interactor)interactor.enabled=true;hand.blockedInteractors.Clear();}
+                hand.wasBlocked=blocked;
+            }
             float grip = 0, trigger = 0, thumb = 0;
             if (preview)
             {
@@ -248,6 +269,7 @@ namespace GroupProject.Opening
         {
             if (hand == null) return;
             foreach (var entry in hand.controllerRenderers) if (entry.Key) entry.Key.forceRenderingOff = entry.Value;
+            foreach(var interactor in hand.blockedInteractors)if(interactor)interactor.enabled=true;hand.blockedInteractors.Clear();
         }
 
         void OnDisable()

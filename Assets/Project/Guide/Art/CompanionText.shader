@@ -75,7 +75,7 @@ SubShader {
 	ZWrite Off
 	Lighting Off
 	Fog { Mode Off }
-	ZTest Always
+	ZTest LEqual
 	Blend One OneMinusSrcAlpha
 	ColorMask [_ColorMask]
 

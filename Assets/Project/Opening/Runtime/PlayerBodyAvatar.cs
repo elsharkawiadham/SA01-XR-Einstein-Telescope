@@ -36,6 +36,10 @@ namespace GroupProject.Opening
         public Quaternion BodyRotation => Quaternion.Euler(0, bodyYaw, 0);
 
         Transform visualRoot;
+        Transform mirrorHead,neckBridge;
+        public Transform NeckBridge=>neckBridge;
+        public Vector3 CollarPosition=>bones[1].TransformPoint(new Vector3(0,.115f,0));
+        public Transform MirrorHead=>mirrorHead;
         readonly Transform[] bones = new Transform[10];
         readonly RaycastHit[] floorHits = new RaycastHit[32];
         readonly List<Material> ownedMaterials = new List<Material>();
@@ -43,7 +47,7 @@ namespace GroupProject.Opening
         readonly bool[] footwearWorn = new bool[2];
         readonly GameObject[] shoes = new GameObject[2];
         Mesh bodyMesh;
-        Material topMaterial, trousersMaterial, suitMaterial, shoeMaterial;
+        Material topMaterial, trousersMaterial, suitMaterial, shoeMaterial,underLayerMaterial;
         float bodyYaw, previousRootYaw, validCalibrationTime, tallestSample;
         bool wasDesktop;
         bool initialized;
@@ -97,6 +101,8 @@ namespace GroupProject.Opening
             suitMaterial = MakeMaterial(cleanroomFabric ? cleanroomFabric : Resources.Load<Material>("DressingMaterials/Coverall_0"),
                 "Worn cleanroom fabric", new Color(.84f,.89f,.92f));
             shoeMaterial = MakeMaterial(everydayShoes, "Everyday shoes", new Color(.075f,.085f,.10f));
+            underLayerMaterial=MakeMaterial(null,"Clean preparation base layer",new Color(.62f,.67f,.70f));
+            CreateMirrorHead();
 
             bodyMesh = BodySurface.Build(Rest, RestWrist(true), RestWrist(false), RestAnkle(true), RestAnkle(false));
             var bind = new Matrix4x4[bones.Length];
@@ -123,6 +129,26 @@ namespace GroupProject.Opening
             var node = new GameObject(label).transform;
             node.SetParent(parent, false);
             return node;
+        }
+
+        void CreateMirrorHead()
+        {
+            // A neutral avatar head completes the outfit reflection. ShadowsOnly keeps it out of the first-person view.
+            mirrorHead=MakeTransform("Mirror avatar head",visualRoot);
+            var hands=GetComponent<AnimatedControllerHands>();
+            var skin=MakeMaterial(hands?hands.bareSkinMaterial:null,"Avatar head skin",new Color(.62f,.40f,.29f));
+            var detail=MakeMaterial(null,"Avatar face detail",new Color(.025f,.04f,.05f));
+            MirrorHeadPart("Head",Vector3.zero,new Vector3(.17f,.23f,.19f),skin);
+            var neck=GameObject.CreatePrimitive(PrimitiveType.Capsule);neck.name="Connected neck";Destroy(neck.GetComponent<Collider>());neckBridge=neck.transform;neckBridge.SetParent(visualRoot,false);
+            var neckRenderer=neck.GetComponent<Renderer>();neckRenderer.sharedMaterial=skin;neckRenderer.shadowCastingMode=ShadowCastingMode.ShadowsOnly;
+            MirrorHeadPart("Nose",new Vector3(0,-.01f,.093f),new Vector3(.035f,.045f,.038f),skin);
+            foreach(float x in new[]{-.034f,.034f})MirrorHeadPart("Eye",new Vector3(x,.018f,.085f),new Vector3(.019f,.012f,.012f),detail);
+        }
+        void MirrorHeadPart(string label,Vector3 position,Vector3 size,Material material)
+        {
+            var g=GameObject.CreatePrimitive(PrimitiveType.Sphere);g.name=label;Destroy(g.GetComponent<Collider>());
+            g.transform.SetParent(mirrorHead,false);g.transform.localPosition=position;g.transform.localScale=size;
+            var renderer=g.GetComponent<Renderer>();renderer.sharedMaterial=material;renderer.shadowCastingMode=ShadowCastingMode.ShadowsOnly;
         }
 
         Material MakeMaterial(Material source, string label, Color fallback)
@@ -170,7 +196,7 @@ namespace GroupProject.Opening
             if (topMaterial && !everydayTop)
                 topMaterial.SetColor("_BaseColor", PersonalJacketStored ? new Color(.45f,.50f,.53f) : new Color(.16f,.22f,.28f));
             BodyRenderer.sharedMaterials = CoverallWorn
-                ? new[] { suitMaterial, suitMaterial } : new[] { topMaterial, trousersMaterial };
+                ? new[] { suitMaterial, suitMaterial } : PersonalJacketStored?new[]{underLayerMaterial,underLayerMaterial}:new[] { topMaterial, trousersMaterial };
         }
 
         /// <summary>Call while standing comfortably after recentering. It never moves the tracked camera.</summary>
@@ -180,11 +206,8 @@ namespace GroupProject.Opening
         {
             if (!head || !playerRoot) return;
             FloorHeight = FindFloor();
-            float height = head.position.y - FloorHeight;
-            if (!ValidEyeHeight(height)) return;
-            CalibratedEyeHeight = height;
-            IsCalibrated = true;
-            tallestSample = height;
+            CalibratedEyeHeight=StartingViewHeight.EyeHeight;
+            IsCalibrated=true;tallestSample=CalibratedEyeHeight;
             if (initialized) UpdatePose();
         }
         static bool ValidEyeHeight(float value) => value >= .85f && value <= 2.25f;
@@ -194,26 +217,8 @@ namespace GroupProject.Opening
             if (!initialized) { Initialize(); if (!initialized) return; }
             FloorHeight = FindFloor();
             bool preview = DesktopPreview.Active;
-            if (preview != wasDesktop)
-            {
-                wasDesktop = preview;
-                if (preview) CalibrateStanding();
-                else { IsCalibrated = false; tallestSample = 0; validCalibrationTime = 0; }
-            }
-            if (!IsCalibrated)
-            {
-                var device = InputDevices.GetDeviceAtXRNode(XRNode.Head);
-                bool tracking = preview || (device.isValid && device.TryGetFeatureValue(CommonUsages.isTracked, out bool tracked) && tracked);
-                float sample = head.position.y - FloorHeight;
-                if (tracking && ValidEyeHeight(sample))
-                {
-                    tallestSample = Mathf.Max(tallestSample, sample);
-                    validCalibrationTime += Time.unscaledDeltaTime;
-                    if (validCalibrationTime >= calibrationSeconds)
-                    { CalibratedEyeHeight = tallestSample; IsCalibrated = true; }
-                }
-                else { validCalibrationTime = 0; tallestSample = 0; }
-            }
+            wasDesktop=preview;
+            if(!IsCalibrated)CalibrateStanding();
             float rootYaw = playerRoot.eulerAngles.y;
             bodyYaw += Mathf.DeltaAngle(previousRootYaw, rootYaw);
             previousRootYaw = rootYaw;
@@ -252,8 +257,9 @@ namespace GroupProject.Opening
             visualRoot.SetPositionAndRotation(new Vector3(head.position.x, FloorHeight, head.position.z)
                 - BodyRotation * Vector3.forward * (.115f * scale), BodyRotation);
             visualRoot.localScale = Vector3.one * scale;
+            if(mirrorHead)mirrorHead.SetPositionAndRotation(head.position-head.up*(.09f*scale),head.rotation);
             float eye = (head.position.y - FloorHeight) / scale;
-            float crouch = Mathf.Max(0, 1.65f - eye);
+            float crouch = 1.65f - eye;
             float shoulderY = Mathf.Max(.64f, 1.39f - crouch);
             float hipY = Mathf.Clamp(.88f - crouch * .64f, .34f, .94f);
             bones[0].localPosition = new Vector3(0,hipY,0);
@@ -263,6 +269,11 @@ namespace GroupProject.Opening
             RightFoot.localPosition = new Vector3(.11f,0,.09f);
             PoseArm(true, shoulderY); PoseArm(false, shoulderY);
             PoseLeg(true, hipY); PoseLeg(false, hipY);
+            if(neckBridge&&mirrorHead){
+                var collar=CollarPosition;var headBase=mirrorHead.TransformPoint(new Vector3(0,-.065f,-.015f));var span=headBase-collar;
+                neckBridge.SetPositionAndRotation((collar+headBase)*.5f,Quaternion.FromToRotation(Vector3.up,span));
+                neckBridge.localScale=new Vector3(.10f,(span.magnitude+.08f)*.5f,.10f)/scale;
+            }
         }
 
         Vector3 WristPosition(bool left)

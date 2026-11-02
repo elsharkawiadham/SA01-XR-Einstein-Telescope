@@ -6,7 +6,7 @@ using UnityEngine;
 public static class ProjectAssembly
 {
     public const string Main="Assets/Project/Scenes/01_Opening.unity";
-    public static readonly Vector3[] RoutePoints={new Vector3(-8,.03f,8),new Vector3(0,.03f,8),new Vector3(12,.06f,8),new Vector3(12,.23f,19.3f),new Vector3(23,.25f,19.3f),new Vector3(26.4f,.25f,19.3f),new Vector3(26.4f,.25f,17.9f),new Vector3(28,.25f,17.9f)};
+    public static readonly Vector3[] RoutePoints={new Vector3(-8,.03f,8),new Vector3(0,.03f,8),new Vector3(12,.06f,8),new Vector3(12,.23f,19.3f),new Vector3(23,.25f,19.3f),new Vector3(34,.25f,19.3f),new Vector3(34,.25f,28)};
     public static void ValidateRoute()
     {
         Physics.SyncTransforms();

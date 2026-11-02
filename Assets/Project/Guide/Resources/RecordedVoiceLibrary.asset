@@ -246,7 +246,7 @@ MonoBehaviour:
     originalName: 
     clip: {fileID: 8300000, guid: 5f45e4acd6d41487bb8a6aaea5912168, type: 3}
   - id: VOICE_059
-    text: "B1: Arrived. Leave the cabin through the open door."
+    text: 'B1: Arrived. Leave the cabin through the open door.'
     originalName: 
     clip: {fileID: 8300000, guid: aecd7db46b2d94bfb9fbc31b62a80f70, type: 3}
   - id: VOICE_060
@@ -329,3 +329,47 @@ MonoBehaviour:
     text: You're welcome!
     originalName: 
     clip: {fileID: 8300000, guid: 1b37abacc21594939937acbe83a9c05f, type: 3}
+  - id: onboarding_4
+    text: Push the right stick left, then release it.
+    originalName: 
+    clip: {fileID: 8300000, guid: 73e9c850603237841a2d79ba10dec364, type: 3}
+  - id: onboarding_5
+    text: Push the right stick right, then release it.
+    originalName: 
+    clip: {fileID: 8300000, guid: 36f1f08dc62606a48b423ff8cae26bb4, type: 3}
+  - id: onboarding_6
+    text: Press and release the left index-finger trigger. Use triggers to select buttons and doors.
+    originalName: 
+    clip: {fileID: 8300000, guid: b9c37517174b810499592bf458b44ac2, type: 3}
+  - id: onboarding_7
+    text: Press and release the right index-finger trigger.
+    originalName: 
+    clip: {fileID: 8300000, guid: 69117ced97cc3d9408ac8d6e5b9f8467, type: 3}
+  - id: onboarding_8
+    text: Squeeze the left side grip, then release it. Hold grip to carry clothing; release to fit it.
+    originalName: 
+    clip: {fileID: 8300000, guid: 615bfad7eb1c4c44899354abde132853, type: 3}
+  - id: onboarding_9
+    text: Squeeze the right side grip, then release it.
+    originalName: 
+    clip: {fileID: 8300000, guid: bbc8985d067974944b05f99eaefeed8f, type: 3}
+  - id: onboarding_10
+    text: Hold A on the right controller to aim at a clear floor. Release A to teleport. Try holding and releasing A now.
+    originalName: 
+    clip: {fileID: 8300000, guid: 1b419f80fca6b9942b15c590dfc10c0d, type: 3}
+  - id: onboarding_11
+    text: Hold B on the right controller while speaking, then release to ask. Try holding and releasing B now.
+    originalName: 
+    clip: {fileID: 8300000, guid: 572806d63ebb3b04099ba611b80e5ed2, type: 3}
+  - id: onboarding_12
+    text: Press and release X on the left controller to hide or show your checklist.
+    originalName: 
+    clip: {fileID: 8300000, guid: d08f3342db58a6e4b8c4039daf0537db, type: 3}
+  - id: onboarding_context0
+    text: This is a training version of the Einstein Telescope cleanroom environment. You will practise preparing yourself before reaching the future ET facility room.
+    originalName: 
+    clip: {fileID: 8300000, guid: 936c4e16f38dd43498f3f1c74ee141b5, type: 3}
+  - id: onboarding_context1
+    text: Follow the corridor to the elevator, then visit the changing room and air shower. After the shower, follow the hallway to the ET facility room door. That room is coming soon and stays closed. Hold B to ask for help.
+    originalName: 
+    clip: {fileID: 8300000, guid: 07df8069a6d5b8149a286e69b926187a, type: 3}

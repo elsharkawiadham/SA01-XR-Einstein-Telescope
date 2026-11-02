@@ -81,6 +81,7 @@ public static class PreparationRebuild
         }fx.jets=jets.ToArray();
         lower.SetActive(false);EditorSceneManager.MarkSceneDirty(scene);EditorSceneManager.SaveScene(scene);AssetDatabase.SaveAssets();
         File.WriteAllText("Logs/PreparationRebuild.txt","Built editable room geometry, clothing meshes, lockers, seven wearable items, personal jacket storage, shower jets and spatial fan.");
+        TrainingRevisionSetup.Run();
     }
     static Transform Group(string name,Transform p){var g=new GameObject(name);g.transform.SetParent(p,false);return g.transform;}
     static Material Mat(string name,Color color,float metallic,float smooth){string p=Art+name+".mat";var m=AssetDatabase.LoadAssetAtPath<Material>(p);if(!m){m=new Material(Shader.Find("Universal Render Pipeline/Lit"));AssetDatabase.CreateAsset(m,p);}m.color=color;m.SetFloat("_Metallic",metallic);m.SetFloat("_Smoothness",smooth);EditorUtility.SetDirty(m);return m;}

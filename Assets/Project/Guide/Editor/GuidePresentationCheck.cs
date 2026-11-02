@@ -90,7 +90,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
             {
                 Assert(ride.State==ElevatorRide.Phase.Arrived,"Arrival failed");Assert(!ride.motor.isPlaying&&!effects.doorLoop.isPlaying,"Elevator loops still playing after arrival");Assert(effects.CuesPlayed>=7,"Missing elevator event sounds");
                 Assert(parrot.gameObject.activeInHierarchy&&parrot.bird.enabled,"Parrot lost on arrival");
-                Assert(Vector3.Distance(parrot.transform.position,parrot.head.TransformPoint(parrot.offset))<.03f,"Companion is not following head");
+                Assert(parrot.lowerAnchor&&Vector3.Distance(parrot.transform.position,parrot.lowerAnchor.position)<.03f,"Companion is not at its fixed B1 station");
                 Finish("PASS: Quest captions and AI control advice in keyboard preview; fallback and AI voice mirrored at parrot; dialogue synchronized; original narrators muted; footsteps follow travel and stop at rest; call/door/button/start/stop/chime cues; descent motor; loops stop at arrival; companion survives scene change. Scripted editor test; Quest hardware and subjective listening still pending.");
             }
             if(stage>0&&EditorApplication.timeSinceStartup-since>90)throw new Exception("Timeout at stage "+stage);

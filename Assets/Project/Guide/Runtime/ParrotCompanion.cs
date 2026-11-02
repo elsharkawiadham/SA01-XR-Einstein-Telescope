@@ -15,7 +15,11 @@ namespace GroupProject.Guide
         public AudioSource voice;
         public TMP_Text dialogue;
         public ParrotGraphic bird;
-        public Vector3 offset=new Vector3(-.65f,-.38f,1.65f);
+        public Vector3 offset=new Vector3(.65f,-.48f,1.65f);
+        public Transform groundAnchor,lowerAnchor;
+        GroupProject.Elevator.ElevatorRide ride;
+        Vector3 fallbackPosition;
+        Quaternion fallbackRotation;
         public bool Speaking => voice && voice.isPlaying;
         public string CurrentDialogue => dialogue ? dialogue.text : "";
         float[] volumes,samples=new float[128];
@@ -28,6 +32,10 @@ namespace GroupProject.Guide
         public void ArriveAfter(float seconds){arriveAt=Time.unscaledTime+seconds;presentation=GetComponent<CanvasGroup>();if(!presentation)presentation=gameObject.AddComponent<CanvasGroup>();presentation.alpha=0;}
         void Awake()
         {
+            fallbackPosition=transform.position;fallbackRotation=transform.rotation;
+            if(ai&&ai.playerRoot){var journey=ai.playerRoot.GetComponent<GroupProject.Preparation.PreparationJourney>();if(journey)ride=journey.ride;}
+            transform.SetParent(null,true);
+            if(!GetComponent<ParrotStations>())gameObject.AddComponent<ParrotStations>().Initialize(this,ride);
             volumes=new float[narrators.Length];wasPlaying=new bool[narrators.Length];clips=new AudioClip[narrators.Length];
             for(int i=0;i<narrators.Length;i++)if(narrators[i]){volumes[i]=narrators[i].volume;narrators[i].volume=0;}
         }
@@ -46,8 +54,16 @@ namespace GroupProject.Guide
             if(!head)return;
             float arrival=Mathf.SmoothStep(0,1,(Time.unscaledTime-arriveAt)/1.5f);
             if(presentation)presentation.alpha=arrival;
-            transform.position=head.TransformPoint(offset+Vector3.left*(1-arrival)*1.4f);transform.rotation=head.rotation;
+            var stations=GetComponent<ParrotStations>();
+            var anchor=stations?stations.Choose():ride&&ride.AtB1?lowerAnchor:groundAnchor;
+            transform.SetPositionAndRotation(anchor?anchor.position:fallbackPosition,stations?stations.PresentationRotation(anchor):anchor?Quaternion.Euler(0,anchor.eulerAngles.y,0):fallbackRotation);
             if(bird)bird.rectTransform.anchoredPosition=new Vector2(0,-150+Mathf.Sin(Time.unscaledTime*2.2f)*6);
+            if(ai&&ai.SpeechSuppressed)
+            {
+                if(voice)voice.Stop();active=null;captionUntil=0;if(dialogue)dialogue.text="";
+                for(int i=0;i<narrators.Length;i++){if(narrators[i]&&narrators[i].isPlaying)narrators[i].Stop();wasPlaying[i]=false;}
+                if(bird)bird.speech=0;return;
+            }
             // Original channels retain playback timing/cancellation; only the parrot channel is audible.
             for(int i=0;i<narrators.Length;i++)
             {
@@ -55,10 +71,10 @@ namespace GroupProject.Guide
                 if(source.isPlaying && (!wasPlaying[i]||clips[i]!=source.clip))
                 {
                     string recordedText;var original=source.clip;var replacement=RecordedVoiceLibrary.ForOriginal(original,out recordedText);
-                    if(replacement&&replacement!=original){source.clip=replacement;source.pitch=1;source.Play();}
+                    if(replacement&&replacement!=original){source.clip=replacement;source.Play();}
                     active=source;mirrored=source.clip;voice.Stop();voice.clip=mirrored;voice.pitch=source.pitch;voice.volume=Mathf.Max(.65f,volumes[i]);
                     if(mirrored){voice.timeSamples=Mathf.Clamp(source.timeSamples,0,mirrored.samples-1);voice.Play();}
-                    string text=ai && source==ai.speaker ? ai.LastReply : recordedText;
+                    string text=ai && source==ai.speaker ? ai.LastReply : ai&&ai.tutorial&&source==ai.tutorial.narrator?LocomotionGuide.CaptionForStep(ai.tutorial.CurrentStep):recordedText;
                     if(string.IsNullOrEmpty(text))foreach(var line in lines)if(line.clip==mirrored){text=line.text;break;}
                     if(!string.IsNullOrEmpty(text))dialogue.text=text;
                 }

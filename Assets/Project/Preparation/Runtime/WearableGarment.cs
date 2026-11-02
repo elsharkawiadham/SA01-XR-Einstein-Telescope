@@ -72,7 +72,7 @@ namespace GroupProject.Preparation
             dropping=false;ReturnToLocker();
         }
         void ReturnToLocker(){var reason=Prerequisite();ResetToLocker();journey?.Tell(reason ?? (Footwear?"Place this over the marked foot space. It has returned to its locker.":DisplayName+": move it to the highlighted target and release. Try again."));}
-        public string Prerequisite(){if(!DesktopPreview.Active&&((kind==Kind.LeftGlove&&selectedSide==InteractorHandedness.Left)||(kind==Kind.RightGlove&&selectedSide==InteractorHandedness.Right)))return "Use the opposite hand to put on this glove.";if(!journey)return "Preparing dressing area.";if(kind!=Kind.PersonalJacket&&!journey.PersonalClothesStored)return "First store your personal jacket in the personal locker.";if(kind==Kind.LeftOvershoe&&!journey.HasGarment(Kind.LeftBoot))return "Put on the left boot before its overshoe.";if(kind==Kind.RightOvershoe&&!journey.HasGarment(Kind.RightBoot))return "Put on the right boot before its overshoe.";return null;}
+        public string Prerequisite(){if(!DesktopPreview.Active&&((kind==Kind.LeftGlove&&selectedSide==InteractorHandedness.Left)||(kind==Kind.RightGlove&&selectedSide==InteractorHandedness.Right)))return "Use the opposite hand to put on this glove.";if(!journey)return "Preparing dressing area.";if(kind!=Kind.PersonalJacket&&!journey.PersonalClothesStored)return "First open locker 01 and select STORE CLOTHES.";if(kind==Kind.LeftOvershoe&&!journey.HasGarment(Kind.LeftBoot))return "Put on the left boot before its overshoe.";if(kind==Kind.RightOvershoe&&!journey.HasGarment(Kind.RightBoot))return "Put on the right boot before its overshoe.";return null;}
         // Only use the avatar belonging to this journey. Isolated tests and other players must not share fitting targets.
         PlayerBodyAvatar Avatar => journey&&journey.ride&&PlayerBodyAvatar.Active&&PlayerBodyAvatar.Active.playerRoot==journey.ride.playerRoot?PlayerBodyAvatar.Active:null;
         AnimatedControllerHands Hands => journey&&journey.ride?journey.ride.playerRoot.GetComponent<AnimatedControllerHands>():null;
@@ -116,6 +116,16 @@ namespace GroupProject.Preparation
             else{Equipped=true;journey.Equip((int)kind);ApplyWornAppearance();}
             body.isKinematic=true;grab.enabled=false;foreach(var c in GetComponentsInChildren<Collider>())c.enabled=false;
             if(selectingHand){var node=selectedSide==InteractorHandedness.Right?XRNode.RightHand:XRNode.LeftHand;InputDevices.GetDeviceAtXRNode(node).SendHapticImpulse(0,.35f,.10f);}return true;}
+        public void StoreFromWardrobe()
+        {
+            if(kind!=Kind.PersonalJacket||Stored)return;
+            var top=Avatar&&Avatar.BodyRenderer?Avatar.BodyRenderer.sharedMaterials[0]:null;
+            Stored=true;transform.SetPositionAndRotation(TargetPosition(),storagePoint?storagePoint.rotation:homeRotation);
+            journey.StorePersonalClothes();if(Avatar)Avatar.SetPersonalJacketStored(true);
+            if(top)foreach(var r in GetComponentsInChildren<Renderer>(true))r.sharedMaterial=top;
+            SetRenderers(true);grab.enabled=false;body.isKinematic=true;
+            foreach(var c in GetComponentsInChildren<Collider>(true))c.enabled=false;
+        }
         void ApplyWornAppearance()
         {
             // The animated skin becomes the worn glove; the deforming body becomes the suit.

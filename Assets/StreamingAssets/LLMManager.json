@@ -1,0 +1,17 @@
+{
+    "downloadOnStart": false,
+    "modelEntries": [
+        {
+            "label": "",
+            "filename": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+            "path": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+            "lora": false,
+            "url": "",
+            "embeddingOnly": false,
+            "embeddingLength": 896,
+            "includeInBuild": true,
+            "contextLength": 32768
+        }
+    ],
+    "debugMode": 1
+}

@@ -108,7 +108,7 @@ public static class ControllerEmbodimentCheck
             await Frames(2);
         }
         Require(avatar.IsFootwearWorn(true)&&avatar.IsFootwearWorn(false),"Default shoes remain after footwear fits");
-        Require(journey.Dressed&&!journey.showerGate.activeSelf,"Full outfit failed to unlock shower");
+        Require(journey.Dressed&&journey.entryDoor.Open,"Full outfit failed to unlock shower");
         foreach(var boot in garments.Where(g=>g.kind==WearableGarment.Kind.LeftBoot||g.kind==WearableGarment.Kind.RightBoot))
             Require(boot.GetComponentsInChildren<Renderer>().All(r=>!r.enabled),"Boot mesh overlaps its fitted overshoe");
         foreach(float standingHeight in new[]{1.25f,1.90f,1.65f})

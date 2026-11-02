@@ -18,6 +18,8 @@ public static class StandaloneAICheck
     public static void Run()
     {
         EditorSceneManager.OpenScene(OpeningProjectSetup.ScenePath);
+        // Editor automation should not claim or initialize an attached headset.
+        if(UnityEngine.XR.Management.XRGeneralSettings.Instance)UnityEngine.XR.Management.XRGeneralSettings.Instance.InitManagerOnStart=false;
         var desktop=UnityEngine.Object.FindFirstObjectByType<DesktopPreview>();if(desktop)desktop.enabled=false;
         UnityEngine.Object.FindFirstObjectByType<OpeningSequence>().enabled=false;
         SessionState.SetBool("Adham.AICheck",true);
@@ -39,9 +41,23 @@ public static class StandaloneAICheck
             double start=EditorApplication.timeSinceStartup;
             while(!guide.Ready&&guide.Failure==null&&EditorApplication.timeSinceStartup-start<120)await Task.Delay(100);
             if(!guide.Ready)throw new Exception("Initialization: "+guide.Failure);
+            // Exercise the actual local model as well as the authored question shortcuts.
+            var classification=guide.agent.Chat("How do I turn left?",addToHistory:false);
+            if(await Task.WhenAny(classification,Task.Delay(45000))!=classification)throw new Exception("Local model inference timed out");
+            string category=await classification;
+            if(string.IsNullOrWhiteSpace(category))throw new Exception("Local model returned no result");
             var flags=BindingFlags.NonPublic|BindingFlags.Instance;
             var tts=(ITtsService)typeof(StandaloneAIGuide).GetField("synthesis",flags).GetValue(guide);
             var asr=(IAsrService)typeof(StandaloneAIGuide).GetField("recognition",flags).GetValue(guide);
+            float slowRatio;
+            using(var normal=await tts.GenerateAsync("Follow the numbered lockers from left to right.",1f,0))
+            using(var slower=await tts.GenerateAsync("Follow the numbered lockers from left to right.",guide.speechSpeed,0))
+            {
+                if(!normal.IsValid||!slower.IsValid)throw new Exception("Speech synthesis returned invalid audio");
+                slowRatio=(float)slower.Samples.Length/normal.Samples.Length;
+                // VITS samples duration noise independently for each call. Their length ratio is diagnostic, not a deterministic speed assertion.
+                if(guide.speechSpeed>=1||guide.recordedSpeechRate>=1)throw new Exception("Narration speed settings were reset");
+            }
             string heard;
             using(var question=await tts.GenerateAsync("How do I turn left to find the elevator?"))
             {
@@ -65,11 +81,11 @@ public static class StandaloneAICheck
             if(guide.model.remote || guide.agent.remote)throw new Exception("Remote mode must be disabled");
             guide.elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>().destinationRoot.SetActive(true);
             var body=guide.playerRoot.GetComponent<CharacterController>();bool enabled=body && body.enabled;if(enabled)body.enabled=false;
-            guide.playerRoot.position=new Vector3(28,.25f,17.9f);if(enabled)body.enabled=true;
+            guide.playerRoot.position=new Vector3(23,.25f,19.3f);if(enabled)body.enabled=true;
             await Task.Delay(300);
-            if(!GroupProject.Cleaning.CleaningStation.Active)throw new Exception("Cleaning Q&A context not active");
-            string[] questions={"Which wipe should I use for class A?","How do I change the wipe face?","What oven temperature should I use?"};
-            string[] expected={"Anticon Gold","Lift the wipe","approved local procedure"};
+            if(GroupProject.Cleaning.CleaningStation.Active)throw new Exception("Removed cleaning demo active");
+            string[] questions={"How do I start the air shower?","What should I do next?"};
+            string[] expected={"CLOSE DOOR","cleanroom clothing"};
             string cleaningReport="";
             for(int i=0;i<questions.Length;i++)
             {
@@ -78,10 +94,10 @@ public static class StandaloneAICheck
                     var replyTask=(Task)typeof(StandaloneAIGuide).GetMethod("Answer",flags).Invoke(guide,new object[]{audio.Samples,audio.SampleRate});
                     if(await Task.WhenAny(replyTask,Task.Delay(90000))!=replyTask)throw new Exception("Cleaning answer timeout");await replyTask;
                 }
-                if(!guide.LastReply.Contains(expected[i]))throw new Exception("Cleaning reply mismatch: "+guide.LastReply);
-                cleaningReport+="\nCleaning question: "+questions[i]+"\nSpoken reply: "+guide.LastReply;
+                if(!guide.LastReply.Contains(expected[i]))throw new Exception("Preparation reply mismatch: "+guide.LastReply);
+                cleaningReport+="\nPreparation question: "+questions[i]+"\nSpoken reply: "+guide.LastReply;
             }
-            string report="PASS: native local TTS -> ASR -> LLM -> TTS and automatic narration completed.\nRecognized question: "+heard+"\nAnswer: "+reply+"\nAutomatic instruction: "+automaticReply+"\nElapsed seconds: "+(EditorApplication.timeSinceStartup-start).ToString("F1")+cleaningReport+"\nEditor synthetic-audio test; physical microphone, Quest controls, standalone build and performance NOT tested.\n";
+            string report="PASS: Windows local model startup/inference, native TTS -> ASR -> grounded reply -> TTS and automatic narration completed.\nIndependent synthesis duration ratio (diagnostic; stochastic VITS): "+slowRatio.ToString("F2")+". Configured speed: "+guide.speechSpeed+". Recorded speech playback rate: "+guide.recordedSpeechRate+".\nRaw model classification (authored shortcuts determine known control answers): "+category+"\nRecognized question: "+heard+"\nAnswer: "+reply+"\nAutomatic instruction: "+automaticReply+"\nElapsed seconds: "+(EditorApplication.timeSinceStartup-start).ToString("F1")+cleaningReport+"\nEditor synthetic-audio test; physical microphone, Quest controls, standalone build and performance NOT tested.\n";
             Directory.CreateDirectory("Logs");File.WriteAllText("Logs/StandaloneAICheck.txt",report);Debug.Log(report);
             SessionState.SetBool("Adham.AICheck",false);SessionState.SetInt("Adham.AICheckExit",0);EditorApplication.isPlaying=false;
         }

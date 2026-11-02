@@ -167,7 +167,7 @@ public static class DressingInteractionCheck
                 Require(garment.Equipped, garment.DisplayName + " cannot be fitted through the preview gesture.");
                 if (garment.Footwear) AssertSoleOnFloor(garment, floorCollider);
             }
-            Require(journey.Dressed && !journey.showerGate.activeSelf, "Completed outfit did not unlock the shower.");
+            Require(journey.Dressed && journey.entryDoor.Open, "Completed outfit did not unlock the shower.");
             foreach (var garment in garments)
                 Require(garment.TryPlace(), "Already fitted item was not idempotent.");
             Require(journey.Dressed, "Repeated placement changed completion state.");

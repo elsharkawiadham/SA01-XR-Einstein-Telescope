@@ -29,6 +29,10 @@ namespace GroupProject.Opening
         public string LastReply { get; private set; }
         public string LastQuestion { get; private set; }
         public string Failure { get; private set; }
+        GroupProject.Preparation.PreparationJourney preparation;
+        public bool SpeechSuppressed{get{if(!preparation&&playerRoot)preparation=playerRoot.GetComponent<GroupProject.Preparation.PreparationJourney>();return preparation&&preparation.InDressingRoom;}}
+        [Range(.6f,1f)] public float speechSpeed=.82f;
+        [Range(.75f,1f)] public float recordedSpeechRate=.9f;
         IAsrService recognition;
         ITtsService synthesis;
         readonly CancellationTokenSource lifetime = new CancellationTokenSource();
@@ -84,7 +88,7 @@ namespace GroupProject.Opening
         }
         public Task<bool> SpeakInstruction(string facts, int step=-1)
         {
-            if(IsBusy)return Task.FromResult(false);
+            if(IsBusy||SpeechSuppressed)return Task.FromResult(false);
             IsBusy=true;
             var task=Instruction(facts,step);operation=task;return task;
         }
@@ -122,14 +126,16 @@ namespace GroupProject.Opening
         public string GroundedReply(string question, string category)
         {
             string social=SocialReply(question);if(social!=null)return social;
+            var ride = elevator ? elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>() : null;
+            string q=question.ToLowerInvariant();
+            if(q.Contains("teleport"))return "Hold A on your right controller and aim at a clear floor. A green arc marks a safe landing. Release A to teleport. Closed doors, walls and the coming-soon room block teleportation.";
+            if(ride&&ride.AtB1&&(q.Contains("ground")||q.Contains("back up")||q.Contains("go up")))return "Return to the elevator. Use the up-arrow call button to open it, step fully inside, then aim at G and press the trigger to return to the ground floor.";
             var preparation=FindFirstObjectByType<GroupProject.Preparation.PreparationJourney>();
             if(preparation){string answer=preparation.Answer(question);if(!string.IsNullOrEmpty(answer))return answer;}
             // Chapters answer from client-reviewed facts before the opening-route fallback.
             var cleaning=GroupProject.Cleaning.CleaningStation.Active;
             if(cleaning){string answer=cleaning.Answer(question);if(!string.IsNullOrEmpty(answer))return answer;}
             // Never speak model-generated controller claims. Resolve only to authored facts.
-            var ride = elevator ? elevator.GetComponentInParent<GroupProject.Elevator.ElevatorRide>() : null;
-            string q=question.ToLowerInvariant();
             if(q.Contains("turn") || q.Contains("rotat")) category="TURN";
             else if(q.Contains("button") || q.Contains("door") || q.Contains("floor") || q.Contains("press")) category="ELEVATOR";
             else if((q.Contains("where") || q.Contains("find")) && (q.Contains("elevator") || q.Contains("go")) || q.Contains("lost")) category="ROUTE";
@@ -144,7 +150,7 @@ namespace GroupProject.Opening
             }
             switch(category.Trim().Trim('.', '!', ' ', '\n').ToUpperInvariant())
             {
-                case "TURN": return "Flick the right joystick left or right to turn in small steps. Use the left joystick to walk forward.";
+                case "TURN": return "Gently push the right joystick left or right to turn smoothly. A small push turns slowly. Release it to stop. Use the left joystick to walk forward.";
                 case "MOVE": return "Use the left joystick to move forward or backward. Move it left or right to step sideways.";
                 case "ELEVATOR": return elevator && elevator.Called
                     ? ride ? ride.Instruction : "Enter the cabin through the open door."
@@ -158,7 +164,7 @@ namespace GroupProject.Opening
                 case "HELP":
                     if(cleaning)return cleaning.HelpForCurrentStep();
                     if(ride && elevator.Called)return ride.Instruction;
-                    return "Let's do it together. Push the left joystick forward to follow the floor line. At the corner, flick the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.";
+                    return "Let's do it together. Push the left joystick forward to follow the floor line. At the corner, gently push the right joystick left. Then follow the line to the elevator button, aim at the down arrow, and press the trigger.";
                 default: return "I am not sure what you mean. Are you asking where an object is, how to use it, or what to do next?";
             }
         }
@@ -173,24 +179,25 @@ namespace GroupProject.Opening
         }
         async Task Speak(string text,int version)
         {
+            if(SpeechSuppressed)return;
             var recording=GroupProject.Guide.RecordedVoiceLibrary.ForText(text);
             if(recording)
             {
-                if(version!=speechVersion)return;
+                if(version!=speechVersion||SpeechSuppressed)return;
                 LastReply=text;Status(text+"\n\nHold "+TalkKey+" to ask after the guide finishes.");
-                speaker.clip=recording;speaker.Play();
+                speaker.pitch=recordedSpeechRate;speaker.clip=recording;speaker.Play();
                 try{do{await Task.Delay(30,lifetime.Token);}while(speaker&&speaker.isPlaying&&version==speechVersion);}
                 finally{if(speaker&&speaker.clip==recording){speaker.Stop();speaker.clip=null;}}
                 return;
             }
-            using(var result=await synthesis.GenerateAsync(text,lifetime.Token))
+            using(var result=await synthesis.GenerateAsync(text,speechSpeed,0,lifetime.Token))
             {
                 lifetime.Token.ThrowIfCancellationRequested();
-                if(version!=speechVersion)return;
+                if(version!=speechVersion||SpeechSuppressed)return;
                 var clip=result.ToAudioClip("Local guide speech");
                 try
                 {
-                    LastReply=text;Status(text+"\n\nHold "+TalkKey+" to ask after the guide finishes.");speaker.clip=clip;speaker.Play();
+                    LastReply=text;Status(text+"\n\nHold "+TalkKey+" to ask after the guide finishes.");speaker.pitch=1;speaker.clip=clip;speaker.Play();
                     do{await Task.Delay(30,lifetime.Token);}while(speaker && speaker.isPlaying && version==speechVersion);
                 }
                 finally{if(speaker){speaker.Stop();speaker.clip=null;}Destroy(clip);}
@@ -199,6 +206,7 @@ namespace GroupProject.Opening
         public void CancelSpeech(){speechVersion++;if(speaker)speaker.Stop();}
         void Update()
         {
+            if(SpeechSuppressed){if(speaker&&speaker.isPlaying)CancelSpeech();if(recording){Microphone.End(null);recording=false;IsBusy=false;if(microphone)Destroy(microphone);microphone=null;}held=false;return;}
             if(playerRoot)
             {
                 Vector3 delta=playerRoot.position-previousPosition;
@@ -211,7 +219,7 @@ namespace GroupProject.Opening
             bool pressed=false;
             InputDevices.GetDeviceAtXRNode(XRNode.RightHand).TryGetFeatureValue(UnityEngine.XR.CommonUsages.secondaryButton,out pressed);
             if(DesktopPreview.Active) pressed|=QuestControllerPreview.Speak;
-            if(pressed&&!held)StartRecording();
+            if(pressed&&!held&&!LocomotionGuide.Locked)StartRecording();
             if(!pressed&&held&&recording)FinishRecording();
             held=pressed;
             if(recording&&Time.unscaledTime-recordStarted>=12)FinishRecording();
@@ -228,6 +236,7 @@ namespace GroupProject.Opening
         }
         void StartRecording()
         {
+            if(SpeechSuppressed)return;
             if(!Ready){Status("Offline guide is not ready yet.");return;}
             if((companion && companion.Speaking) || IsBusy || (tutorial&&tutorial.IsRunning) || (opening.welcome&&opening.welcome.isPlaying)){Status("Please wait until the guide finishes speaking.");return;}
 #if UNITY_ANDROID && !UNITY_EDITOR

@@ -59,7 +59,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactables;
                 Assert(UnityEngine.Object.FindObjectsByType<AudioListener>(FindObjectsSortMode.None).Length==1,"Duplicate listener");
                 Assert(!ride.playerRoot.GetComponent<DesktopPreview>().MovementLocked,"Movement not restored");
                 Assert(Vector3.Distance(ride.callButton.door.localPosition,closed+ride.callButton.openOffset)<.02f,"Arrival door not open");
-                Assert(!floor.TryPress(),"Arrival can trigger duplicate scene load");
+                Assert(floor.instruction&&floor.instruction.text.Contains("G / UP"),"Arrival does not offer a ground return");
                 Place(new Vector3(-8,.03f,8));Assert(Physics.Raycast(ride.playerRoot.position+Vector3.up,Vector3.down,2),"No arrival floor collision");
                 Finish("PASS: distant and outside selection rejected; XR trigger activation starts ride; desktop aimed B1 interaction; duplicate presses rejected; doorway reopens; missing destination recovers; single-scene B1 arrival; doors reopen; movement restored; single camera/listener; landing collision. Scripted editor checks, not headset validation.");
             }

@@ -5,7 +5,7 @@ Shader "GroupProject/CompanionUI"
  Tags { "RenderPipeline"="UniversalPipeline" "Queue"="Overlay-1" "RenderType"="Transparent" }
  Pass {
  Blend SrcAlpha OneMinusSrcAlpha
- ZWrite Off ZTest Always Cull Off
+ ZWrite Off ZTest LEqual Cull Off
  HLSLPROGRAM
  #pragma vertex vert
  #pragma fragment frag
