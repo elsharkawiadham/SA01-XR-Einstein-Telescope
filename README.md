@@ -1,5 +1,5 @@
 # Einstein Telescope — VR Cleanroom Training
-# Project Members
+## Project Members
 Adham Elsharkawi, 
 Jacy Mandels, 
 Justice Dedume, 
