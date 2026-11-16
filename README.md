@@ -1,4 +1,9 @@
 # Einstein Telescope — VR Cleanroom Training
+# Project Members
+Adham Elsharkawi
+Jacy Mandels
+Justice Dedume
+Mirko Palone
 
 An educational Unity prototype for practising Quest-controller navigation, cleanroom preparation and air-shower operation, supported by a talking parrot guide.
 
